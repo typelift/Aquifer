@@ -18,9 +18,12 @@ associativity left
 precedence 120
 }
 
-public func |>>()
+public func |>><UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DI -> Proxy<UO, UI, NI, NO, DO>) {
+}
 
 prefix operator |>> {}
+
+public prefix func |>><UO, UI, DI, DO, NI, NO, FR>(f: DI -> Proxy<UO, UI, NI, NO, DO>)
 
 postfix operator |>> {}
 
