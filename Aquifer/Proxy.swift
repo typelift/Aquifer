@@ -103,7 +103,7 @@ public func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>, p: P
     return p.ap(f)
 }
 
-public prefix func <*><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> Proxy<UO, UI, DI, DO, FR -> NR> -> Proxy<UO, UI, DI, DO, NR> {
+public prefix func <*><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR -> NR> -> Proxy<UO, UI, DI, DO, NR> {
     return { f in p.ap(f) }
 }
 
@@ -125,7 +125,7 @@ public prefix func >>-<UO, UI, DI, DO, FR, NR>(f: FR -> Proxy<UO, UI, DI, DO, NR
     return { p in p.bind(f) }
 }
 
-public postfix func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> (FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+public postfix func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>) -> (FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
     return { f in p.bind(f) }
 }
 
