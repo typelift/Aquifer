@@ -10,13 +10,13 @@ import Foundation
 import Swiftz
 
 public struct X {
-    internal let rec: Box<X>
+    internal let rec: () -> X
 
-    internal init(_ r: X) {
-        rec = Box(r)
+    internal init(_ r: @autoclosure () -> X) {
+        rec = r
     }
 
     public func absurd<A>() -> A {
-        return rec.value.absurd()
+        return rec().absurd()
     }
 }
