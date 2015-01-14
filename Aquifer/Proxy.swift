@@ -29,6 +29,14 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
         case let Pure(x): return ProxyRepr<UO, UI, DI, DO, NR>.Pure { _ in f(x()) }
         }
     }
+
+    internal func ap<NR>(f: ProxyRepr<UO, UI, DI, DO, FR -> NR>) -> ProxyRepr<UO, UI, DI, DO, NR> {
+        switch f {
+        case let Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { self.ap(fUI($0)) }
+        case let Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { self.ap(fDI($0)) }
+        case let Pure(g): return self.fmap(g())
+        }
+    }
 }
 
 /// A bidirectional channel for information.
@@ -89,5 +97,19 @@ public func pure<UO, UI, DI, DO, FR>(x: FR) -> Proxy<UO, UI, DI, DO, FR> {
 }
 
 extension Proxy: Applicative {
-    
+    public func ap<NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, NR> {
+        return Proxy<UO, UI, DI, DO, NR>(repr.ap(f.repr))
+    }
+}
+
+public func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
+    return p.ap(f)
+}
+
+public prefix func <*><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> Proxy<UO, UI, DI, DO, FR -> NR> -> Proxy<UO, UI, DI, DO, NR> {
+    return { f in p.ap(f) }
+}
+
+public postfix func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
+    return { p in p.ap(f) }
 }
