@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import Swiftz_core
 import Swiftz
 
 internal enum ProxyRepr<UO, UI, DI, DO, FR> {
-    case Request(UO, UI -> ProxyRepr<UO, UI, DI, DO, FR>)
-    case Respond(DO, DI -> ProxyRepr<UO, UI, DI, DO, FR>)
-    case Pure(FR)
+    case Request(() -> UO, (() -> UI) -> ProxyRepr<UO, UI, DI, DO, FR>)
+    case Respond(() -> DO, (() -> DI) -> ProxyRepr<UO, UI, DI, DO, FR>)
+    case Pure(() -> FR)
 
     internal func observe() -> ProxyRepr<UO, UI, DI, DO, FR> {
         switch self {
@@ -24,6 +23,14 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
     }
 }
 
+/// A bidirectional channel for information.
+///
+/// The type parameters are as follows:
+/// UO - upstream   output
+/// UI - upstream   input
+/// DI — downstream input
+/// DO — downstream output
+/// FR — final      result
 public struct Proxy<UO, UI, DI, DO, FR> {
     private let repr: ProxyRepr<UO, UI, DI, DO, FR>
 
