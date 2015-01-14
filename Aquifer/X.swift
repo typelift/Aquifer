@@ -11,13 +11,13 @@ import Swiftz
 
 /// The (nominally) empty type, implemented as a strictly self-recursive struct.
 public struct X {
-    internal let rec: Box<X>
+    private let rec: () -> X
 
     internal init(_ r: X) {
-        rec = Box(r)
+        rec = { _ in r }
     }
 
     public func absurd<A>() -> A {
-        return rec.value.absurd()
+        return rec().absurd()
     }
 }
