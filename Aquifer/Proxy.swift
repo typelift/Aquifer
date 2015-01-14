@@ -12,7 +12,7 @@ import Swiftz
 internal enum ProxyRepr<UO, UI, DI, DO, FR> {
     case Request(Box<UO>, Box<UI> -> ProxyRepr<UO, UI, DI, DO, FR>)
     case Respond(Box<DO>, Box<DI> -> ProxyRepr<UO, UI, DI, DO, FR>)
-    case Pure(() -> FR)
+    case Pure(Box<FR>)
 
     internal func observe() -> ProxyRepr<UO, UI, DI, DO, FR> {
         switch self {
