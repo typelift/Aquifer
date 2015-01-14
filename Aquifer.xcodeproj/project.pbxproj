@@ -14,6 +14,7 @@
 		11862D271A66392B008F5696 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,8 @@
 		11862D261A66392B008F5696 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
 		11862D281A66E8EB008F5696 /* X.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X.swift; sourceTree = "<group>"; };
 		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "AquiferTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +138,8 @@
 			isa = PBXGroup;
 			children = (
 				11862CE11A65FF66008F5696 /* Supporting Files */,
+				11862D311A67316B008F5696 /* ProxyTests.swift */,
+				11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */,
 			);
 			path = AquiferTests;
 			sourceTree = "<group>";
@@ -341,6 +346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11862D321A67316B008F5696 /* ProxyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +487,7 @@
 		11862CEB1A65FF66008F5696 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -493,12 +500,15 @@
 				INFOPLIST_FILE = AquiferTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AquiferTests/AquiferTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		11862CEC1A65FF66008F5696 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -507,6 +517,7 @@
 				INFOPLIST_FILE = AquiferTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AquiferTests/AquiferTests-Bridging-Header.h";
 			};
 			name = Release;
 		};
