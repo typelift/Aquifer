@@ -9,8 +9,9 @@
 import Foundation
 import Swiftz
 
+/// The (nominally) empty type, implemented as a self-recursive struct.
 public struct X {
-    internal let rec: () -> X
+    private let rec: () -> X
 
     internal init(_ r: @autoclosure () -> X) {
         rec = r
