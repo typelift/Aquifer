@@ -9,6 +9,8 @@
 import Foundation
 import Swiftz
 
+public func respond<UO, UI, DI, DO, FR>()
+
 infix operator |>> {
 associativity left
 precedence 120

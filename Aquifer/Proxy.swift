@@ -135,14 +135,14 @@ extension Proxy {
     }
 }
 
-public func closed<A>(x: X) -> A {
-    return x.absurd()
+internal func closed<A>(x: () -> X) -> A {
+    return x().absurd()
 }
 
 public func runEffect<FR>(p: Proxy<X, (), (), X, FR>) -> FR {
     switch p.repr {
-    case let .Request(uO, _): return closed(uO())
-    case let .Respond(dO, _): return closed(dO())
+    case let .Request(uO, _): return closed(uO)
+    case let .Respond(dO, _): return closed(dO)
     case let .Pure(x): return x()
     }
 }
