@@ -87,3 +87,7 @@ extension Proxy: Pointed {
 public func pure<UO, UI, DI, DO, FR>(x: FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy.pure(x)
 }
+
+extension Proxy: Applicative {
+    
+}
