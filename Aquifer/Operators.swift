@@ -9,8 +9,8 @@
 import Foundation
 import Swiftz
 
-public func respond<UO, UI, DI, DO>(dO: DO) -> Proxy<UO, UI, DI, DO, DI> {
-    return Proxy(ProxyRepr.Respond(const(dO)) { x in ProxyRepr.Pure(x) })
+public func respond<UO, UI, DI, DO>(dO: @autoclosure () -> DO) -> Proxy<UO, UI, DI, DO, DI> {
+    return Proxy(ProxyRepr.Respond(d0) { x in ProxyRepr.Pure(x) })
 }
 
 infix operator |>> {
