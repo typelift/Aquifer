@@ -18,6 +18,8 @@ associativity left
 precedence 120
 }
 
+public func |>>()
+
 prefix operator |>> {}
 
 postfix operator |>> {}
