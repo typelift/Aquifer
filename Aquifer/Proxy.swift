@@ -14,14 +14,6 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
     case Respond(() -> DO, (() -> DI) -> ProxyRepr<UO, UI, DI, DO, FR>)
     case Pure(() -> FR)
 
-    internal func observe() -> ProxyRepr<UO, UI, DI, DO, FR> {
-        switch self {
-        case let Request(uO, fUI): return Request(uO) { fUI($0).observe() }
-        case let Respond(dO, fDI): return Respond(dO) { fDI($0).observe() }
-        case Pure(_): return self
-        }
-    }
-
     internal func fmap<NR>(f: FR -> NR) -> ProxyRepr<UO, UI, DI, DO, NR> {
         switch self {
         case let Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { fUI($0).fmap(f) }
@@ -52,17 +44,6 @@ public struct Proxy<UO, UI, DI, DO, FR> {
 
     internal init(_ r: ProxyRepr<UO, UI, DI, DO, FR>) {
         repr = r
-    }
-
-    /// This resets the internal representation, losing some minor performance in
-    /// favor of more strictly obeying the Monad laws.
-    ///
-    /// This is used sparingly internally to make sure certain higher-order
-    /// functions act properly.  Users may invoke this function to get
-    /// back a Proxy that behaves identically to the original, but is internally
-    /// reduced to a "canonical" representation.
-    public func observe() -> Proxy<UO, UI, DI, DO, FR> {
-        return Proxy(repr.observe())
     }
 }
 
