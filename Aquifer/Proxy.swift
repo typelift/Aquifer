@@ -69,3 +69,21 @@ extension Proxy: Functor {
 public func <^><UO, UI, DI, DO, FR, NR>(f: FR -> NR, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
     return p.fmap(f)
 }
+
+public prefix func <^><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> (FR -> NR) -> Proxy<UO, UI, DI, DO, NR> {
+    return { f in p.fmap(f) }
+}
+
+public postfix func <^><UO, UI, DI, DO, FR, NR>(f: FR -> NR) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
+    return { p in p.fmap(f) }
+}
+
+extension Proxy: Pointed {
+    public static func pure(x: FR) -> Proxy<UO, UI, DI, DO, FR> {
+        return Proxy(ProxyRepr.Pure { _ in x })
+    }
+}
+
+public func pure<UO, UI, DI, DO, FR>(x: FR) -> Proxy<UO, UI, DI, DO, FR> {
+    return Proxy.pure(x)
+}
