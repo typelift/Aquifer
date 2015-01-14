@@ -20,4 +20,8 @@ public struct X {
     public func absurd<A>() -> A {
         return rec().absurd()
     }
+
+    public static func infiniteLoop() -> X {
+        return X(infiniteLoop())
+    }
 }

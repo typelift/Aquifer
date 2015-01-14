@@ -48,7 +48,7 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
 /// DO — downstream output
 /// FR — final      result
 public struct Proxy<UO, UI, DI, DO, FR> {
-    private let repr: ProxyRepr<UO, UI, DI, DO, FR>
+    internal let repr: ProxyRepr<UO, UI, DI, DO, FR>
 
     internal init(_ r: ProxyRepr<UO, UI, DI, DO, FR>) {
         repr = r
