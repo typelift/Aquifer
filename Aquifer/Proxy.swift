@@ -37,6 +37,14 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
         case let Pure(x): return f(x())
         }
     }
+
+    internal func reflect() -> ProxyRepr<DO, DI, UI, UO, FR> {
+        switch self {
+        case let Request(uO, fUI): return ProxyRepr<DO, DI, UI, UO, FR>.Respond(uO) { fUI($0).reflect() }
+        case let Respond(dO, fDI): return ProxyRepr<DO, DI, UI, UO, FR>.Request(dO) { fDI($0).reflect() }
+        case let Pure(x): return ProxyRepr<DO, DI, UI, UO, FR>.Pure(x)
+        }
+    }
 }
 
 /// A bidirectional channel for information.
@@ -119,4 +127,22 @@ public prefix func >>-<UO, UI, DI, DO, FR, NR>(f: FR -> Proxy<UO, UI, DI, DO, NR
 
 public postfix func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> (FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
     return { f in p.bind(f) }
+}
+
+extension Proxy {
+    public func reflect() -> Proxy<DO, DI, UI, UO, FR> {
+        return Proxy<DO, DI, UI, UO, FR>(repr.reflect())
+    }
+}
+
+public func closed<A>(x: X) -> A {
+    return x.absurd()
+}
+
+public func runEffect<FR>(p: Proxy<X, (), (), X, FR>) -> FR {
+    switch p.repr {
+    case let .Request(uO, _): return closed(uO())
+    case let .Respond(dO, _): return closed(dO())
+    case let .Pure(x): return x()
+    }
 }

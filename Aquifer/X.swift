@@ -25,7 +25,3 @@ public struct X {
         return X(infiniteLoop())
     }
 }
-
-public func closed<A>(x: X) -> A {
-    return x.absurd()
-}

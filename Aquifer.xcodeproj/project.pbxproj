@@ -13,6 +13,7 @@
 		11862D181A662145008F5696 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CFD1A6620C0008F5696 /* swiftz.framework */; };
 		11862D271A66392B008F5696 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
+		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		11862CF51A6620C0008F5696 /* swiftz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = swiftz.xcodeproj; path = Carthage/Checkouts/swiftz/swiftz.xcodeproj; sourceTree = "<group>"; };
 		11862D261A66392B008F5696 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
 		11862D281A66E8EB008F5696 /* X.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X.swift; sourceTree = "<group>"; };
+		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				11862D261A66392B008F5696 /* Proxy.swift */,
+				11862D2B1A670B0A008F5696 /* Operators.swift */,
 				11862D281A66E8EB008F5696 /* X.swift */,
 			);
 			name = Core;
@@ -330,6 +333,7 @@
 			files = (
 				11862D291A66E8EB008F5696 /* X.swift in Sources */,
 				11862D271A66392B008F5696 /* Proxy.swift in Sources */,
+				11862D2C1A670B0A008F5696 /* Operators.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
