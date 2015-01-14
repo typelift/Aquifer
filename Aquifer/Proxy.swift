@@ -10,8 +10,8 @@ import Foundation
 import Swiftz
 
 internal enum ProxyRepr<UO, UI, DI, DO, FR> {
-    case Request(() -> UO, (() -> UI) -> ProxyRepr<UO, UI, DI, DO, FR>)
-    case Respond(() -> DO, (() -> DI) -> ProxyRepr<UO, UI, DI, DO, FR>)
+    case Request(Box<UO>, Box<UI> -> ProxyRepr<UO, UI, DI, DO, FR>)
+    case Respond(Box<DO>, Box<DI> -> ProxyRepr<UO, UI, DI, DO, FR>)
     case Pure(() -> FR)
 
     internal func observe() -> ProxyRepr<UO, UI, DI, DO, FR> {
