@@ -55,7 +55,7 @@
 		11862CC71A65FF66008F5696 = {
 			isa = PBXGroup;
 			children = (
-				11862CEF1A660DB0008F5696 /* Carthage Data */,
+				11862CEF1A660DB0008F5696 /* Carthage Support */,
 				11862CD31A65FF66008F5696 /* Aquifer */,
 				11862CE01A65FF66008F5696 /* AquiferTests */,
 				11862CD21A65FF66008F5696 /* Products */,
@@ -105,12 +105,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		11862CEF1A660DB0008F5696 /* Carthage Data */ = {
+		11862CEF1A660DB0008F5696 /* Carthage Support */ = {
 			isa = PBXGroup;
 			children = (
 				11862CF01A660E37008F5696 /* Cartfile */,
 			);
-			name = "Carthage Data";
+			name = "Carthage Support";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
