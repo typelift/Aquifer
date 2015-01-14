@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
-@import Foundation
+#import <Foundation/Foundation.h>
 
 //! Project version number for Aquifer.
 FOUNDATION_EXPORT double AquiferVersionNumber;
