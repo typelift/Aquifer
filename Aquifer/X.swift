@@ -9,15 +9,15 @@
 import Foundation
 import Swiftz
 
-/// The (nominally) empty type, implemented as a self-recursive struct.
+/// The (nominally) empty type, implemented as a strictly self-recursive struct.
 public struct X {
-    private let rec: () -> X
+    internal let rec: Box<X>
 
-    internal init(_ r: @autoclosure () -> X) {
-        rec = r
+    internal init(_ r: X) {
+        rec = Box(r)
     }
 
     public func absurd<A>() -> A {
-        return rec().absurd()
+        return rec.value.absurd()
     }
 }

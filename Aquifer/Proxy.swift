@@ -38,6 +38,13 @@ public struct Proxy<UO, UI, DI, DO, FR> {
         repr = r
     }
 
+    /// This resets the internal representation, losing some minor performance in
+    /// favor of more strictly obeying the Monad laws.
+    ///
+    /// This is used sparingly internally to make sure certain higher-order
+    /// functions act properly.  Users may invoke this function to get
+    /// back a Proxy that behaves identically to the original, but is internally
+    /// reduced to a "canonical" representation.
     public func observe() -> Proxy<UO, UI, DI, DO, FR> {
         return Proxy(repr.observe())
     }
