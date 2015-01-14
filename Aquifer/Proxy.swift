@@ -10,8 +10,8 @@ import Foundation
 import Swiftz
 
 internal enum ProxyRepr<UO, UI, DI, DO, FR> {
-    case Request(() -> UO, (() -> UI) -> ProxyRepr<UO, UI, DI, DO, FR>)
-    case Respond(() -> DO, (() -> DI) -> ProxyRepr<UO, UI, DI, DO, FR>)
+    case Request(() -> UO, UI -> ProxyRepr<UO, UI, DI, DO, FR>)
+    case Respond(() -> DO, DI -> ProxyRepr<UO, UI, DI, DO, FR>)
     case Pure(() -> FR)
 
     internal func fmap<NR>(f: FR -> NR) -> ProxyRepr<UO, UI, DI, DO, NR> {

@@ -10,7 +10,7 @@ import Foundation
 import Swiftz
 
 public func respond<UO, UI, DI, DO>(dO: @autoclosure () -> DO) -> Proxy<UO, UI, DI, DO, DI> {
-    return Proxy(ProxyRepr.Respond(dO) { x in ProxyRepr.Pure(x) })
+    return Proxy(ProxyRepr.Respond(dO) { x in ProxyRepr.Pure { _ in x} })
 }
 
 infix operator |>> {
@@ -18,14 +18,25 @@ associativity left
 precedence 120
 }
 
-public func |>><UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DI -> Proxy<UO, UI, NI, NO, DO>) {
+internal func respondBind<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, f: DI -> ProxyRepr<UO, UI, NI, NO, DO>) -> ProxyRepr<UO, UI, NI, NO, FR> {
+    switch 
+}
+
+public func |>><UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DI -> Proxy<UO, UI, NI, NO, DO>) -> Proxy<UO, UI, NI,NO, FR> {
+    return Proxy(respondBind(p.repr) { f($0).repr })
 }
 
 prefix operator |>> {}
 
-public prefix func |>><UO, UI, DI, DO, NI, NO, FR>(f: DI -> Proxy<UO, UI, NI, NO, DO>)
+public prefix func |>><UO, UI, DI, DO, NI, NO, FR>(f: DI -> Proxy<UO, UI, NI, NO, DO>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, NI, NO, FR> {
+    return { p in p |>> f }
+}
 
 postfix operator |>> {}
+
+public postfix func |>><UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>) -> (DI -> Proxy<UO, UI, NI, NO, DO>) -> Proxy<UO, UI, NI,NO, FR> {
+    return { f in p |>> f }
+}
 
 infix operator <<| {
 associativity right
