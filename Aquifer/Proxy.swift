@@ -29,6 +29,14 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
         case let Pure(g): return self.fmap(g())
         }
     }
+
+    internal func bind<NR>(f: FR -> ProxyRepr<UO, UI, DI, DO, NR>) -> ProxyRepr<UO, UI, DI, DO, NR> {
+        switch self {
+        case let Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { fUI($0).bind(f) }
+        case let Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { fDI($0).bind(f) }
+        case let Pure(x): return f(x())
+        }
+    }
 }
 
 /// A bidirectional channel for information.
@@ -93,4 +101,22 @@ public prefix func <*><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) ->
 
 public postfix func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
     return { p in p.ap(f) }
+}
+
+extension Proxy: Monad {
+    public func bind<NR>(f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+        return Proxy<UO, UI, DI, DO, NR>(repr.bind { f($0).repr })
+    }
+}
+
+public func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+    return p.bind(f)
+}
+
+public prefix func >>-<UO, UI, DI, DO, FR, NR>(f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
+    return { p in p.bind(f) }
+}
+
+public postfix func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> (FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+    return { f in p.bind(f) }
 }
