@@ -109,7 +109,7 @@ precedence 140
 }
 
 public func |<|<IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI,NO, FR> {
-    return { g |>| f }
+    return g |>| f
 }
 
 prefix operator |<| {}
