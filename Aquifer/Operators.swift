@@ -9,7 +9,9 @@
 import Foundation
 import Swiftz
 
-public func respond<UO, UI, DI, DO, FR>()
+public func respond<UO, UI, DI, DO, FR>(dO: DO) -> Proxy<UO, UI, DI, DO, FR> {
+    return Proxy(ProxyRepr.Respond({ _ in dO }, { x in ProxyRepr.Pure { _ in x } }))
+}
 
 infix operator |>> {
 associativity left
