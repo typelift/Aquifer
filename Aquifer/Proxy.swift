@@ -53,6 +53,14 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
         case let Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
         }
     }
+
+    internal func requestBind<NO, NI>(f: UO -> ProxyRepr<NO, NI, DI, DO, UI>) -> ProxyRepr<NO, NI, DI, DO, FR> {
+        switch self {
+        case let Request(uO, fUI): return f(uO()).bind { fUI($0).requestBind(f) }
+        case let Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Respond(dO) { fDI($0).requestBind(f) }
+        case let Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
+        }
+    }
 }
 
 /// A bidirectional channel for information.
