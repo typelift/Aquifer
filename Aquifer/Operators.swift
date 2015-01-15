@@ -248,9 +248,21 @@ associativity left
 precedence 160
 }
 
+public func >+><IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UI, UO, FR>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return g <+< f
+}
+
 prefix operator >+> {}
 
+public prefix func >+><IS, UO, UI, DI, DO, NO, NI, FR>(g: IS -> Proxy<UO, UI, DI, DO, FR>) -> (UO -> Proxy<NO, NI, UI, UO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { f in g <+< f }
+}
+
 postfix operator >+> {}
+
+public postfix func >+><IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UI, UO, FR>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { g in g <+< f }
+}
 
 infix operator >>~ {
 associativity left
@@ -278,9 +290,21 @@ associativity right
 precedence 160
 }
 
+public func <+<<IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, UI, UO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { f($0) <<+ g }
+}
+
 prefix operator <+< {}
 
+public prefix func <+<<IS, UO, UI, DI, DO, NO, NI, FR>(g: UO -> Proxy<NO, NI, UI, UO, FR>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { f in f <+< g }
+}
+
 postfix operator <+< {}
+
+public postfix func <+<<IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>) -> (UO -> Proxy<NO, NI, UI, UO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { g in f <+< g }
+}
 
 infix operator ~<< {
 associativity right
@@ -308,15 +332,39 @@ associativity left
 precedence 170
 }
 
+public func <~<<IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DO, DI, NI, NO, FR>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return g >~> f
+}
+
 prefix operator <~< {}
 
+public prefix func <~<<IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>) -> (DO -> Proxy<DO, DI, NI, NO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { g in f >~> g }
+}
+
 postfix operator <~< {}
+
+public postfix func <~<<IS, UO, UI, DI, DO, NI, NO, FR>(g: DO -> Proxy<DO, DI, NI, NO, FR>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { f in f >~> g }
+}
 
 infix operator >~> {
 associativity right
 precedence 170
 }
 
+public func >~><IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<DO, DI, NI, NO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { f($0) >>~ g }
+}
+
 prefix operator >~> {}
 
+public prefix func >~><IS, UO, UI, DI, DO, NI, NO, FR>(g: DO -> Proxy<DO, DI, NI, NO, FR>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { f in f >~> g }
+}
+
 postfix operator >~> {}
+
+public postfix func >~><IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>) -> (DO -> Proxy<DO, DI, NI, NO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { g in f >~> g }
+}
