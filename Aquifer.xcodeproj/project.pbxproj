@@ -122,8 +122,8 @@
 		11862CD31A65FF66008F5696 /* Aquifer */ = {
 			isa = PBXGroup;
 			children = (
-				11862D1F1A6638F7008F5696 /* Core */,
 				11862CD61A65FF66008F5696 /* Aquifer.h */,
+				11862D1F1A6638F7008F5696 /* Core */,
 				11862CD41A65FF66008F5696 /* Supporting Files */,
 			);
 			path = Aquifer;
@@ -140,9 +140,9 @@
 		11862CE01A65FF66008F5696 /* AquiferTests */ = {
 			isa = PBXGroup;
 			children = (
-				11862CE11A65FF66008F5696 /* Supporting Files */,
-				11862D311A67316B008F5696 /* ProxyTests.swift */,
 				11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */,
+				11862D3E1A673BAA008F5696 /* Core */,
+				11862CE11A65FF66008F5696 /* Supporting Files */,
 			);
 			path = AquiferTests;
 			sourceTree = "<group>";
@@ -191,6 +191,14 @@
 				11862D3B1A673B5D008F5696 /* README.md */,
 			);
 			name = "Auxiliary Files";
+			sourceTree = "<group>";
+		};
+		11862D3E1A673BAA008F5696 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				11862D311A67316B008F5696 /* ProxyTests.swift */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
