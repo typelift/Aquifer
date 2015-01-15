@@ -13,6 +13,10 @@ public func respond<UO, UI, DI, DO>(dO: @autoclosure () -> DO) -> Proxy<UO, UI, 
     return Proxy(ProxyRepr.Respond(dO) { x in ProxyRepr.Pure { _ in x} })
 }
 
+public func request<UO, UI, DI, DO>(uO: @autoclosure () -> UO) -> Proxy<UO, UI, DI, DO, UI> {
+    return Proxy(ProxyRepr.Request(uO) { x in ProxyRepr.Pure { _ in x } })
+}
+
 infix operator |>> {
 associativity left
 precedence 120

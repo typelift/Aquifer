@@ -20,8 +20,10 @@ public struct X {
     public func absurd<A>() -> A {
         return rec().absurd()
     }
+}
 
-    public static func infiniteLoop() -> X {
-        return X(infiniteLoop())
-    }
+
+/// Bottom is the only inhabitent of X
+public func infiniteLoop() -> X {
+    return X(infiniteLoop())
 }
