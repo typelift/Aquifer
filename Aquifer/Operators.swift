@@ -17,6 +17,14 @@ public func request<UO, UI, DI, DO>(uO: @autoclosure () -> UO) -> Proxy<UO, UI, 
     return Proxy(ProxyRepr.Request(uO) { x in ProxyRepr.Pure { _ in x } })
 }
 
+internal func pushRepr<UT, DT, FR>(dT: () -> DT) -> ProxyRepr<UT, DT, UT, DT, FR> {
+    return ProxyRepr.Respond(dT) { uT in ProxyRepr.Request({ _ in uT }) { x in pushRepr { _ in x } } }
+}
+
+public func push<UT, DT, FR>(dT: @autoclosure () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
+    return Proxy(pushRepr(dT))
+}
+
 infix operator |>> {
 associativity left
 precedence 120
