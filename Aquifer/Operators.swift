@@ -25,6 +25,14 @@ public func push<UT, DT, FR>(dT: @autoclosure () -> DT) -> Proxy<UT, DT, UT, DT,
     return Proxy(pushRepr(dT))
 }
 
+internal func pullRepr<UT, DT, FR>(uT: () -> UT) -> ProxyRepr<UT, DT, UT, DT, FR> {
+    return ProxyRepr.Request(uT) { dT in ProxyRepr.Respond({ _ in dT }) { x in pullRepr { _ in x } } }
+}
+
+public func pull<UT, DT, FR>(uT: @autoclosure () -> UT) -> Proxy<UT, DT, UT, DT, FR> {
+    return Proxy(pullRepr(uT))
+}
+
 infix operator |>> {
 associativity left
 precedence 120
@@ -198,6 +206,10 @@ associativity left
 precedence 150
 }
 
+public func <<+<UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, UI, UO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
+    return Proxy(p.repr.pullBind { f($0).repr })
+}
+
 prefix operator <<+ {}
 
 postfix operator <<+ {}
@@ -223,6 +235,10 @@ postfix operator >+> {}
 infix operator >>~ {
 associativity left
 precedence 160
+}
+
+public func >>~<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<DO, DI, NI, NO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
+    return Proxy(p.repr.pushBind { f($0).repr })
 }
 
 prefix operator >>~ {}
