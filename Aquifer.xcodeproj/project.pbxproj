@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		11862CDD1A65FF66008F5696 /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
 		11862CED1A65FF8F008F5696 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		11862CF11A660E37008F5696 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 11862CF01A660E37008F5696 /* Cartfile */; };
 		11862D181A662145008F5696 /* swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CFD1A6620C0008F5696 /* swiftz.framework */; };
 		11862D271A66392B008F5696 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
 		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
+		11862D3C1A673B69008F5696 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 11862CF01A660E37008F5696 /* Cartfile */; };
+		11862D3D1A673B6C008F5696 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 11862D3B1A673B5D008F5696 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "AquiferTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; };
+		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				11862CEF1A660DB0008F5696 /* Carthage Support */,
+				11862D371A673B36008F5696 /* Auxiliary Files */,
 				11862CD31A65FF66008F5696 /* Aquifer */,
 				11862CE01A65FF66008F5696 /* AquiferTests */,
 				11862CD21A65FF66008F5696 /* Products */,
@@ -180,6 +183,14 @@
 				11862D281A66E8EB008F5696 /* X.swift */,
 			);
 			name = Core;
+			sourceTree = "<group>";
+		};
+		11862D371A673B36008F5696 /* Auxiliary Files */ = {
+			isa = PBXGroup;
+			children = (
+				11862D3B1A673B5D008F5696 /* README.md */,
+			);
+			name = "Auxiliary Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,7 +329,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11862CF11A660E37008F5696 /* Cartfile in Resources */,
+				11862D3C1A673B69008F5696 /* Cartfile in Resources */,
+				11862D3D1A673B6C008F5696 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
