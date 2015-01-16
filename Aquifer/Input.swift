@@ -23,7 +23,7 @@ private class DataProducerFromURLImpl<UO, UI>: NSObject, NSURLSessionDelegate, N
     }
 }
 
-public func dataProducer<UO, UI>(fromURL url: NSURL, withConfiguration config: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(), withDelegateQueue dQueue: NSOperationQueue? = nil) -> Proxy<UO, UI, (), NSData, ()> {
+public func dataProducer<UO, UI>(fromURL url: NSURL, withConfiguration config: NSURLSessionConfiguration? = NSURLSessionConfiguration.defaultSessionConfiguration(), withDelegateQueue dQueue: NSOperationQueue? = nil) -> Proxy<UO, UI, (), NSData, ()> {
     let impl: DataProducerFromURLImpl<UO, UI> = DataProducerFromURLImpl(url)
     let session: NSURLSession = NSURLSession(configuration: config, delegate: impl, delegateQueue: dQueue)
 }
