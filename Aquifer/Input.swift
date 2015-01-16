@@ -9,7 +9,7 @@
 import Foundation
 import Swiftz
 
-private class DataProducerImpl: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
+private class DataProducerFromURLImpl<UO, UI>: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     private let url: NSURL
 
     private init(_ u: NSURL) {
@@ -23,6 +23,7 @@ private class DataProducerImpl: NSObject, NSURLSessionDelegate, NSURLSessionTask
     }
 }
 
-public func dataProducer<UO, UI>(fromURL url: NSURL) -> Proxy<UO, UI, (), NSData, ()> {
-    let impl: DataProducerImpl = DataProducerImpl(url)
+public func dataProducer<UO, UI>(fromURL url: NSURL, withConfiguration config: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(), withDelegateQueue dQueue: NSOperationQueue? = nil) -> Proxy<UO, UI, (), NSData, ()> {
+    let impl: DataProducerFromURLImpl<UO, UI> = DataProducerFromURLImpl(url)
+    let session: NSURLSession = NSURLSession(configuration: config, delegate: impl, delegateQueue: dQueue)
 }
