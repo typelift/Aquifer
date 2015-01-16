@@ -1,5 +1,5 @@
 //
-//  RawIO.swift
+//  FileIO.swift
 //  Aquifer
 //
 //  Created by Alexander Ronald Altman on 1/16/15.
@@ -9,5 +9,4 @@
 import Foundation
 import Swiftz
 
-class RawProducerImpl: NSInputStream {
-}
+
