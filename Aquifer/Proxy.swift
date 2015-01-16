@@ -63,27 +63,19 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
     }
 
     internal func pushBind<NI, NO>(f: DO -> ProxyRepr<DO, DI, NI, NO, FR>) -> ProxyRepr<UO, UI, NI, NO, FR> {
-        return pushBindImpl(self, f)
+        switch self {
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { fUI($0).pushBind(f) }
+        case let .Respond(dO, fDI): return f(dO).pullBind(fDI)
+        case let .Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
+        }
     }
 
     internal func pullBind<NO, NI>(f: UO -> ProxyRepr<NO, NI, UI, UO, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
-        return pullBindImpl(self, f)
-    }
-}
-
-private func pushBindImpl<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, f: DO -> ProxyRepr<DO, DI, NI, NO, FR>) -> ProxyRepr<UO, UI, NI, NO, FR> {
-    switch p {
-    case let .Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { pushBindImpl(fUI($0), f) }
-    case let .Respond(dO, fDI): return pullBindImpl(f(dO), fDI)
-    case let .Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
-    }
-}
-
-private func pullBindImpl<UO, UI, DI, DO, NO, NI, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, f: UO -> ProxyRepr<NO, NI, UI, UO, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
-    switch p {
-    case let .Request(uO, fUI): return pushBindImpl(f(uO), fUI)
-    case let .Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Request(dO) { pullBindImpl(fDI($0), f) }
-    case let .Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
+        switch self {
+        case let .Request(uO, fUI): return f(uO).pushBind(fUI)
+        case let .Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Request(dO) { fDI($0).pullBind(f) }
+        case let .Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
+        }
     }
 }
 
