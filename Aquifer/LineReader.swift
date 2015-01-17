@@ -8,5 +8,5 @@
 
 import Foundation
 
-internal class LineReader {
+internal struct LineReader {
 }
