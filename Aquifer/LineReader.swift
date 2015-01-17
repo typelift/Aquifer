@@ -8,4 +8,5 @@
 
 import Foundation
 
-internal LineReader
+internal class LineReader {
+}
