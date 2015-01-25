@@ -16,7 +16,6 @@
 		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		11862D3C1A673B69008F5696 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 11862CF01A660E37008F5696 /* Cartfile */; };
 		11862D3D1A673B6C008F5696 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 11862D3B1A673B5D008F5696 /* README.md */; };
-		11A916DB1A6C7B4C007B4BBA /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DA1A6C7B4C007B4BBA /* Parser.swift */; };
 		11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,7 +78,6 @@
 		11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "AquiferTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; };
 		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		11A916DA1A6C7B4C007B4BBA /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		11A916DC1A6C7EFC007B4BBA /* Grouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grouping.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -209,7 +207,6 @@
 		11A916D91A6C7B06007B4BBA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				11A916DA1A6C7B4C007B4BBA /* Parser.swift */,
 				11A916DC1A6C7EFC007B4BBA /* Grouping.swift */,
 			);
 			name = Utilities;
@@ -371,7 +368,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */,
-				11A916DB1A6C7B4C007B4BBA /* Parser.swift in Sources */,
 				11862D291A66E8EB008F5696 /* X.swift in Sources */,
 				11862D271A66392B008F5696 /* Proxy.swift in Sources */,
 				11862D2C1A670B0A008F5696 /* Operators.swift in Sources */,

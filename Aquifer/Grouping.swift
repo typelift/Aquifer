@@ -8,3 +8,5 @@
 
 import Foundation
 import Swiftz
+
+public enum GroupedProducer
