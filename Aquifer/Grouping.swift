@@ -9,4 +9,15 @@
 import Foundation
 import Swiftz
 
-public enum GroupedProducer
+internal enum GroupedProducerSignature<V, R> {
+    case End(R)
+    case More(Proxy<X, (), (), V, GroupedProducer<V, R>>)
+}
+
+public struct GroupedProducer<V, R> {
+    internal let underlying: GroupedProducerSignature<V, R>
+
+    internal init(_ u: Proxy<X, (), (), V, GroupedProducerSignature<V, R>>) {
+        underlying = u
+    }
+}
