@@ -17,7 +17,7 @@ internal enum GroupedProducerSignature<V, R> {
 public struct GroupedProducer<V, R> {
     internal let underlying: GroupedProducerSignature<V, R>
 
-    internal init(_ u: Proxy<X, (), (), V, GroupedProducerSignature<V, R>>) {
+    internal init(_ u: GroupedProducerSignature<V, R>) {
         underlying = u
     }
 }
