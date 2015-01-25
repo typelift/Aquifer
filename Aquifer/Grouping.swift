@@ -10,8 +10,8 @@ import Foundation
 import Swiftz
 
 internal enum GroupedProducerSignature<V, R> {
-    case End(R)
-    case More(Proxy<X, (), (), V, GroupedProducer<V, R>>)
+    case End(() -> R)
+    case More(() -> Proxy<X, (), (), V, GroupedProducer<V, R>>)
 }
 
 public struct GroupedProducer<V, R> {
