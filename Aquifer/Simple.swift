@@ -16,3 +16,15 @@ public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X
     case let .Pure(x): return .Left(Box(x()))
     }
 }
+
+private func eachRepr<G: GeneratorType>(var gen: G) -> ProxyRepr<X, (), (), G.Element, ()> {
+    if let v = gen.next() {
+        return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }
+    } else {
+        return ProxyRepr.Pure(const(()))
+    }
+}
+
+public func each<S: SequenceType>(seq: S) -> Proxy<X, (), (), S.Generator.Element, ()> {
+    return Proxy(eachRepr(seq.generate()))
+}
