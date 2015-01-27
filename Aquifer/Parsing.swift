@@ -17,7 +17,7 @@ public func span<V, R>(p: Proxy<X, (), (), V, R>, predicate: V -> Bool) -> Proxy
         if predicate(dO) {
             return yield(dO) >>- { _ in span(p, predicate) }
         } else {
-            return 
+            return pure(yield(dO) >>- { _ in q })
         }
     }
 }
