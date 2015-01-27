@@ -21,3 +21,7 @@ public struct GroupedProducer<V, R> {
         underlying = u
     }
 }
+
+/*public func groupsBy<V, R>(p: Lens<Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducer<V, R> {
+    
+}*/
