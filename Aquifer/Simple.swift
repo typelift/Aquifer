@@ -81,7 +81,15 @@ public func ~><IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI
 
 prefix operator ~> {}
 
+public prefix func ~><IS, UO, UI, DI, DO, NI, NO, FR>(g: IS -> Proxy<UO, UI, DI, DO, FR>) -> (DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { f in g |>| f }
+}
+
 postfix operator ~> {}
+
+public postfix func |<|<IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { g in g |>| f }
+}
 
 infix operator ~< {
 associativity left
