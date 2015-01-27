@@ -45,9 +45,17 @@ public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {
     return pull(())
 }
 
+public func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
+    return p |>> f
+}
+
 infix operator <~ {
 associativity left
 precedence 130
+}
+
+public func <~<IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return f |>| g
 }
 
 prefix operator <~ {}
