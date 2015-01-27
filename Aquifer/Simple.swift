@@ -28,3 +28,15 @@ private func eachRepr<G: GeneratorType>(var gen: G) -> ProxyRepr<X, (), (), G.El
 public func each<S: SequenceType>(seq: S) -> Proxy<X, (), (), S.Generator.Element, ()> {
     return Proxy(eachRepr(seq.generate()))
 }
+
+public func yield<UO, UI, DO>(dO: @autoclosure () -> DO) -> Proxy<UO, UI, (), DO, ()> {
+    return respond(dO)
+}
+
+public func await<UI, DI, DO>() -> Proxy<(), UI, DI, DO, UI> {
+    return request(())
+}
+
+public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {
+    return pull(())
+}
