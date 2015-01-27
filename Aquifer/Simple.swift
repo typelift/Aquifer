@@ -40,3 +40,33 @@ public func await<UI, DI, DO>() -> Proxy<(), UI, DI, DO, UI> {
 public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {
     return pull(())
 }
+
+infix operator <~ {
+associativity left
+precedence 130
+}
+
+infix operator ~> {
+associativity right
+precedence 130
+}
+
+infix operator ~< {
+associativity left
+precedence 140
+}
+
+infix operator >~ {
+associativity right
+precedence 140
+}
+
+infix operator >~> {
+associativity left
+precedence 160
+}
+
+infix operator <~< {
+associativity right
+precedence 160
+}
