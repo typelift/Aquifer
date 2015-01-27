@@ -27,16 +27,7 @@ private func groupsBySignature<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -
     case let .Left(x): return GroupedProducerSignature.End { _ in x.value }
     case let .Right(k):
         let (dO, q) = k.value
-        return GroupedProducerSignature.More { _ in
-            groupsBySignature(
-                span(
-                    yield(dO) >>- { _ in
-                        q
-                    }
-                    ) { v in
-                        equals(dO, v)
-                }, equals)
-        }
+        return GroupedProducerSignature.More { _ in { r in groupsBySignature(r, equals) } <^> (span(yield(dO) >>- { _ in q }) { v in equals(dO, v) }) }
     }
 }
 
