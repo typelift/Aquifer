@@ -105,6 +105,10 @@ associativity right
 precedence 140
 }
 
+public func >~<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, q: Proxy<(), FR, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+    return ({ _ in p }) >>| q
+}
+
 prefix operator >~ {}
 
 postfix operator >~ {}
