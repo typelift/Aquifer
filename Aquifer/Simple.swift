@@ -118,7 +118,7 @@ precedence 140
 }
 
 public func >~<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, q: Proxy<(), FR, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
-    return ({ _ in p }) >>| q
+    return { _ in p } >>| q
 }
 
 prefix operator >~ {}
@@ -138,15 +138,39 @@ associativity left
 precedence 160
 }
 
+public func >-><UO, UI, DT, DI, DO, FR>(p: Proxy<UO, UI, (), DT, FR>, q: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+    return { _ in p } +>> q
+}
+
 prefix operator >-> {}
 
+public prefix func >-><UO, UI, DT, DI, DO, FR>(q: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, (), DT, FR> -> Proxy<UO, UI, DI, DO, FR> {
+    return { p in p >-> q }
+}
+
 postfix operator >-> {}
+
+public postfix func >-><UO, UI, DT, DI, DO, FR>(p: Proxy<UO, UI, (), DT, FR>) -> Proxy<(), DT, DI, DO, FR> -> Proxy<UO, UI, DI, DO, FR> {
+    return { q in p >-> q }
+}
 
 infix operator <-< {
 associativity right
 precedence 160
 }
 
+public func <-<<UO, UI, DT, DI, DO, FR>(p: Proxy<(), DT, DI, DO, FR>, q: Proxy<UO, UI, (), DT, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+    return q >-> p
+}
+
 prefix operator <-< {}
 
+public prefix func <-<<UO, UI, DT, DI, DO, FR>(q: Proxy<UO, UI, (), DT, FR>) -> Proxy<(), DT, DI, DO, FR> -> Proxy<UO, UI, DI, DO, FR> {
+    return { p in q >-> p }
+}
+
 postfix operator <-< {}
+
+public postfix func <-<<UO, UI, DT, DI, DO, FR>(p: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, (), DT, FR> -> Proxy<UO, UI, DI, DO, FR> {
+    return { q in q >-> p }
+}
