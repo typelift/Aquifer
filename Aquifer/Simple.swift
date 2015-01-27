@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Swiftz
 
 public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X, (), (), DO, FR>)> {
     switch p.repr {
