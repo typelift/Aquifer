@@ -29,6 +29,10 @@ public func each<S: SequenceType>(seq: S) -> Proxy<X, (), (), S.Generator.Elemen
     return Proxy(eachRepr(seq.generate()))
 }
 
+public func each<V>(seq: V...) -> Proxy<X, (), (), V, ()> {
+    return each(seq)
+}
+
 public func yield<UO, UI, DO>(dO: @autoclosure () -> DO) -> Proxy<UO, UI, (), DO, ()> {
     return respond(dO)
 }
@@ -46,27 +50,51 @@ associativity left
 precedence 130
 }
 
+prefix operator <~ {}
+
+postfix operator <~ {}
+
 infix operator ~> {
 associativity right
 precedence 130
 }
+
+prefix operator ~> {}
+
+postfix operator ~> {}
 
 infix operator ~< {
 associativity left
 precedence 140
 }
 
+prefix operator ~< {}
+
+postfix operator ~< {}
+
 infix operator >~ {
 associativity right
 precedence 140
 }
+
+prefix operator >~ {}
+
+postfix operator >~ {}
 
 infix operator >~> {
 associativity left
 precedence 160
 }
 
+prefix operator >~> {}
+
+postfix operator >~> {}
+
 infix operator <~< {
 associativity right
 precedence 160
 }
+
+prefix operator <~< {}
+
+postfix operator <~< {}
