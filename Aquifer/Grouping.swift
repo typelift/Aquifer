@@ -24,7 +24,14 @@ internal enum GroupedProducerRepr<V, R> {
         switch (self, f) {
         case let (.End(x), .End(g)): return GroupedProducerRepr<V, N>.End { _ in g()(x()) }
         case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmap(g()) } }
-        case let (_, .More(t)): return GroupedProducerRepr<V, N>.More { _ in t().fmap { g in self.ap(g) } }
+        case let (_, .More(g)): return GroupedProducerRepr<V, N>.More { _ in g().fmap { h in self.ap(h) } }
+        }
+    }
+
+    internal func bind<N>(f: R -> GroupedProducerRepr<V, N>) -> GroupedProducerRepr<V, N> {
+        switch self {
+        case let .End(x): return f(x())
+        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in p().fmap() }
         }
     }
 }
@@ -96,6 +103,25 @@ public prefix func <*><V, R, N>(p: GroupedProducer<V, R>) -> GroupedProducer<V, 
 public postfix func <*><V, R, N>(f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
     return { p in f <*> p }
 }
+
+extension GroupedProducer: Monad {
+    public func bind<N>(f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
+        return
+    }
+}
+
+public func >>-<V, R, N>(p: GroupedProducer<V, R>, f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
+    return p.bind(f)
+}
+
+public prefix func >>-<V, R, N>(f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
+    return { p in p >>- f }
+}
+
+public postfix func >>-<V, R, N>(p: GroupedProducer<V, R>) -> (R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
+    return { f in p >>- f }
+}
+
 private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
     switch next(p) {
     case let .Left(x): return GroupedProducerRepr.End { _ in x.value }
