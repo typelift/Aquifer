@@ -34,3 +34,14 @@ public func splitAt<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> Proxy<X, (), (),
         }
     }
 }
+
+public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+    switch next(p) {
+    case let .Left(x): return pure(pure(x.value))
+    case let .Right(k):
+        let (dO, q) = k.value
+        return span(yield(dO) >>- { _ in q }) { v in equals(dO, v) }
+    }
+}
+
+
