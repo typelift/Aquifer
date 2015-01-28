@@ -64,3 +64,17 @@ public func draw<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, 
 public func skip<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
     return { if let _ = $0 { return true } else { return false } } <^> draw()
 }
+
+private func drawAllInner<V, I>(diffAs: List<V> -> List<V>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
+    return draw() >>- {
+        if let v = $0 {
+            return drawAllInner(diffAs • curry(List.cons)(v))
+        } else {
+            return pure(diffAs([]))
+        }
+    }
+}
+
+public func drawAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
+    return drawAllInner { v in v }
+}
