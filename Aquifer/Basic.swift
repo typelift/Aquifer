@@ -181,3 +181,10 @@ public func elem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
 public func notElem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
     return all(p) { x != $0 }
 }
+
+public func head<V>(p: Proxy<X, (), (), V, ()>, x: V) -> V? {
+    switch next(p) {
+    case .Left(_): return nil
+    case let .Right(k): return k.value.0
+    }
+}
