@@ -30,3 +30,7 @@ public func stdoutLn<DI, DO, FR>() -> Proxy<(), String, DI, DO, FR> {
 public func toHandle<DI, DO, FR>(handle: NSFileHandle) -> Proxy<(), String, DI, DO, FR> {
     return for_(cat()) { handle.writeLine($0); return pure(()) }
 }
+
+public func describe<UI: Printable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
+    return description() >-> stdoutLn()
+}
