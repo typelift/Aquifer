@@ -43,6 +43,5 @@ public func groups<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> GroupedProduce
 
 public func chunksOf<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducer<V, R> {
     switch next(p) {
-
     }
 }
