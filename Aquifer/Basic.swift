@@ -118,3 +118,7 @@ public func chain<DT, FR>(action: DT -> Void) -> Proxy<(), DT, (), DT, FR> {
 public func description<UI: Printable, FR>() -> Proxy<(), UI, (), String, FR> {
     return map { $0.description }
 }
+
+public func debugDescription<UI: DebugPrintable, FR>() -> Proxy<(), UI, (), String, FR> {
+    return map { $0.debugDescription }
+}
