@@ -140,8 +140,8 @@
 		11862CD31A65FF66008F5696 /* Aquifer */ = {
 			isa = PBXGroup;
 			children = (
-				11200E881A7958480032A136 /* LineReader */,
 				11862CD61A65FF66008F5696 /* Aquifer.h */,
+				11200E881A7958480032A136 /* LineReader */,
 				11862D1F1A6638F7008F5696 /* Core */,
 				11A916D91A6C7B06007B4BBA /* Utilities */,
 				11862CD41A65FF66008F5696 /* Supporting Files */,
