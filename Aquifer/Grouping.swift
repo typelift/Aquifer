@@ -170,3 +170,21 @@ private func concatsRepr<V, R>(p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (),
 public func concats<V, R>(p: GroupedProducer<V, R>) -> Proxy<X, (), (), V, R> {
     return concatsRepr(p.repr)
 }
+
+private func intercalatesRepr<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (), V, R> {
+    switch p {
+    case let .End(x): return pure(x())
+    case let .More(q): return q() >>- { intercalatesReprInner(sep, $0) }
+    }
+}
+
+private func intercalatesReprInner<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (), V, R> {
+    switch p {
+    case let .End(x): return pure(x())
+    case let .More(q): return sep >>- { _ in q() >>- { intercalatesReprInner(sep, $0) } }
+    }
+}
+
+public func intercalates<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducer<V, R>) -> Proxy<X, (), (), V, R> {
+    return intercalatesRepr(sep, p.repr)
+}
