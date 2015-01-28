@@ -23,7 +23,7 @@ public func discard<UO, UI, DI, DO>(_: Any) -> Proxy<UO, UI, DI, DO, ()> {
     return Proxy(ProxyRepr.Pure { _ in () })
 }
 
-private func eachRepr<G: GeneratorType>(var gen: G) -> ProxyRepr<X, (), (), G.Element, ()> {
+private func eachRepr<UO, UI, G: GeneratorType>(var gen: G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
     if let v = gen.next() {
         return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }
     } else {
@@ -31,11 +31,11 @@ private func eachRepr<G: GeneratorType>(var gen: G) -> ProxyRepr<X, (), (), G.El
     }
 }
 
-public func each<S: SequenceType>(seq: S) -> Proxy<X, (), (), S.Generator.Element, ()> {
+public func each<UO, UI, S: SequenceType>(seq: S) -> Proxy<UO, UI, (), S.Generator.Element, ()> {
     return Proxy(eachRepr(seq.generate()))
 }
 
-public func each<V>(seq: V...) -> Proxy<X, (), (), V, ()> {
+public func each<UO, UI, V>(seq: V...) -> Proxy<UO, UI, (), V, ()> {
     return each(seq)
 }
 

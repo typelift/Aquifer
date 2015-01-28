@@ -62,3 +62,7 @@ public func dropWhile<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR
         }
     }
 }
+
+public func concat<S: SequenceType, FR>() -> Proxy<(), S, (), S.Generator.Element, FR> {
+    return for_(cat(), each)
+}
