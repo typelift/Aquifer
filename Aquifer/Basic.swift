@@ -78,3 +78,13 @@ public func map<UI, DO, FR>(f: UI -> DO) -> Proxy<(), UI, (), DO, FR> {
 public func mapMany<UI, S: SequenceType, FR>(f: UI -> S) -> Proxy<(), UI, (), S.Generator.Element, FR> {
     return for_(cat()) { each(f($0)) }
 }
+
+public func filter<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
+    return for_(cat()) { v in
+        if predicate(v) {
+            return yield(v)
+        } else {
+            return pure(())
+        }
+    }
+}
