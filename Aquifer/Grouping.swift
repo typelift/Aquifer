@@ -52,6 +52,10 @@ public func wrap<V, R>(p: @autoclosure () -> Proxy<X, (), (), V, GroupedProducer
     return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
 }
 
+public func wrap<V, R>(p: @autoclosure () -> Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
+    return wrap(p().fmap { pure($0) })
+}
+
 public func delay<V, R>(p: @autoclosure () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
     return GroupedProducer(p().repr)
 }
