@@ -89,5 +89,20 @@ public func filter<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
     }
 }
 
-/*public func elemIndices<UI: Equatable, FR>(x: @autoclosure () -> UI) {
-}*/
+public func elemIndices<UI: Equatable, FR>(x: @autoclosure () -> UI) -> Proxy<(), UI, (), Int, FR> {
+    return findIndices { x() == $0 }
+}
+
+public func findIndicesInner<UI, FR>(predicate: UI -> Bool, n: Int) -> Proxy<(), UI, (), Int, FR> {
+    return await() >>- {
+        if predicate($0) {
+            return yield(n) >>- { _ in findIndicesInner(predicate, n + 1) }
+        } else {
+            return findIndicesInner(predicate, n + 1)
+        }
+    }
+}
+
+public func findIndices<UI, FR>(predicate: UI -> Bool) -> Proxy<(), UI, (), Int, FR> {
+    return findIndicesInner(predicate, 0)
+}
