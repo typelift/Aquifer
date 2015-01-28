@@ -189,10 +189,6 @@ extension Proxy {
     }
 }
 
-public func closed<A>(x: @autoclosure () -> X) -> A {
-    return x().absurd()
-}
-
 public func runEffect<FR>(p: Proxy<X, (), (), X, FR>) -> FR {
     switch p.repr {
     case let .Request(uO, _): return closed(uO())

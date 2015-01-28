@@ -24,6 +24,9 @@ public struct X {
     }
 }
 
+public func closed<A>(x: @autoclosure () -> X) -> A {
+    return x().absurd()
+}
 
 /// Bottom is the only inhabitent of X
 public func infiniteLoop() -> X {
