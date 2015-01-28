@@ -52,3 +52,13 @@ private func dropInner<DT>(n: Int) -> Proxy<(), DT, (), DT, ()> {
 public func drop<DT, FR>(n: Int) -> Proxy<(), DT, (), DT, FR> {
     return dropInner(n) >>- { _ in cat() }
 }
+
+public func dropWhile<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
+    return await() >>- { v in
+        if predicate(v) {
+            return dropWhile(predicate)
+        } else {
+            return yield(v) >>- { _ in cat() }
+        }
+    }
+}
