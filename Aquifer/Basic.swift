@@ -110,3 +110,7 @@ public func findIndices<UI, FR>(predicate: UI -> Bool) -> Proxy<(), UI, (), Int,
 public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: A, extractWith extractor: A -> DO) -> Proxy<(), UI, (), DO, FR> {
     return yield(extractor(initial)) >>- { _ in await() >>- { scan(stepWith: step, initializeWith: step(initial, $0), extractWith: extractor) } }
 }
+
+public func chain<DT, FR>(action: DT -> Void) -> Proxy<(), DT, (), DT, FR> {
+    return for_(cat()) { action($0); return yield($0) }
+}
