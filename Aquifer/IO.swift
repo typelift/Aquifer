@@ -22,3 +22,7 @@ public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String
         return yield(handle.readLine) >>- { _ in fromHandle(handle) }
     }
 }
+
+public func toHandle<DI, DO, FR>(handle: NSFileHandle) -> Proxy<(), String, DI, DO, FR> {
+    return for_(cat()) { handle.writeLine($0); return pure(()) }
+}
