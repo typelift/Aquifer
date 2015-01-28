@@ -78,3 +78,7 @@ private func drawAllInner<V, I>(diffAs: List<V> -> List<V>) -> IxState<Proxy<X, 
 public func drawAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
     return drawAllInner { v in v }
 }
+
+public func skipAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
+    return draw() >>- { if let _ = $0 { return skipAll() } else { return pure(()) } }
+}
