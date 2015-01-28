@@ -105,6 +105,7 @@ public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initi
     }
 }
 
+// this seems to required higher-kinded types to implement, even though none appear in its signature
 /*public func toParser<V, I, R>(p: Proxy<(), V?, (), X, R>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
 }*/
 
