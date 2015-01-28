@@ -21,3 +21,16 @@ public func span<V, R>(p: Proxy<X, (), (), V, R>, predicate: V -> Bool) -> Proxy
         }
     }
 }
+
+public func splitAt<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+    if n <= 0 {
+        return pure(p)
+    } else {
+        switch next(p) {
+        case let .Left(x): return pure(pure(x.value))
+        case let .Right(k):
+            let (dO, q) = k.value
+            return yield(dO) >>- { _ in splitAt(q, n - 1) }
+        }
+    }
+}
