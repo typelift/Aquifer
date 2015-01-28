@@ -157,3 +157,21 @@ public func isEmpty<V>(p: Proxy<X, (), (), V, ()>) -> Bool {
 public func all<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Bool {
     return isEmpty(p >-> filter { !predicate($0) })
 }
+
+public func any<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Bool {
+    return !isEmpty(p >-> filter(predicate))
+}
+
+public func not<FR>() -> Proxy<(), Bool, (), Bool, FR> {
+    return map(!)
+}
+
+public func and(p: Proxy<X, (), (), Bool, ()>) -> Bool {
+    return all { b in b }
+}
+
+public func or(p: Proxy<X, (), (), Bool, ()>) -> Bool {
+    return any { b in b }
+}
+
+public func elem(p: proxy)
