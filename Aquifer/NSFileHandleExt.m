@@ -131,4 +131,13 @@ int create_socket() {
 -(void)writeLine:(NSString*)line {
     [self writeData: [[NSString stringWithFormat:@"%@\n", line] dataUsingEncoding:NSUTF8StringEncoding]];
 }
+
+-(BOOL)isAtEndOfFile {
+    UInt64 currentOffset = self.offsetInFile;
+    [self seekToEndOfFile];
+    UInt64 endOffset = self.offsetInFile;
+    [self seekToFileOffset:currentOffset];
+    return currentOffset >= endOffset;
+}
+
 @end

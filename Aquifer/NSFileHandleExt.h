@@ -19,4 +19,5 @@
 +(instancetype)fileHandleWithConnectionToHost:(NSString*)host toPort:(int)port;
 @property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *readLine;
 -(void)writeLine:(NSString*)line;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL isAtEndOfFile;
 @end
