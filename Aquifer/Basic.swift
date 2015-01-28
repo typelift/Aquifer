@@ -20,13 +20,13 @@ public func repeat<UO, UI, DO, FR>(v: () -> DO) -> Proxy<UO, UI, (), DO, FR> {
 }
 
 /*public func replicate<UO, UI, DO>(v: () -> DO, n: Int) -> Proxy<UO, UI, (), DO, ()> {
-    return once(v) >~ take(n)
+return once(v) >~ take(n)
 }*/
 
 public func take<DT>(n: Int) -> Proxy<(), DT, (), DT, ()> {
     if n <= 0 {
         return pure(())
     } else {
-        return await() >>- { yield($0) >>- { _ in take(n - 1) }
- }    }
+        return await() >>- { yield($0) >>- { _ in take(n - 1) } }
+    }
 }
