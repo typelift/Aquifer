@@ -17,6 +17,10 @@ public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X
     }
 }
 
+public func discard<UO, UI, DI, DO>(_: Any) -> Proxy<UO, UI, DI, DO, ()> {
+    return Proxy(ProxyRepr.Pure { _ in () })
+}
+
 private func eachRepr<G: GeneratorType>(var gen: G) -> ProxyRepr<X, (), (), G.Element, ()> {
     if let v = gen.next() {
         return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }

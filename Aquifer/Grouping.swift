@@ -67,6 +67,10 @@ public func next<V, R>(p: GroupedProducer<V, R>) -> Either<R, Proxy<X, (), (), V
     }
 }
 
+public func discard<V>(_: Any) -> GroupedProducer<V, ()> {
+    return GroupedProducer(GroupedProducerRepr.End { _ in () })
+}
+
 extension GroupedProducer: Functor {
     public typealias B = Any
 
