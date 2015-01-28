@@ -129,6 +129,6 @@ int create_socket() {
 }
 
 -(void)writeLine:(NSString*)line {
-    [self writeData: [[NSString stringWithFormat:@"%@\r\n", line] dataUsingEncoding:NSISOLatin1StringEncoding]];
+    [self writeData: [[NSString stringWithFormat:@"%@\r\n", line] dataUsingEncoding:NSUTF8StringEncoding]];
 }
 @end
