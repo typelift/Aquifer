@@ -74,3 +74,7 @@ public func drain<UI, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
 public func map<UI, DO, FR>(f: UI -> DO) -> Proxy<(), UI, (), DO, FR> {
     return for_(cat()) { v in yield(f(v)) }
 }
+
+public func mapMany<UI, S: SequenceType, FR>(f: UI -> S) -> Proxy<(), UI, (), S.Generator.Element, FR> {
+    return for_(cat()) { each(f($0)) }
+}
