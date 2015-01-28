@@ -90,3 +90,7 @@ public func unDraw<V, I>(x: V) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (
 public func peek<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, V?> {
     return draw() >>- { k in if let v = k { return { _ in k } <^> unDraw(v) } else { return pure(k) } }
 }
+
+public func isEndOfInput<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
+    return { if let _ = $0 { return true } else { return false } } <^> peek()
+}
