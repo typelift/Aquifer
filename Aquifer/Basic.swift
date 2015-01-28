@@ -167,11 +167,17 @@ public func not<FR>() -> Proxy<(), Bool, (), Bool, FR> {
 }
 
 public func and(p: Proxy<X, (), (), Bool, ()>) -> Bool {
-    return all { b in b }
+    return all(p) { b in b }
 }
 
 public func or(p: Proxy<X, (), (), Bool, ()>) -> Bool {
-    return any { b in b }
+    return any(p) { b in b }
 }
 
-public func elem(p: proxy)
+public func elem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
+    return any(p) { x == $0 }
+}
+
+public func notElem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
+    return all(p) { x != $0 }
+}
