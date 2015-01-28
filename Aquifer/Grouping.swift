@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
+// roughly 'Pipes.Group'
+
 import Foundation
 import Swiftz
 
