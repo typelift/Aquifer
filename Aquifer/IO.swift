@@ -23,6 +23,10 @@ public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String
     }
 }
 
+public func stdoutLn<DI, DO, FR>() -> Proxy<(), String, DI, DO, FR> {
+    return toHandle(NSFileHandle.fileHandleWithStandardOutput())
+}
+
 public func toHandle<DI, DO, FR>(handle: NSFileHandle) -> Proxy<(), String, DI, DO, FR> {
     return for_(cat()) { handle.writeLine($0); return pure(()) }
 }
