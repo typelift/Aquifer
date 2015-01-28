@@ -9,7 +9,7 @@
 import Foundation
 import Swiftz
 
-/// The (nominally) empty type, implemented as a strictly self-recursive struct.
+/// The (nominally) empty type, implemented as a semi-strictly self-recursive struct.
 public struct X {
     private let rec: () -> X
 
