@@ -30,3 +30,13 @@ public func take<DT>(n: Int) -> Proxy<(), DT, (), DT, ()> {
         return await() >>- { yield($0) >>- { _ in take(n - 1) } }
     }
 }
+
+public func takeWhile<DT>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, ()> {
+    return await() >>- { v in
+        if predicate(v) {
+            return yield(v) >>- { _ in takeWhile(predicate) }
+        } else {
+            return pure(())
+        }
+    }
+}
