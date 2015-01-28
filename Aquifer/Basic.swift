@@ -106,3 +106,7 @@ public func findIndicesInner<UI, FR>(predicate: UI -> Bool, n: Int) -> Proxy<(),
 public func findIndices<UI, FR>(predicate: UI -> Bool) -> Proxy<(), UI, (), Int, FR> {
     return findIndicesInner(predicate, 0)
 }
+
+public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: A, extractWith extractor: A -> DO) -> Proxy<(), UI, (), DO, FR> {
+    return yield(extractor(initial)) >>- { _ in await() >>- { scan(stepWith: step, initializeWith: step(initial, $0), extractWith: extractor) } }
+}
