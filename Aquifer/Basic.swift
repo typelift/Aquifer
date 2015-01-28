@@ -134,3 +134,15 @@ private func foldRepr<A, V, R>(p: ProxyRepr<X, (), (), V, ()>, stepWith step: (A
 public func fold<A, V, R>(p: Proxy<X, (), (), V, ()>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> R {
     return foldRepr(p.repr, stepWith: step, initializeWith: initial, extractWith: extractor)
 }
+
+private func foldRetRepr<A, V, FR, R>(p: ProxyRepr<X, (), (), V, FR>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> (R, FR) {
+    switch p {
+    case let .Request(uO, fUI): return closed(uO())
+    case let .Respond(dO, fDI): return foldRetRepr(fDI(()), stepWith: step, initializeWith: step(initial, dO()), extractWith: extractor)
+    case let .Pure(x): return (extractor(initial), x())
+    }
+}
+
+public func foldRet<A, V, FR, R>(p: Proxy<X, (), (), V, FR>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> (R, FR) {
+    return foldRetRepr(p.repr, stepWith: step, initializeWith: initial, extractWith: extractor)
+}
