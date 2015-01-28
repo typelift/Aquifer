@@ -59,3 +59,14 @@ private func chunksOfRepr<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedPro
 public func chunksOf<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducer<V, R> {
     return GroupedProducer(chunksOfRepr(p, n))
 }
+
+private func concatsRepr<V, R>(p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (), V, R> {
+    switch p {
+    case let .End(x): return pure(x())
+    case let .More(q): return q() >>- concatsRepr
+    }
+}
+
+public func concats<V, R>(p: GroupedProducer<V, R>) -> Proxy<X, (), (), V, R> {
+    return concatsRepr(p.repr)
+}
