@@ -16,5 +16,9 @@ public func stdinLn<UO, UI>() -> Proxy<UO, UI, (), String, ()> {
 }
 
 public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String, ()> {
-    return pure(())
+    if handle.isAtEndOfFile {
+        return pure(())
+    } else {
+        return yield(handle.readLine) >>- { _ in fromHandle(handle) }
+    }
 }
