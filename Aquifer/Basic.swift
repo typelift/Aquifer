@@ -88,3 +88,6 @@ public func filter<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
         }
     }
 }
+
+/*public func elemIndices<UI: Equatable, FR>(x: @autoclosure () -> UI) {
+}*/
