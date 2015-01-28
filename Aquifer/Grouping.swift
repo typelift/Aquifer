@@ -13,18 +13,18 @@ internal enum GroupedProducerRepr<V, R> {
     case End(() -> R)
     case More(() -> Proxy<X, (), (), V, GroupedProducerRepr<V, R>>)
 
-    internal func fmapRepr<N>(f: R -> N) -> GroupedProducerRepr<V, N> {
+    internal func fmap<N>(f: R -> N) -> GroupedProducerRepr<V, N> {
         switch self {
         case let .End(x): return GroupedProducerRepr<V, N>.End { _ in f(x()) }
-        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in { q in q.fmapRepr(f) } <^> p() }
+        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in { q in q.fmap(f) } <^> p() }
         }
     }
 
-    internal func apRepr<N>(f: GroupedProducerRepr<V, R -> N>) -> GroupedProducerRepr<V, N> {
+    internal func ap<N>(f: GroupedProducerRepr<V, R -> N>) -> GroupedProducerRepr<V, N> {
         switch (self, f) {
         case let (.End(x), .End(g)): return GroupedProducerRepr<V, N>.End { _ in g()(x()) }
-        case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmapRepr(g()) } }
-        case let (_, .More(p)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { t in self.apRepr(t) } }
+        case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmap(g()) } }
+        case let (_, .More(p)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { t in self.ap(t) } }
         }
     }
 }
@@ -53,7 +53,7 @@ extension GroupedProducer: Functor {
     public typealias B = Any
 
     public func fmap<N>(f: R -> N) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(repr.fmapRepr(f))
+        return GroupedProducer<V, N>(repr.fmap(f))
     }
 }
 
@@ -81,7 +81,7 @@ public func pure<V, R>(x: @autoclosure () -> R) -> GroupedProducer<V, R> {
 
 extension GroupedProducer: Applicative {
     public func ap<N>(f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(self.repr.apRepr(f.repr))
+        return GroupedProducer<V, N>(self.repr.ap(f.repr))
     }
 }
 
