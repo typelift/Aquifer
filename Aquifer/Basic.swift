@@ -182,9 +182,19 @@ public func notElem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
     return all(p) { x != $0 }
 }
 
-public func head<V>(p: Proxy<X, (), (), V, ()>, x: V) -> V? {
+public func find<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> V? {
+    return head(p >-> filter(predicate))
+}
+
+public func findIndex<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Int? {
+    return head(p >-> findIndices(predicate))
+}
+
+public func head<V>(p: Proxy<X, (), (), V, ()>) -> V? {
     switch next(p) {
     case .Left(_): return nil
     case let .Right(k): return k.value.0
     }
 }
+
+public
