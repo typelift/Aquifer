@@ -188,3 +188,20 @@ private func intercalatesReprInner<V, R>(sep: Proxy<X, (), (), V, ()>, p: Groupe
 public func intercalates<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducer<V, R>) -> Proxy<X, (), (), V, R> {
     return intercalatesRepr(sep, p.repr)
 }
+
+private func takesRepr<V>(p: GroupedProducerRepr<V, ()>, n: Int) -> GroupedProducerRepr<V, ()> {
+    if n > 0 {
+        return GroupedProducerRepr.More { _ in
+            switch p {
+            case let .End(x): return pure(GroupedProducerRepr.End(x))
+            case let .More(q): return pure(GroupedProducerRepr.More { _ in q().fmap { takesRepr($0, n - 1) } })
+            }
+        }
+    } else {
+        return GroupedProducerRepr.End { _ in () }
+    }
+}
+
+public func takes<V>(p: GroupedProducer<V, ()>, n: Int) -> GroupedProducer<V, ()> {
+    return GroupedProducer(takesRepr(p.repr, n))
+}
