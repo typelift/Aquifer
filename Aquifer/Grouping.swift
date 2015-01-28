@@ -215,13 +215,24 @@ public func takes<V>(p: GroupedProducer<V, ()>, n: Int) -> GroupedProducer<V, ()
     return GroupedProducer(takesRepr(p.repr, n))
 }
 
-/*private func takesRetRepr<V, R>(p: GroupedProducerRepr<V, R>, n: Int) -> GroupedProducerRepr<V, R> {
-
+private func takesRetRepr<V, R>(p: GroupedProducerRepr<V, R>, n: Int) -> GroupedProducerRepr<V, R> {
+    if n > 0 {
+        switch p {
+        case let .End(x): return GroupedProducerRepr.End(x)
+        case let .More(q): return GroupedProducerRepr.More { _ in q().fmap { takesRetRepr($0, n - 1) } }
+        }
+    } else {
+        return takesRetReprInner(p)
+    }
 }
 
-private func takesRetReprInner<V, R>(p: GroupedProducerRepr<V, R>, n: Int) -> GroupedProducerRepr<V, R> {
+private func takesRetReprInner<V, R>(p: GroupedProducerRepr<V, R>) -> GroupedProducerRepr<V, R> {
+    switch p {
+    case let .End(x): return GroupedProducerRepr.End(x)
+    case let .More(q): return takesRetReprInner(runEffect(for_(q()) { discard($0) }))
+    }
 }
 
 public func takesRet<V, R>(p: GroupedProducer<V, R>, n: Int) -> GroupedProducer<V, R> {
     return GroupedProducer(takesRetRepr(p.repr, n))
-}*/
+}
