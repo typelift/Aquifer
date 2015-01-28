@@ -147,11 +147,13 @@ public func foldRet<A, V, FR, R>(p: Proxy<X, (), (), V, FR>, stepWith step: (A, 
     return foldRetRepr(p.repr, stepWith: step, initializeWith: initial, extractWith: extractor)
 }
 
-public func isEmpty<V, R>(p: Proxy<X, (), (), V, ()>) -> Bool {
+public func isEmpty<V>(p: Proxy<X, (), (), V, ()>) -> Bool {
     switch next(p) {
     case .Left(_): return true
     case .Right(_): return false
     }
 }
 
-/*public func all<V, R>()*/
+public func all<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Bool {
+    return isEmpty(p >-> filter { !predicate($0) })
+}
