@@ -94,3 +94,13 @@ public func peek<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, 
 public func isEndOfInput<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
     return { if let _ = $0 { return true } else { return false } } <^> peek()
 }
+
+public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, R> {
+    return draw() >>- {
+        if let v = $0 {
+            return foldAll(stepWith: step, initializeWith: step(initial, v), extractWith: extractor)
+        } else {
+            return pure(extractor(initial))
+        }
+    }
+}
