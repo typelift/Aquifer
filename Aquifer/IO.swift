@@ -34,3 +34,7 @@ public func toHandle<DI, DO, FR>(handle: NSFileHandle) -> Proxy<(), String, DI, 
 public func describe<UI: Printable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
     return description() >-> stdoutLn()
 }
+
+public func debugDescribe<UI: DebugPrintable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
+    return debugDescription() >-> stdoutLn()
+}
