@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
+// part of `Pipes.Prelude`
+
 import Foundation
 import Swiftz
 
@@ -17,10 +19,14 @@ public func repeat<UO, UI, DO, FR>(v: () -> DO) -> Proxy<UO, UI, (), DO, FR> {
     return once(v) >~ cat()
 }
 
-public func replicate<UO, UI, DO, FR>(v: () -> DO, n: Int) -> Proxy<UO, UI, (), DO, ()> {
+/*public func replicate<UO, UI, DO>(v: () -> DO, n: Int) -> Proxy<UO, UI, (), DO, ()> {
     return once(v) >~ take(n)
-}
+}*/
 
 public func take<UI, DO, FR>(n: Int) -> Proxy<(), UI, (), DO, ()> {
-    return
+    if n <= 0 {
+        return pure(())
+    } else {
+        return await() >>- { yield($0) >>- { _ in take(n - 1) } }
+    }
 }
