@@ -31,7 +31,7 @@ internal enum GroupedProducerRepr<V, R> {
     internal func bind<N>(f: R -> GroupedProducerRepr<V, N>) -> GroupedProducerRepr<V, N> {
         switch self {
         case let .End(x): return f(x())
-        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in p().fmap() }
+        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.bind(f) } }
         }
     }
 }
@@ -106,7 +106,7 @@ public postfix func <*><V, R, N>(f: GroupedProducer<V, R -> N>) -> GroupedProduc
 
 extension GroupedProducer: Monad {
     public func bind<N>(f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
-        return
+        return GroupedProducer<V, N>(repr.bind { f($0).repr })
     }
 }
 
