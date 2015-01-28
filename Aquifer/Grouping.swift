@@ -33,6 +33,10 @@ public struct GroupedProducer<V, R> {
     }
 }
 
+public func wrap<V, R>(p: @autoclosure () -> Proxy<X, (), (), V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
+    return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
+}
+
 public func delay<V, R>(p: @autoclosure () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
     return GroupedProducer(p().repr)
 }
