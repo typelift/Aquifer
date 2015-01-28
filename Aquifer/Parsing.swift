@@ -44,4 +44,6 @@ public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> 
     }
 }
 
-
+public func group<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+    return groupBy(p) { v0, v1 in v0 == v1 }
+}
