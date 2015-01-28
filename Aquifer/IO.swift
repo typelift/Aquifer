@@ -10,3 +10,7 @@
 
 import Foundation
 import Swiftz
+
+public func stdinLn<UO, UI>() -> Proxy<UO, UI, (), String, ()> {
+    return fromHandle(NSFileHandle.fileHandleWithStandardInput())
+}
