@@ -114,3 +114,7 @@ public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith init
 public func chain<DT, FR>(action: DT -> Void) -> Proxy<(), DT, (), DT, FR> {
     return for_(cat()) { action($0); return yield($0) }
 }
+
+public func description<UI: Printable, FR>() -> Proxy<(), UI, (), String, FR> {
+    return map { $0.description }
+}
