@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TypeLift. All rights reserved.
 //
 
-// part of `Pipes.Prelude`
+// roughly `Pipes.Prelude`
 
 import Foundation
 import Swiftz
