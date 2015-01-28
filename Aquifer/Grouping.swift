@@ -19,6 +19,14 @@ internal enum GroupedProducerRepr<V, R> {
         case let .More(p): return GroupedProducerRepr<V, N>.More { _ in { q in q.fmapRepr(f) } <^> p() }
         }
     }
+
+    internal func apRepr<N>(f: GroupedProducerRepr<V, R -> N>) -> GroupedProducerRepr<V, N> {
+        switch (self, f) {
+        case let (.End(x), .End(g)): return GroupedProducerRepr<V, N>.End { _ in g()(x()) }
+        case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmapRepr(g()) } }
+        case let (_, .More(p)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { t in self.apRepr(t) } }
+        }
+    }
 }
 
 public struct GroupedProducer<V, R> {
@@ -69,6 +77,16 @@ extension GroupedProducer: Pointed {
 
 public func pure<V, R>(x: @autoclosure () -> R) -> GroupedProducer<V, R> {
     return GroupedProducer(GroupedProducerRepr.End(x))
+}
+
+extension GroupedProducer: Applicative {
+    public func ap<N>(f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, N> {
+        return GroupedProducer<V, N>(self.repr.apRepr(f.repr))
+    }
+}
+
+public func <*><V, R, N>(p: GroupedProducer<V, R>, f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, N> {
+    return p.ap(f)
 }
 
 private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
