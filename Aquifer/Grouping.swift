@@ -49,6 +49,24 @@ public func <^><V, R, N>(f: R -> N, p: GroupedProducer<V, R>) -> GroupedProducer
     return p.fmap(f)
 }
 
+public prefix func <^><V, R, N>(p: GroupedProducer<V, R>) -> (R -> N) -> GroupedProducer<V, N> {
+    return { f in f <^> p }
+}
+
+public postfix func <^><V, R, N>(f: R -> N) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
+    return { p in f <^> p }
+}
+
+extension GroupedProducer: Pointed {
+    public static func pure(x: R) -> GroupedProducer<V, R> {
+        return Aquifer.pure(x)
+    }
+}
+
+public func pure<V, R>(x: @autoclosure () -> R) -> GroupedProducer<V, R> {
+    return GroupedProducer(GroupedProducerRepr.End(x))
+}
+
 private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
     switch next(p) {
     case let .Left(x): return GroupedProducerRepr.End { _ in x.value }
