@@ -82,3 +82,7 @@ public func drawAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), 
 public func skipAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
     return draw() >>- { if let _ = $0 { return skipAll() } else { return pure(()) } }
 }
+
+public func unDraw<V, I>(x: V) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
+    return modify { p in yield(x) >>- { _ in p } }
+}
