@@ -60,6 +60,13 @@ public func delay<V, R>(p: @autoclosure () -> GroupedProducer<V, R>) -> GroupedP
     return GroupedProducer(p().repr)
 }
 
+public func next<V, R>(p: GroupedProducer<V, R>) -> Either<R, Proxy<X, (), (), V, GroupedProducer<V, R>>> {
+    switch p.repr {
+    case let .End(x): return .Left(Box(x()))
+    case let .More(q): return .Right(Box({ GroupedProducer($0) } <^> q()))
+    }
+}
+
 extension GroupedProducer: Functor {
     public typealias B = Any
 
@@ -205,3 +212,7 @@ private func takesRepr<V>(p: GroupedProducerRepr<V, ()>, n: Int) -> GroupedProdu
 public func takes<V>(p: GroupedProducer<V, ()>, n: Int) -> GroupedProducer<V, ()> {
     return GroupedProducer(takesRepr(p.repr, n))
 }
+
+/*public func takesRet<V, R>(p: GroupedProducer<V, R>, n: Int) -> GroupedProducer<V, R> {
+
+}*/
