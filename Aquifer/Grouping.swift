@@ -24,7 +24,7 @@ internal enum GroupedProducerRepr<V, R> {
         switch (self, f) {
         case let (.End(x), .End(g)): return GroupedProducerRepr<V, N>.End { _ in g()(x()) }
         case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmap(g()) } }
-        case let (_, .More(p)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { t in self.ap(t) } }
+        case let (_, .More(t)): return GroupedProducerRepr<V, N>.More { _ in t().fmap { g in self.ap(g) } }
         }
     }
 }
