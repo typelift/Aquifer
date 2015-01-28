@@ -22,3 +22,7 @@ public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String
         return yield(handle.readLine) >>- { _ in fromHandle(handle) }
     }
 }
+
+public func repeat<UO, UI, DO, FR>(v: @autoclosure () -> DO) -> Proxy<UO, UI, (), DO, FR> {
+    return pure(v) >~ cat()
+}
