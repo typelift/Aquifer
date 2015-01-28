@@ -126,6 +126,10 @@ public postfix func >>-<V, R, N>(p: GroupedProducer<V, R>) -> (R -> GroupedProdu
     return { f in p >>- f }
 }
 
+public func flatten<V, R>(p: GroupedProducer<V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
+    return p.bind { q in q }
+}
+
 private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
     switch next(p) {
     case let .Left(x): return GroupedProducerRepr.End { _ in x.value }
