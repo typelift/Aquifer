@@ -187,7 +187,7 @@ extension Proxy {
     }
 }
 
-internal func closed<A>(x: () -> X) -> A {
+public func closed<A>(x: @autoclosure () -> X) -> A {
     return x().absurd()
 }
 
