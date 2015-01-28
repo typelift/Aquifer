@@ -60,3 +60,7 @@ public func draw<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, 
         }
     }
 }
+
+public func skip<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
+    return { if let _ = $0 { return true } else { return false } } <^> draw()
+}
