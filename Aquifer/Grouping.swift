@@ -236,3 +236,18 @@ private func takesRetReprInner<V, R>(p: GroupedProducerRepr<V, R>) -> GroupedPro
 public func takesRet<V, R>(p: GroupedProducer<V, R>, n: Int) -> GroupedProducer<V, R> {
     return GroupedProducer(takesRetRepr(p.repr, n))
 }
+
+private func dropsRepr<V, R>(p: GroupedProducerRepr<V, R>, n: Int) -> GroupedProducerRepr<V, R> {
+    if n <= 0 {
+        return p
+    } else {
+        switch p {
+        case let .End(x): return .End(x)
+        case let .More(q): return dropsRepr(runEffect(for_(q()) { discard($0) }), n - 1)
+        }
+    }
+}
+
+public func drops<V, R>(p: GroupedProducer<V, R>, n: Int) -> GroupedProducer<V, R> {
+    return GroupedProducer(dropsRepr(p.repr, n))
+}
