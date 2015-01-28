@@ -15,3 +15,4 @@ FOUNDATION_EXPORT double AquiferVersionNumber;
 FOUNDATION_EXPORT const unsigned char AquiferVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Aquifer/PublicHeader.h>
+#import "NSFileHandleExt.h"

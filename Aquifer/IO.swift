@@ -14,3 +14,7 @@ import Swiftz
 public func stdinLn<UO, UI>() -> Proxy<UO, UI, (), String, ()> {
     return fromHandle(NSFileHandle.fileHandleWithStandardInput())
 }
+
+public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String, ()> {
+    return pure(())
+}
