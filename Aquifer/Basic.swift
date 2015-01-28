@@ -67,3 +67,6 @@ public func concat<S: SequenceType, FR>() -> Proxy<(), S, (), S.Generator.Elemen
     return for_(cat(), each)
 }
 
+public func drain<UI, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
+    return for_(cat(), discard)
+}
