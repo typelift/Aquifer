@@ -85,10 +85,17 @@ extension GroupedProducer: Applicative {
     }
 }
 
-public func <*><V, R, N>(p: GroupedProducer<V, R>, f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, N> {
+public func <*><V, R, N>(f: GroupedProducer<V, R -> N>, p: GroupedProducer<V, R>) -> GroupedProducer<V, N> {
     return p.ap(f)
 }
 
+public prefix func <*><V, R, N>(p: GroupedProducer<V, R>) -> GroupedProducer<V, R -> N> -> GroupedProducer<V, N> {
+    return { f in f <*> p }
+}
+
+public postfix func <*><V, R, N>(f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
+    return { p in f <*> p }
+}
 private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
     switch next(p) {
     case let .Left(x): return GroupedProducerRepr.End { _ in x.value }

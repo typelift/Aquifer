@@ -165,10 +165,6 @@ extension Proxy: Monad {
     }
 }
 
-public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, DI, DO, FR>>) -> Proxy<UO, UI, DI, DO, FR> {
-    return p.bind { q in q }
-}
-
 public func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
     return p.bind(f)
 }
@@ -179,6 +175,10 @@ public prefix func >>-<UO, UI, DI, DO, FR, NR>(f: FR -> Proxy<UO, UI, DI, DO, NR
 
 public postfix func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>) -> (FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
     return { f in p.bind(f) }
+}
+
+public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, DI, DO, FR>>) -> Proxy<UO, UI, DI, DO, FR> {
+    return p.bind { q in q }
 }
 
 extension Proxy {
