@@ -122,3 +122,15 @@ public func description<UI: Printable, FR>() -> Proxy<(), UI, (), String, FR> {
 public func debugDescription<UI: DebugPrintable, FR>() -> Proxy<(), UI, (), String, FR> {
     return map { $0.debugDescription }
 }
+
+private func foldRepr<A, V, R>(p: ProxyRepr<X, (), (), V, ()>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> R {
+    switch p {
+    case let .Request(uO, _): return closed(uO())
+    case let .Respond(dO, fDI): return foldRepr(fDI(()), stepWith: step, initializeWith: step(initial, dO()), extractWith: extractor)
+    case .Pure(_): return extractor(initial)
+    }
+}
+
+public func fold<A, V, R>(p: Proxy<X, (), (), V, ()>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> R {
+    return foldRepr(p.repr, stepWith: step, initializeWith: initial, extractWith: extractor)
+}
