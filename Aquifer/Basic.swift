@@ -197,4 +197,50 @@ public func head<V>(p: Proxy<X, (), (), V, ()>) -> V? {
     }
 }
 
-public
+private func lastInner<V>(x: V, p: Proxy<X, (), (), V, ()>) -> V? {
+    switch next(p) {
+    case .Left(_): return x
+    case let .Right(k):
+        let (dO, q) = k.value
+        return lastInner(dO, q)
+    }
+}
+
+public func last<V>(p: Proxy<X, (), (), V, ()>) -> V? {
+    switch next(p) {
+    case .Left(_): return nil
+    case let .Right(k):
+        let (dO, q) = k.value
+        return lastInner(dO, q)
+    }
+}
+
+public func length<V>(p: Proxy<X, (), (), V, ()>) -> Int {
+    return fold(p, stepWith: { n, _ in n + 1 }, initializeWith: 0, extractWith: { n in n })
+}
+
+public func maximum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
+    func step(x: V?, v: V) -> V? {
+        if let w = x {
+            return max(v, w)
+        } else {
+            return x
+        }
+    }
+    return fold(p, stepWith: step, initializeWith: nil, extractWith: { x in x })
+}
+
+public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
+    func step(x: V?, v: V) -> V? {
+        if let w = x {
+            return min(v, w)
+        } else {
+            return x
+        }
+    }
+    return fold(p, stepWith: step, initializeWith: nil, extractWith: { x in x })
+}
+
+public func sum<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
+    return fold(p, stepWith: , initializeWith: <#A#>, extractWith: <#A -> R##A -> R#>)
+}
