@@ -15,10 +15,14 @@ internal enum GroupedProducerRepr<V, R> {
 }
 
 public struct GroupedProducer<V, R> {
-    internal let repr: () -> GroupedProducerRepr<V, R>
+    private let _repr: () -> GroupedProducerRepr<V, R>
 
     internal init(_ r: @autoclosure () -> GroupedProducerRepr<V, R>) {
-        repr = r
+        _repr = r
+    }
+
+    internal var repr: GroupedProducerRepr<V, R> {
+        return _repr()
     }
 }
 
@@ -41,7 +45,15 @@ public func groups<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> GroupedProduce
     return groupsBy(p) { v0, v1 in v0 == v1  }
 }
 
-public func chunksOf<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducer<V, R> {
+private func chunksOfRepr<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducerRepr<V, R> {
     switch next(p) {
+    case let .Left(x): return GroupedProducerRepr.End { _ in x.value }
+    case let .Right(k):
+        let (dO, q) = k.value
+        return GroupedProducerRepr.More { _ in { r in chunksOfRepr(q, n) } <^> splitAt(yield(dO) >>- { _ in q }, n) }
     }
+}
+
+public func chunksOf<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducer<V, R> {
+    return GroupedProducer(chunksOfRepr(p, n))
 }
