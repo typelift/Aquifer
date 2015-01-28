@@ -49,3 +49,14 @@ public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> 
 public func group<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     return groupBy(p) { v0, v1 in v0 == v1 }
 }
+
+public func draw<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, V?> {
+    return get() >>- { p in
+        switch next(p) {
+        case let .Left(x): return { _ in nil } <^> put(pure(x.value))
+        case let .Right(k):
+            let (dO, q) = k.value
+            return { _ in dO } <^> put(q)
+        }
+    }
+}
