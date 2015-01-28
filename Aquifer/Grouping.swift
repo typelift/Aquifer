@@ -26,7 +26,9 @@ public struct GroupedProducer<V, R> {
     }
 }
 
-public func delay(p: @autoclosure () -> GroupedProducer)
+public func delay<V, R>(p: @autoclosure () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
+    return GroupedProducer(p().repr)
+}
 
 private func groupsBySignature<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
     switch next(p) {
