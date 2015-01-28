@@ -12,6 +12,13 @@ import Swiftz
 internal enum GroupedProducerRepr<V, R> {
     case End(() -> R)
     case More(() -> Proxy<X, (), (), V, GroupedProducerRepr<V, R>>)
+
+    internal func fmapRepr<N>(f: R -> N) -> GroupedProducerRepr<V, N> {
+        switch self {
+        case let .End(x): return GroupedProducerRepr<V, N>.End { _ in f(x()) }
+        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in { q in q.fmapRepr(f) } <^> p() }
+        }
+    }
 }
 
 public struct GroupedProducer<V, R> {
@@ -28,6 +35,18 @@ public struct GroupedProducer<V, R> {
 
 public func delay<V, R>(p: @autoclosure () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
     return GroupedProducer(p().repr)
+}
+
+extension GroupedProducer: Functor {
+    public typealias B = Any
+
+    public func fmap<N>(f: R -> N) -> GroupedProducer<V, N> {
+        return GroupedProducer<V, N>(repr.fmapRepr(f))
+    }
+}
+
+public func <^><V, R, N>(f: R -> N, p: GroupedProducer<V, R>) -> GroupedProducer<V, N> {
+    return p.fmap(f)
 }
 
 private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
