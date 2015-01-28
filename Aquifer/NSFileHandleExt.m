@@ -80,7 +80,7 @@ int create_socket() {
     else if (result == 0)
         [[NSException exceptionWithName:@"Error connecting" reason:@"Timeout while connecting" userInfo:nil] raise];
 
-    return [[NSFileHandle alloc] initWithFileDescriptor: sockfd];
+    return [[NSFileHandle alloc] initWithFileDescriptor: sockfd closeOnDealloc: YES];
 }
 
 -(NSString*)readLine {
