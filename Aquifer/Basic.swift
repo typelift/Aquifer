@@ -40,3 +40,15 @@ public func takeWhile<DT>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, ()> {
         }
     }
 }
+
+private func dropInner<DT>(n: Int) -> Proxy<(), DT, (), DT, ()> {
+    if n <= 0 {
+        return pure(())
+    } else {
+        return await() >>- { _ in dropInner(n - 1) }
+    }
+}
+
+public func drop<DT, FR>(n: Int) -> Proxy<(), DT, (), DT, FR> {
+    return dropInner(n) >>- { _ in cat() }
+}
