@@ -287,3 +287,7 @@ public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (
 // this seems to required higher-kinded types to implement, even though none appear in its signature
 /*public func tee<V, R>(p: Proxy<(), V, (), X, R>) -> Proxy<(), V, (), V, R> {
 }*/
+
+// this seems to required higher-kinded types to implement, even though none appear in its signature
+/*public func generalize<UT, UI, DO, FR>(p: Proxy<(), UI, (), DO, FR>) -> Proxy<UT, UI, UT, DO, FR> {
+}*/
