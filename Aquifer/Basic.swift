@@ -216,7 +216,7 @@ public func last<V>(p: Proxy<X, (), (), V, ()>) -> V? {
 }
 
 public func length<V>(p: Proxy<X, (), (), V, ()>) -> Int {
-    return fold(p, stepWith: { n, _ in n + 1 }, initializeWith: 0, extractWith: { n in n })
+    return fold(p, stepWith: { n, _ in n + 1 }, initializeWith: 0, extractWith: { $0 })
 }
 
 public func maximum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
@@ -227,7 +227,7 @@ public func maximum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
             return x
         }
     }
-    return fold(p, stepWith: step, initializeWith: nil, extractWith: { x in x })
+    return fold(p, stepWith: step, initializeWith: nil, extractWith: { $0 })
 }
 
 public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
@@ -238,9 +238,9 @@ public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
             return x
         }
     }
-    return fold(p, stepWith: step, initializeWith: nil, extractWith: { x in x })
+    return fold(p, stepWith: step, initializeWith: nil, extractWith: { $0 })
 }
 
 public func sum<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
-    return fold(p, stepWith: , initializeWith: <#A#>, extractWith: <#A -> R##A -> R#>)
+    return fold(p, stepWith: { $0.plus($1) }, initializeWith: V.zero, extractWith: { $0 })
 }
