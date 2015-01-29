@@ -265,3 +265,15 @@ private func toListRepr<V>(p: ProxyRepr<X, (), (), V, ()>) -> List<V> {
 public func toList<V>(p: Proxy<X, (), (), V, ()>) -> List<V> {
     return toListRepr(p.repr)
 }
+
+public func zip<V0, V1, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>, f: (V0, V1) -> V2) -> Proxy<X, (), (), (V1, V2), R> {
+    return zipWith(p, q) { ($0, $1) }
+}
+
+private func zipWithRepr<V0, V1, V2, R>(p: ProxyRepr<X, (), (), V0, R>, q: ProxyRepr<X, (), (), V1, R>, f: (V0, V1) -> V2) -> ProxyRepr<X, (), (), V2, R> {
+    return
+}
+
+public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>, f: (V0, V1) -> V2) -> Proxy<X, (), (), V2, R> {
+    return Proxy(zipWithRepr(p.repr, q.repr, f))
+}
