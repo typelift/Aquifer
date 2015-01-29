@@ -253,4 +253,15 @@ public func product<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
     return fold(p, stepWith: { $0.times($1) }, initializeWith: V.one, extractWith: { $0 })
 }
 
-public
+
+private func toListRepr<V>(p: ProxyRepr<X, (), (), V, ()>) -> List<V> {
+    switch p {
+    case let .Request(uO, _): return closed(uO())
+    case let .Respond(dO, fDI): return List(dO(), toListRepr(fDI(())))
+    case .Pure(_): return []
+    }
+}
+
+public func toList<V>(p: Proxy<X, (), (), V, ()>) -> List<V> {
+    return toListRepr(p.repr)
+}
