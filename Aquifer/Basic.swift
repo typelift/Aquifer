@@ -241,6 +241,10 @@ public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
     return fold(p, stepWith: step, initializeWith: nil, extractWith: { $0 })
 }
 
+public func mconcat<V: Monoid>(p: Proxy<X, (), (), V, ()>) -> V {
+    return fold(p, stepWith: { $0.op($1) }, initializeWith: V.mzero, extractWith: { $0 })
+}
+
 public func sum<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
     return fold(p, stepWith: { $0.plus($1) }, initializeWith: V.zero, extractWith: { $0 })
 }
@@ -249,6 +253,4 @@ public func product<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
     return fold(p, stepWith: { $0.times($1) }, initializeWith: V.one, extractWith: { $0 })
 }
 
-public func mconcat<V: Monoid>(p: Proxy<X, (), (), V, ()>) -> V {
-    return fold(p, stepWith: { $0.op($1) }, initializeWith: V.mzero, extractWith: { $0 })
-}
+public
