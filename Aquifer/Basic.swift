@@ -266,14 +266,20 @@ public func toList<V>(p: Proxy<X, (), (), V, ()>) -> List<V> {
     return toListRepr(p.repr)
 }
 
-public func zip<V0, V1, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>, f: (V0, V1) -> V2) -> Proxy<X, (), (), (V1, V2), R> {
+public func zip<V0, V1, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>) -> Proxy<X, (), (), (V0, V1), R> {
     return zipWith(p, q) { ($0, $1) }
 }
 
-private func zipWithRepr<V0, V1, V2, R>(p: ProxyRepr<X, (), (), V0, R>, q: ProxyRepr<X, (), (), V1, R>, f: (V0, V1) -> V2) -> ProxyRepr<X, (), (), V2, R> {
-    return
-}
-
 public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>, f: (V0, V1) -> V2) -> Proxy<X, (), (), V2, R> {
-    return Proxy(zipWithRepr(p.repr, q.repr, f))
+    switch next(p) {
+    case let .Left(x): return pure(x.value)
+    case let .Right(k0):
+        let (dO0, r) = k0.value
+        switch next(q) {
+        case let .Left(y): return pure(y.value)
+        case let .Right(k1):
+            let (dO1, s) = k1.value
+            return yield(f(dO0, dO1)) >>- { _ in zipWith(r, s, f) }
+        }
+    }
 }
