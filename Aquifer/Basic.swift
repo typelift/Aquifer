@@ -244,3 +244,7 @@ public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
 public func sum<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
     return fold(p, stepWith: { $0.plus($1) }, initializeWith: V.zero, extractWith: { $0 })
 }
+
+public func product<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
+    return fold(p, stepWith: { $0.times($1) }, initializeWith: V.one, extractWith: { $0 })
+}
