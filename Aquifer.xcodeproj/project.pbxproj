@@ -25,6 +25,7 @@
 		11862D3C1A673B69008F5696 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 11862CF01A660E37008F5696 /* Cartfile */; };
 		11862D3D1A673B6C008F5696 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 11862D3B1A673B5D008F5696 /* README.md */; };
 		11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
+		11D195741A7B42260072F514 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		11A916DC1A6C7EFC007B4BBA /* Grouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grouping.swift; sourceTree = "<group>"; usesTabs = 0; };
+		11D195731A7B42260072F514 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 		11A916D91A6C7B06007B4BBA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				11D195731A7B42260072F514 /* Auxiliary.swift */,
 				11A916DC1A6C7EFC007B4BBA /* Grouping.swift */,
 				11200E821A784D230032A136 /* Parsing.swift */,
 				11200E841A7952BA0032A136 /* Arrow.swift */,
@@ -385,6 +388,7 @@
 				11200E851A7952BA0032A136 /* Arrow.swift in Sources */,
 				11200E831A784D230032A136 /* Parsing.swift in Sources */,
 				11862D2C1A670B0A008F5696 /* Operators.swift in Sources */,
+				11D195741A7B42260072F514 /* Auxiliary.swift in Sources */,
 				11200E911A796D9F0032A136 /* Basic.swift in Sources */,
 				11200E8C1A7958580032A136 /* NSFileHandleExt.m in Sources */,
 			);
