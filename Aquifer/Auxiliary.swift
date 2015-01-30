@@ -40,3 +40,24 @@ private func rightInner<A, B, C>() -> Proxy<(), Either<C, A>, (), Either<C, B>, 
 public func right<A, B, C, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), Either<C, A>, (), Either<C, B>, R> {
     return rightInner() >~ for_(p) { v in yield(Either.right(v)) }
 }
+
+infix operator +++ {
+associativity left
+precedence 180
+}
+
+public func +++<A, B, C, D, R>(p: Proxy<(), A, (), B, R>, q: Proxy<(), C, (), D, R>) -> Proxy<(), Either<A, C>, (), Either<B, D>, R> {
+    return left(p) >-> right(q)
+}
+
+prefix operator +++ {}
+
+public prefix func +++<A, B, C, D, R>(q: Proxy<(), C, (), D, R>) -> Proxy<(), A, (), B, R> -> Proxy<(), Either<A, C>, (), Either<B, D>, R> {
+    return { p in p +++ q }
+}
+
+postfix operator +++ {}
+
+public postfix func +++<A, B, C, D, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), C, (), D, R> -> Proxy<(), Either<A, C>, (), Either<B, D>, R> {
+    return { q in p +++ q }
+}
