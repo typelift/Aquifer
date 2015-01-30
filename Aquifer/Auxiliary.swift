@@ -11,3 +11,6 @@
 import Foundation
 import Swiftz
 
+public func arr<A, B, R>(f: A -> B) -> Proxy<(), A, (), B, R> {
+    return map(f)
+}
