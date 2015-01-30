@@ -69,3 +69,6 @@ public func mapInput<UO, UI, DI, DO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: NI
 public func mapOutput<UO, UI, DI, DO, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> NO) -> Proxy<UO, UI, DI, NO, FR> {
     return p |>> { v in respond(f(v)) }
 }
+
+/*public func scan1i<DT>(stepWith step: (DT, DT) -> DT) -> Proxy<(), DT, (), DT, FR> {
+}*/
