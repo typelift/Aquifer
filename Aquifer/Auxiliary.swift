@@ -70,5 +70,10 @@ public func mapOutput<UO, UI, DI, DO, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: D
     return p |>> { v in respond(f(v)) }
 }
 
-/*public func scan1i<DT>(stepWith step: (DT, DT) -> DT) -> Proxy<(), DT, (), DT, FR> {
-}*/
+public func scan1i<DT, FR>(stepWith step: (DT, DT) -> DT) -> Proxy<(), DT, (), DT, FR> {
+    return scan1(stepWith: step, initializeWith: identity, extractWith: identity)
+}
+
+public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: UI -> A, extractWith extractor: A -> DO) -> Proxy<(), UI, (), DO, FR> {
+    return await() >>- { scan(stepWith: step, initializeWith: initial($0), extractWith: extractor) }
+}
