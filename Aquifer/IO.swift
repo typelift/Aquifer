@@ -38,3 +38,7 @@ public func describe<UI: Printable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
 public func debugDescribe<UI: DebugPrintable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
     return debugDescription() >-> stdoutLn()
 }
+
+public func writeTo<DT: Streamable, OS: OutputStreamType, FR>(inout stream: OS) -> Proxy<(), DT, (), DT, FR> {
+    return chain { $0.writeTo(&stream) }
+}
