@@ -61,3 +61,7 @@ postfix operator +++ {}
 public postfix func +++<A, B, C, D, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), C, (), D, R> -> Proxy<(), Either<A, C>, (), Either<B, D>, R> {
     return { q in p +++ q }
 }
+
+public func mapInput<UO, UI, DI, DO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: NI -> UI) -> Proxy<UO, NI, DI, DO, FR> {
+    return { request($0).fmap(f) } >>| p
+}
