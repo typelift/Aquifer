@@ -65,3 +65,7 @@ public postfix func +++<A, B, C, D, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), C
 public func mapInput<UO, UI, DI, DO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: NI -> UI) -> Proxy<UO, NI, DI, DO, FR> {
     return { request($0).fmap(f) } >>| p
 }
+
+public func mapOutput<UO, UI, DI, DO, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> NO) -> Proxy<UO, UI, DI, NO, FR> {
+    return p |>> { v in respond(f(v)) }
+}
