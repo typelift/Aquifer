@@ -1,4 +1,4 @@
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Global/Emacs.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Global/Emacs.gitignore
 
 # -*- mode: gitignore; -*-
 *~
@@ -34,7 +34,7 @@ tramp
 .cask/
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Global/Vim.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Global/Vim.gitignore
 
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
@@ -44,7 +44,7 @@ Session.vim
 *~
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Global/Tags.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Global/Tags.gitignore
 
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
@@ -62,7 +62,7 @@ cscope.po.out
 
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Global/Archives.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Global/Archives.gitignore
 
 # It's better to unpack these files and commit the raw source because
 # git has its own built in compression methods.
@@ -93,7 +93,7 @@ cscope.po.out
 *.msp
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Global/OSX.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Global/OSX.gitignore
 
 .DS_Store
 .AppleDouble
@@ -121,7 +121,7 @@ Temporary Items
 .apdisk
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Global/Xcode.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Global/Xcode.gitignore
 
 build/
 *.pbxuser
@@ -139,7 +139,43 @@ DerivedData
 *.xcuserstate
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Objective-C.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/C.gitignore
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+
+
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Objective-C.gitignore
 
 # Xcode
 #
@@ -166,10 +202,10 @@ DerivedData
 # you should judge for yourself, the pros and cons are mentioned at:
 # http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
 #
-# Pods/
+#Pods/
 
 
-### https://raw.github.com/github/gitignore/4a9d41f8947b9fe5850914abb7e59a59e1ae2cb6/Swift.gitignore
+### https://raw.github.com/github/gitignore/8646d7f7d7a49a08f7112b01be8bb547070aef6d/Swift.gitignore
 
 # Xcode
 #
