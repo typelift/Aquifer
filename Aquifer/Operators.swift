@@ -11,11 +11,11 @@
 import Foundation
 import Swiftz
 
-public func respond<UO, UI, DI, DO>(@autoclosure dO: () -> DO) -> Proxy<UO, UI, DI, DO, DI> {
+public func respond<UO, UI, DI, DO>(@autoclosure(escaping) dO: () -> DO) -> Proxy<UO, UI, DI, DO, DI> {
     return Proxy(ProxyRepr.Respond(dO) { x in ProxyRepr.Pure { _ in x} })
 }
 
-public func request<UO, UI, DI, DO>(@autoclosure uO: () -> UO) -> Proxy<UO, UI, DI, DO, UI> {
+public func request<UO, UI, DI, DO>(@autoclosure(escaping) uO: () -> UO) -> Proxy<UO, UI, DI, DO, UI> {
     return Proxy(ProxyRepr.Request(uO) { x in ProxyRepr.Pure { _ in x } })
 }
 
@@ -23,7 +23,7 @@ internal func pushRepr<UT, DT, FR>(dT: () -> DT) -> ProxyRepr<UT, DT, UT, DT, FR
     return ProxyRepr.Respond(dT) { uT in ProxyRepr.Request({ _ in uT }) { x in pushRepr { _ in x } } }
 }
 
-public func push<UT, DT, FR>(@autoclosure dT: () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
+public func push<UT, DT, FR>(@autoclosure(escaping) dT: () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
     return Proxy(pushRepr(dT))
 }
 
@@ -31,7 +31,7 @@ internal func pullRepr<UT, DT, FR>(uT: () -> UT) -> ProxyRepr<UT, DT, UT, DT, FR
     return ProxyRepr.Request(uT) { dT in ProxyRepr.Respond({ _ in dT }) { x in pullRepr { _ in x } } }
 }
 
-public func pull<UT, DT, FR>(@autoclosure uT: () -> UT) -> Proxy<UT, DT, UT, DT, FR> {
+public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, DT, UT, DT, FR> {
     return Proxy(pullRepr(uT))
 }
 

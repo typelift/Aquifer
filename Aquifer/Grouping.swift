@@ -54,11 +54,11 @@ public func wrap<V, R>(@autoclosure(escaping) p: () -> Proxy<X, (), (), V, Group
     return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
 }
 
-public func wrap<V, R>(@autoclosure p: () -> Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
+public func wrap<V, R>(@autoclosure(escaping) p: () -> Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
     return wrap(p().fmap { pure($0) })
 }
 
-public func delay<V, R>(@autoclosure p: () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
+public func delay<V, R>(@autoclosure(escaping) p: () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
     return GroupedProducer(p().repr)
 }
 
@@ -77,7 +77,7 @@ extension GroupedProducer: Functor {
     public typealias B = Any
 
     public func fmap<N>(f: R -> N) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(repr.fmap(f))
+        return GroupedProducer<V, N>(self.repr.fmap(f))
     }
 }
 
@@ -123,7 +123,7 @@ public postfix func <*><V, R, N>(f: GroupedProducer<V, R -> N>) -> GroupedProduc
 
 extension GroupedProducer: Monad {
     public func bind<N>(f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(repr.bind { f($0).repr })
+        return GroupedProducer<V, N>(self.repr.bind { f($0).repr })
     }
 }
 

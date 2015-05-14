@@ -68,7 +68,7 @@ public func concat<S: SequenceType, FR>() -> Proxy<(), S, (), S.Generator.Elemen
 }
 
 public func drain<UI, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
-    return for_(cat(), discard)
+    return for_(cat()) { discard($0) }
 }
 
 public func map<UI, DO, FR>(f: UI -> DO) -> Proxy<(), UI, (), DO, FR> {
@@ -89,7 +89,7 @@ public func filter<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
     }
 }
 
-public func elemIndices<UI: Equatable, FR>(@autoclosure x: () -> UI) -> Proxy<(), UI, (), Int, FR> {
+public func elemIndices<UI: Equatable, FR>(@autoclosure(escaping) x: () -> UI) -> Proxy<(), UI, (), Int, FR> {
     return findIndices { x() == $0 }
 }
 

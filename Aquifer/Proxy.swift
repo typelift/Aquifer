@@ -100,7 +100,7 @@ private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO
 public struct Proxy<UO, UI, DI, DO, FR> {
     private let _repr: () -> ProxyRepr<UO, UI, DI, DO, FR>
 
-    internal init(@autoclosure _ r: () -> ProxyRepr<UO, UI, DI, DO, FR>) {
+    internal init(@autoclosure(escaping) _ r: () -> ProxyRepr<UO, UI, DI, DO, FR>) {
         _repr = r
     }
 
@@ -109,7 +109,7 @@ public struct Proxy<UO, UI, DI, DO, FR> {
     }
 }
 
-public func delay<UO, UI, DI, DO, FR>(@autoclosure p: () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p: () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(p().repr)
 }
 
@@ -117,7 +117,7 @@ extension Proxy: Functor {
     typealias B = Any
 
     public func fmap<NR>(f: FR -> NR) -> Proxy<UO, UI, DI, DO, NR> {
-        return Proxy<UO, UI, DI, DO, NR>(repr.fmap(f))
+        return Proxy<UO, UI, DI, DO, NR>(self.repr.fmap(f))
     }
 }
 
@@ -139,13 +139,13 @@ extension Proxy: Pointed {
     }
 }
 
-public func pure<UO, UI, DI, DO, FR>(@autoclosure x: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
+public func pure<UO, UI, DI, DO, FR>(@autoclosure(escaping) x: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(ProxyRepr.Pure(x))
 }
 
 extension Proxy: Applicative {
     public func ap<NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, NR> {
-        return Proxy<UO, UI, DI, DO, NR>(repr.ap(f.repr))
+        return Proxy<UO, UI, DI, DO, NR>(self.repr.ap(f.repr))
     }
 }
 
@@ -163,7 +163,7 @@ public postfix func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> N
 
 extension Proxy: Monad {
     public func bind<NR>(f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
-        return Proxy<UO, UI, DI, DO, NR>(repr.bind { f($0).repr })
+        return Proxy<UO, UI, DI, DO, NR>(self.repr.bind { f($0).repr })
     }
 }
 
@@ -185,7 +185,7 @@ public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, D
 
 extension Proxy {
     public func reflect() -> Proxy<DO, DI, UI, UO, FR> {
-        return Proxy<DO, DI, UI, UO, FR>(repr.reflect())
+        return Proxy<DO, DI, UI, UO, FR>(self.repr.reflect())
     }
 }
 
