@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		11200E751A7723BD0032A136 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
-		11200E7E1A775B610032A136 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11200E791A7723BE0032A136 /* Swiftz.framework */; };
-		11200E811A775B750032A136 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11200E791A7723BE0032A136 /* Swiftz.framework */; };
 		11200E831A784D230032A136 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
 		11200E851A7952BA0032A136 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E841A7952BA0032A136 /* Arrow.swift */; };
 		11200E871A7953120032A136 /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E861A7953120032A136 /* IO.swift */; };
@@ -29,40 +27,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		11200E781A7723BE0032A136 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 11862CF51A6620C0008F5696 /* swiftz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84A88F981A71DF7F003D53CF;
-			remoteInfo = Swiftz;
-		};
-		11200E7A1A7723BE0032A136 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 11862CF51A6620C0008F5696 /* swiftz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84A88FA31A71DF7F003D53CF;
-			remoteInfo = SwiftzTests;
-		};
-		11200E7C1A775B560032A136 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 11862CF51A6620C0008F5696 /* swiftz.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 84A88F971A71DF7F003D53CF;
-			remoteInfo = Swiftz;
-		};
-		11200E7F1A775B700032A136 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 11862CF51A6620C0008F5696 /* swiftz.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 84A88F971A71DF7F003D53CF;
-			remoteInfo = Swiftz;
-		};
 		11862CDE1A65FF66008F5696 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 11862CC81A65FF66008F5696 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 11862CD01A65FF66008F5696;
 			remoteInfo = Aquifer;
+		};
+		119F41951B055226001F556C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84A88F981A71DF7F003D53CF;
+			remoteInfo = Swiftz;
+		};
+		119F41971B055226001F556C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84A88FA31A71DF7F003D53CF;
+			remoteInfo = SwiftzTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -80,13 +64,13 @@
 		11862CDC1A65FF66008F5696 /* AquiferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AquiferTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		11862CE21A65FF66008F5696 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11862CF01A660E37008F5696 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
-		11862CF51A6620C0008F5696 /* swiftz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = swiftz.xcodeproj; path = Carthage/Checkouts/swiftz/swiftz.xcodeproj; sourceTree = "<group>"; };
 		11862D261A66392B008F5696 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D281A66E8EB008F5696 /* X.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "AquiferTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		119F418F1B055225001F556C /* swiftz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = swiftz.xcodeproj; path = Carthage/Checkouts/swiftz/swiftz.xcodeproj; sourceTree = "<group>"; };
 		11A916DC1A6C7EFC007B4BBA /* Grouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grouping.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11D195731A7B42260072F514 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,7 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11200E7E1A775B610032A136 /* Swiftz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +87,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11200E811A775B750032A136 /* Swiftz.framework in Frameworks */,
 				11862CDD1A65FF66008F5696 /* Aquifer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,6 +106,7 @@
 		11862CC71A65FF66008F5696 = {
 			isa = PBXGroup;
 			children = (
+				119F418F1B055225001F556C /* swiftz.xcodeproj */,
 				11862CEF1A660DB0008F5696 /* Carthage Support */,
 				11862D371A673B36008F5696 /* Auxiliary Files */,
 				11862CD31A65FF66008F5696 /* Aquifer */,
@@ -183,18 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				11862CF01A660E37008F5696 /* Cartfile */,
-				11862CF51A6620C0008F5696 /* swiftz.xcodeproj */,
 			);
 			name = "Carthage Support";
-			sourceTree = "<group>";
-		};
-		11862CF61A6620C0008F5696 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				11200E791A7723BE0032A136 /* Swiftz.framework */,
-				11200E7B1A7723BE0032A136 /* SwiftzTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		11862D1F1A6638F7008F5696 /* Core */ = {
@@ -222,6 +195,15 @@
 				11862D311A67316B008F5696 /* ProxyTests.swift */,
 			);
 			name = Core;
+			sourceTree = "<group>";
+		};
+		119F41901B055225001F556C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				119F41961B055226001F556C /* Swiftz.framework */,
+				119F41981B055226001F556C /* SwiftzTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		11A916D91A6C7B06007B4BBA /* Utilities */ = {
@@ -271,7 +253,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				11200E7D1A775B560032A136 /* PBXTargetDependency */,
 			);
 			name = Aquifer;
 			productName = Aquifer;
@@ -290,7 +271,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				11200E801A775B700032A136 /* PBXTargetDependency */,
 				11862CDF1A65FF66008F5696 /* PBXTargetDependency */,
 			);
 			name = AquiferTests;
@@ -327,8 +307,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 11862CF61A6620C0008F5696 /* Products */;
-					ProjectRef = 11862CF51A6620C0008F5696 /* swiftz.xcodeproj */;
+					ProductGroup = 119F41901B055225001F556C /* Products */;
+					ProjectRef = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -340,18 +320,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		11200E791A7723BE0032A136 /* Swiftz.framework */ = {
+		119F41961B055226001F556C /* Swiftz.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Swiftz.framework;
-			remoteRef = 11200E781A7723BE0032A136 /* PBXContainerItemProxy */;
+			remoteRef = 119F41951B055226001F556C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		11200E7B1A7723BE0032A136 /* SwiftzTests.xctest */ = {
+		119F41981B055226001F556C /* SwiftzTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = SwiftzTests.xctest;
-			remoteRef = 11200E7A1A7723BE0032A136 /* PBXContainerItemProxy */;
+			remoteRef = 119F41971B055226001F556C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -405,16 +385,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		11200E7D1A775B560032A136 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Swiftz;
-			targetProxy = 11200E7C1A775B560032A136 /* PBXContainerItemProxy */;
-		};
-		11200E801A775B700032A136 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Swiftz;
-			targetProxy = 11200E7F1A775B700032A136 /* PBXContainerItemProxy */;
-		};
 		11862CDF1A65FF66008F5696 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 11862CD01A65FF66008F5696 /* Aquifer */;
