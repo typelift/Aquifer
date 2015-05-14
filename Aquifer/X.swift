@@ -11,7 +11,7 @@
 import Foundation
 import Swiftz
 
-/// The (nominally) empty type, implemented as a strictly self-recursive struct.
+/// The (nominally) empty type, implemented as a semi-strictly self-recursive struct.
 public struct X {
     private let rec: Box<X>
 
@@ -35,5 +35,5 @@ public func fix<A>(f: (() -> A) -> A) -> A {
 
 /// Bottom is the only (non-`error`) inhabitent of X
 public func infiniteLoop() -> X {
-    return fix { Box($0) }
+    return fix { X($0) }
 }
