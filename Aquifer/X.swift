@@ -15,8 +15,8 @@ import Swiftz
 public struct X {
     private let rec: Box<X>
 
-    private init(_ r: X) {
-        rec = { _ in r }
+    private init(_ x: () -> X) {
+        rec = Box(x())
     }
 
     public func absurd<A>() -> A {
@@ -28,7 +28,12 @@ public func closed<A>(x: X) -> A {
     return x.absurd()
 }
 
+// This should probably be part of Swiftx or Swiftz
+public func fix<A>(f: (() -> A) -> A) -> A {
+    return f { _ in fix(f) }
+}
+
 /// Bottom is the only (non-`error`) inhabitent of X
 public func infiniteLoop() -> X {
-    return X(infiniteLoop())
+    return fix { Box($0) }
 }
