@@ -11,24 +11,24 @@
 import Foundation
 import Swiftz
 
-/// The (nominally) empty type, implemented as a semi-strictly self-recursive struct.
+/// The (nominally) empty type, implemented as a strictly self-recursive struct.
 public struct X {
-    private let rec: () -> X
+    private let rec: Box<X>
 
-    internal init(_ r: X) {
+    private init(_ r: X) {
         rec = { _ in r }
     }
 
     public func absurd<A>() -> A {
-        return rec().absurd()
+        return rec.value.absurd()
     }
 }
 
-public func closed<A>(@autoclosure x: () -> X) -> A {
-    return x().absurd()
+public func closed<A>(x: X) -> A {
+    return x.absurd()
 }
 
-/// Bottom is the only inhabitent of X
+/// Bottom is the only (non-`error`) inhabitent of X
 public func infiniteLoop() -> X {
     return X(infiniteLoop())
 }
