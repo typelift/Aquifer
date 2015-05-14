@@ -29,7 +29,7 @@ public func closed<A>(x: X) -> A {
 }
 
 // This should probably be part of Swiftx or Swiftz
-public func fix<A>(f: (() -> A) -> A) -> A {
+private func fix<A>(f: (() -> A) -> A) -> A {
     return f { _ in fix(f) }
 }
 
