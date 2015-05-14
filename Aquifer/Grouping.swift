@@ -41,7 +41,7 @@ internal enum GroupedProducerRepr<V, R> {
 public struct GroupedProducer<V, R> {
     private let _repr: () -> GroupedProducerRepr<V, R>
 
-    internal init(_ r: @autoclosure () -> GroupedProducerRepr<V, R>) {
+    internal init(@autoclosure _ r: () -> GroupedProducerRepr<V, R>) {
         _repr = r
     }
 
@@ -50,15 +50,15 @@ public struct GroupedProducer<V, R> {
     }
 }
 
-public func wrap<V, R>(p: @autoclosure () -> Proxy<X, (), (), V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
+public func wrap<V, R>(@autoclosure p: () -> Proxy<X, (), (), V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
     return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
 }
 
-public func wrap<V, R>(p: @autoclosure () -> Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
+public func wrap<V, R>(@autoclosure p: () -> Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
     return wrap(p().fmap { pure($0) })
 }
 
-public func delay<V, R>(p: @autoclosure () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
+public func delay<V, R>(@autoclosure p: () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
     return GroupedProducer(p().repr)
 }
 
@@ -99,7 +99,7 @@ extension GroupedProducer: Pointed {
     }
 }
 
-public func pure<V, R>(x: @autoclosure () -> R) -> GroupedProducer<V, R> {
+public func pure<V, R>(@autoclosure x: () -> R) -> GroupedProducer<V, R> {
     return GroupedProducer(GroupedProducerRepr.End(x))
 }
 

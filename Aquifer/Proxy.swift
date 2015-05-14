@@ -100,7 +100,7 @@ private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO
 public struct Proxy<UO, UI, DI, DO, FR> {
     private let _repr: () -> ProxyRepr<UO, UI, DI, DO, FR>
 
-    internal init(_ r: @autoclosure () -> ProxyRepr<UO, UI, DI, DO, FR>) {
+    internal init(@autoclosure _ r: () -> ProxyRepr<UO, UI, DI, DO, FR>) {
         _repr = r
     }
 
@@ -109,7 +109,7 @@ public struct Proxy<UO, UI, DI, DO, FR> {
     }
 }
 
-public func delay<UO, UI, DI, DO, FR>(p: @autoclosure () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+public func delay<UO, UI, DI, DO, FR>(@autoclosure p: () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(p().repr)
 }
 
@@ -139,7 +139,7 @@ extension Proxy: Pointed {
     }
 }
 
-public func pure<UO, UI, DI, DO, FR>(x: @autoclosure () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
+public func pure<UO, UI, DI, DO, FR>(@autoclosure x: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(ProxyRepr.Pure(x))
 }
 

@@ -39,7 +39,7 @@ public func each<UO, UI, V>(seq: V...) -> Proxy<UO, UI, (), V, ()> {
     return each(seq)
 }
 
-public func yield<UO, UI, DO>(dO: @autoclosure () -> DO) -> Proxy<UO, UI, (), DO, ()> {
+public func yield<UO, UI, DO>(@autoclosure dO: () -> DO) -> Proxy<UO, UI, (), DO, ()> {
     return respond(dO)
 }
 

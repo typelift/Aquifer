@@ -89,7 +89,7 @@ public func filter<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
     }
 }
 
-public func elemIndices<UI: Equatable, FR>(x: @autoclosure () -> UI) -> Proxy<(), UI, (), Int, FR> {
+public func elemIndices<UI: Equatable, FR>(@autoclosure x: () -> UI) -> Proxy<(), UI, (), Int, FR> {
     return findIndices { x() == $0 }
 }
 

@@ -24,7 +24,7 @@ public struct X {
     }
 }
 
-public func closed<A>(x: @autoclosure () -> X) -> A {
+public func closed<A>(@autoclosure x: () -> X) -> A {
     return x().absurd()
 }
 
