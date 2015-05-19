@@ -72,6 +72,20 @@
 			remoteGlobalIDString = 84A88F971A71DF7F003D53CF;
 			remoteInfo = Swiftz;
 		};
+		11F031DF1B0BFCF0004C6D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84DF751E1B0BD17700C912B0;
+			remoteInfo = "Swiftz-iOS";
+		};
+		11F031E11B0BFCF0004C6D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84DF75281B0BD17700C912B0;
+			remoteInfo = "Swiftz-iOSTests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -231,6 +245,8 @@
 			children = (
 				119F41961B055226001F556C /* Swiftz.framework */,
 				119F41981B055226001F556C /* SwiftzTests.xctest */,
+				11F031E01B0BFCF0004C6D59 /* Swiftz.framework */,
+				11F031E21B0BFCF0004C6D59 /* Swiftz-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -364,6 +380,20 @@
 			fileType = wrapper.cfbundle;
 			path = SwiftzTests.xctest;
 			remoteRef = 119F41971B055226001F556C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		11F031E01B0BFCF0004C6D59 /* Swiftz.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Swiftz.framework;
+			remoteRef = 11F031DF1B0BFCF0004C6D59 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		11F031E21B0BFCF0004C6D59 /* Swiftz-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Swiftz-iOSTests.xctest";
+			remoteRef = 11F031E11B0BFCF0004C6D59 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
