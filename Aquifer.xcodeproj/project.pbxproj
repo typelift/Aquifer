@@ -15,7 +15,6 @@
 		11200E8C1A7958580032A136 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
 		11200E911A796D9F0032A136 /* Basic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E901A796D9F0032A136 /* Basic.swift */; };
 		11862CDD1A65FF66008F5696 /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
-		11862CED1A65FF8F008F5696 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11862D271A66392B008F5696 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
@@ -24,9 +23,30 @@
 		11862D3D1A673B6C008F5696 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 11862D3B1A673B5D008F5696 /* README.md */; };
 		119F41A21B0555C4001F556C /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119F41961B055226001F556C /* Swiftz.framework */; };
 		119F41A31B0555CC001F556C /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119F41961B055226001F556C /* Swiftz.framework */; };
-		119F41A51B0555D4001F556C /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119F41A41B0555D4001F556C /* SwiftCheck.framework */; };
 		11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 		11D195741A7B42260072F514 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
+		11F032161B0BFF82004C6D59 /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */; };
+		11F032281B0C00E6004C6D59 /* NSFileHandleExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11200E891A7958580032A136 /* NSFileHandleExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		11F032291B0C00EB004C6D59 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
+		11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
+		11F0322B1B0C00EF004C6D59 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
+		11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		11F0322D1B0C00EF004C6D59 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
+		11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
+		11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
+		11F032301B0C00F8004C6D59 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
+		11F032311B0C00F8004C6D59 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E841A7952BA0032A136 /* Arrow.swift */; };
+		11F032321B0C00F8004C6D59 /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E861A7953120032A136 /* IO.swift */; };
+		11F032331B0C00F8004C6D59 /* Basic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E901A796D9F0032A136 /* Basic.swift */; };
+		11F032341B0C00FC004C6D59 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
+		11F032351B0C0159004C6D59 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119F41961B055226001F556C /* Swiftz.framework */; };
+		11F032381B0C0179004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		11F032391B0C017B004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		11F0323A1B0C01BC004C6D59 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 11862CF01A660E37008F5696 /* Cartfile */; };
+		11F0323B1B0C01BC004C6D59 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 11862D3B1A673B5D008F5696 /* README.md */; };
+		11F0323D1B0C01F4004C6D59 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0323C1B0C01F3004C6D59 /* SwiftCheck.framework */; };
+		11F0323E1B0C020E004C6D59 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119F41961B055226001F556C /* Swiftz.framework */; };
+		11F0323F1B0C0217004C6D59 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0323C1B0C01F3004C6D59 /* SwiftCheck.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +106,34 @@
 			remoteGlobalIDString = 84DF75281B0BD17700C912B0;
 			remoteInfo = "Swiftz-iOSTests";
 		};
+		11F032171B0BFF82004C6D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11862CC81A65FF66008F5696 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 11F0320A1B0BFF82004C6D59;
+			remoteInfo = "Aquifer-iOS";
+		};
+		11F032241B0C00CA004C6D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 84DF751D1B0BD17700C912B0;
+			remoteInfo = "Swiftz-iOS";
+		};
+		11F032261B0C00CD004C6D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 84DF75271B0BD17700C912B0;
+			remoteInfo = "Swiftz-iOSTests";
+		};
+		11F032361B0C0166004C6D59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 119F418F1B055225001F556C /* swiftz.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 84DF751D1B0BD17700C912B0;
+			remoteInfo = "Swiftz-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -105,13 +153,14 @@
 		11862D261A66392B008F5696 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D281A66E8EB008F5696 /* X.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; usesTabs = 0; };
-		11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = "AquiferTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		119F418F1B055225001F556C /* swiftz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = swiftz.xcodeproj; path = Carthage/Checkouts/swiftz/swiftz.xcodeproj; sourceTree = "<group>"; };
-		119F41A41B0555D4001F556C /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = Carthage/Checkouts/swiftz/Carthage/Checkouts/SwiftCheck/build/Debug/SwiftCheck.framework; sourceTree = "<group>"; };
 		11A916DC1A6C7EFC007B4BBA /* Grouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grouping.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11D195731A7B42260072F514 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
+		11F0320B1B0BFF82004C6D59 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		11F032151B0BFF82004C6D59 /* AquiferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AquiferTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		11F0323C1B0C01F3004C6D59 /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = "../../../../../../../Library/Developer/Xcode/DerivedData/Aquifer-brwmwepzjstykkfhhbkqzifdsmkt/Build/Products/Debug/SwiftCheck.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,9 +176,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				119F41A51B0555D4001F556C /* SwiftCheck.framework in Frameworks */,
+				11F0323D1B0C01F4004C6D59 /* SwiftCheck.framework in Frameworks */,
 				119F41A31B0555CC001F556C /* Swiftz.framework in Frameworks */,
 				11862CDD1A65FF66008F5696 /* Aquifer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11F032071B0BFF82004C6D59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11F032351B0C0159004C6D59 /* Swiftz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11F032121B0BFF82004C6D59 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11F0323F1B0C0217004C6D59 /* SwiftCheck.framework in Frameworks */,
+				11F0323E1B0C020E004C6D59 /* Swiftz.framework in Frameworks */,
+				11F032161B0BFF82004C6D59 /* Aquifer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,8 +215,6 @@
 		11862CC71A65FF66008F5696 = {
 			isa = PBXGroup;
 			children = (
-				119F41A41B0555D4001F556C /* SwiftCheck.framework */,
-				119F418F1B055225001F556C /* swiftz.xcodeproj */,
 				11862CEF1A660DB0008F5696 /* Carthage Support */,
 				11862D371A673B36008F5696 /* Auxiliary Files */,
 				11862CD31A65FF66008F5696 /* Aquifer */,
@@ -163,6 +228,8 @@
 			children = (
 				11862CD11A65FF66008F5696 /* Aquifer.framework */,
 				11862CDC1A65FF66008F5696 /* AquiferTests.xctest */,
+				11F0320B1B0BFF82004C6D59 /* Aquifer.framework */,
+				11F032151B0BFF82004C6D59 /* AquiferTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,7 +257,6 @@
 		11862CE01A65FF66008F5696 /* AquiferTests */ = {
 			isa = PBXGroup;
 			children = (
-				11862D301A67316A008F5696 /* AquiferTests-Bridging-Header.h */,
 				11862D3E1A673BAA008F5696 /* Core */,
 				11862CE11A65FF66008F5696 /* Supporting Files */,
 			);
@@ -209,6 +275,8 @@
 			isa = PBXGroup;
 			children = (
 				11862CF01A660E37008F5696 /* Cartfile */,
+				11F0323C1B0C01F3004C6D59 /* SwiftCheck.framework */,
+				119F418F1B055225001F556C /* swiftz.xcodeproj */,
 			);
 			name = "Carthage Support";
 			sourceTree = "<group>";
@@ -271,7 +339,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11862CED1A65FF8F008F5696 /* Aquifer.h in Headers */,
+				11F032381B0C0179004C6D59 /* Aquifer.h in Headers */,
 				11200E8B1A7958580032A136 /* NSFileHandleExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +348,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11F032081B0BFF82004C6D59 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11F032391B0C017B004C6D59 /* Aquifer.h in Headers */,
+				11F032281B0C00E6004C6D59 /* NSFileHandleExt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,12 +395,51 @@
 			);
 			dependencies = (
 				119F419F1B055412001F556C /* PBXTargetDependency */,
-				11862CDF1A65FF66008F5696 /* PBXTargetDependency */,
 				119F419D1B05540E001F556C /* PBXTargetDependency */,
+				11862CDF1A65FF66008F5696 /* PBXTargetDependency */,
 			);
 			name = AquiferTests;
 			productName = AquiferTests;
 			productReference = 11862CDC1A65FF66008F5696 /* AquiferTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		11F0320A1B0BFF82004C6D59 /* Aquifer-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11F0321E1B0BFF83004C6D59 /* Build configuration list for PBXNativeTarget "Aquifer-iOS" */;
+			buildPhases = (
+				11F032061B0BFF82004C6D59 /* Sources */,
+				11F032071B0BFF82004C6D59 /* Frameworks */,
+				11F032081B0BFF82004C6D59 /* Headers */,
+				11F032091B0BFF82004C6D59 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11F032371B0C0166004C6D59 /* PBXTargetDependency */,
+			);
+			name = "Aquifer-iOS";
+			productName = "Aquifer-iOS";
+			productReference = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		11F032141B0BFF82004C6D59 /* Aquifer-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11F032211B0BFF83004C6D59 /* Build configuration list for PBXNativeTarget "Aquifer-iOSTests" */;
+			buildPhases = (
+				11F032111B0BFF82004C6D59 /* Sources */,
+				11F032121B0BFF82004C6D59 /* Frameworks */,
+				11F032131B0BFF82004C6D59 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				11F032251B0C00CA004C6D59 /* PBXTargetDependency */,
+				11F032271B0C00CD004C6D59 /* PBXTargetDependency */,
+				11F032181B0BFF82004C6D59 /* PBXTargetDependency */,
+			);
+			name = "Aquifer-iOSTests";
+			productName = "Aquifer-iOSTests";
+			productReference = 11F032151B0BFF82004C6D59 /* AquiferTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -340,6 +456,12 @@
 					};
 					11862CDB1A65FF66008F5696 = {
 						CreatedOnToolsVersion = 6.2;
+					};
+					11F0320A1B0BFF82004C6D59 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					11F032141B0BFF82004C6D59 = {
+						CreatedOnToolsVersion = 6.4;
 					};
 				};
 			};
@@ -363,6 +485,8 @@
 			targets = (
 				11862CD01A65FF66008F5696 /* Aquifer */,
 				11862CDB1A65FF66008F5696 /* AquiferTests */,
+				11F0320A1B0BFF82004C6D59 /* Aquifer-iOS */,
+				11F032141B0BFF82004C6D59 /* Aquifer-iOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -415,6 +539,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		11F032091B0BFF82004C6D59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11F0323A1B0C01BC004C6D59 /* Cartfile in Resources */,
+				11F0323B1B0C01BC004C6D59 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11F032131B0BFF82004C6D59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -444,6 +584,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		11F032061B0BFF82004C6D59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */,
+				11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */,
+				11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */,
+				11F032321B0C00F8004C6D59 /* IO.swift in Sources */,
+				11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */,
+				11F032301B0C00F8004C6D59 /* Parsing.swift in Sources */,
+				11F032291B0C00EB004C6D59 /* NSFileHandleExt.m in Sources */,
+				11F032331B0C00F8004C6D59 /* Basic.swift in Sources */,
+				11F0322B1B0C00EF004C6D59 /* Simple.swift in Sources */,
+				11F0322D1B0C00EF004C6D59 /* X.swift in Sources */,
+				11F032311B0C00F8004C6D59 /* Arrow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11F032111B0BFF82004C6D59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11F032341B0C00FC004C6D59 /* ProxyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -466,6 +632,26 @@
 			isa = PBXTargetDependency;
 			name = Swiftz;
 			targetProxy = 119F419E1B055412001F556C /* PBXContainerItemProxy */;
+		};
+		11F032181B0BFF82004C6D59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 11F0320A1B0BFF82004C6D59 /* Aquifer-iOS */;
+			targetProxy = 11F032171B0BFF82004C6D59 /* PBXContainerItemProxy */;
+		};
+		11F032251B0C00CA004C6D59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Swiftz-iOS";
+			targetProxy = 11F032241B0C00CA004C6D59 /* PBXContainerItemProxy */;
+		};
+		11F032271B0C00CD004C6D59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Swiftz-iOSTests";
+			targetProxy = 11F032261B0C00CD004C6D59 /* PBXContainerItemProxy */;
+		};
+		11F032371B0C0166004C6D59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Swiftz-iOS";
+			targetProxy = 11F032361B0C0166004C6D59 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -599,6 +785,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/swiftz/Carthage/Checkouts/SwiftCheck/build/Debug",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Aquifer-brwmwepzjstykkfhhbkqzifdsmkt/Build/Products/Debug",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -621,11 +808,104 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/swiftz/Carthage/Checkouts/SwiftCheck/build/Debug",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Aquifer-brwmwepzjstykkfhhbkqzifdsmkt/Build/Products/Debug",
 				);
 				INFOPLIST_FILE = AquiferTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AquiferTests/AquiferTests-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		11F0321F1B0BFF83004C6D59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Aquifer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = Aquifer;
+				PRODUCT_NAME = Aquifer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		11F032201B0BFF83004C6D59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Aquifer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = Aquifer;
+				PRODUCT_NAME = Aquifer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		11F032221B0BFF83004C6D59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Aquifer-brwmwepzjstykkfhhbkqzifdsmkt/Build/Products/Debug",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AquiferTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = AquiferTests;
+				PRODUCT_NAME = AquiferTests;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		11F032231B0BFF83004C6D59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Aquifer-brwmwepzjstykkfhhbkqzifdsmkt/Build/Products/Debug",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = AquiferTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = AquiferTests;
+				PRODUCT_NAME = AquiferTests;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -658,6 +938,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		11F0321E1B0BFF83004C6D59 /* Build configuration list for PBXNativeTarget "Aquifer-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11F0321F1B0BFF83004C6D59 /* Debug */,
+				11F032201B0BFF83004C6D59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		11F032211B0BFF83004C6D59 /* Build configuration list for PBXNativeTarget "Aquifer-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11F032221B0BFF83004C6D59 /* Debug */,
+				11F032231B0BFF83004C6D59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
