@@ -944,6 +944,7 @@
 				11F032201B0BFF83004C6D59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		11F032211B0BFF83004C6D59 /* Build configuration list for PBXNativeTarget "Aquifer-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -952,6 +953,7 @@
 				11F032231B0BFF83004C6D59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
