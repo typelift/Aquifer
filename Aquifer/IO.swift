@@ -31,11 +31,11 @@ public func toHandle<DI, DO, FR>(handle: NSFileHandle) -> Proxy<(), String, DI, 
     return for_(cat()) { handle.writeLine($0); return pure(()) }
 }
 
-public func describe<UI: Printable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
+public func describe<UI: CustomStringConvertible, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
     return description() >-> stdoutLn()
 }
 
-public func debugDescribe<UI: DebugPrintable, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
+public func debugDescribe<UI: CustomDebugStringConvertible, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
     return debugDescription() >-> stdoutLn()
 }
 

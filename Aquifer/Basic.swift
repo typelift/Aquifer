@@ -15,7 +15,7 @@ public func once<UO, UI, DI, DO, FR>(v: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(ProxyRepr.Pure(v))
 }
 
-public func repeat<UO, UI, DO, FR>(v: () -> DO) -> Proxy<UO, UI, (), DO, FR> {
+public func repeat_<UO, UI, DO, FR>(v: () -> DO) -> Proxy<UO, UI, (), DO, FR> {
     return once(v) >~ cat()
 }
 
@@ -64,7 +64,7 @@ public func dropWhile<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR
 }
 
 public func concat<S: SequenceType, FR>() -> Proxy<(), S, (), S.Generator.Element, FR> {
-    return for_(cat(), each)
+    return for_(cat(), f: each)
 }
 
 public func drain<UI, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
@@ -93,7 +93,7 @@ public func elemIndices<UI: Equatable, FR>(@autoclosure(escaping) x: () -> UI) -
     return findIndices { x() == $0 }
 }
 
-public func findIndicesInner<UI, FR>(predicate: UI -> Bool, n: Int) -> Proxy<(), UI, (), Int, FR> {
+public func findIndicesInner<UI, FR>(predicate: UI -> Bool, _ n: Int) -> Proxy<(), UI, (), Int, FR> {
     return await() >>- {
         if predicate($0) {
             return yield(n) >>- { _ in findIndicesInner(predicate, n + 1) }
@@ -104,7 +104,7 @@ public func findIndicesInner<UI, FR>(predicate: UI -> Bool, n: Int) -> Proxy<(),
 }
 
 public func findIndices<UI, FR>(predicate: UI -> Bool) -> Proxy<(), UI, (), Int, FR> {
-    return findIndicesInner(predicate, 0)
+    return findIndicesInner(predicate, n: 0)
 }
 
 public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: A, extractWith extractor: A -> DO) -> Proxy<(), UI, (), DO, FR> {
@@ -115,11 +115,11 @@ public func chain<DT, FR>(action: DT -> Void) -> Proxy<(), DT, (), DT, FR> {
     return for_(cat()) { action($0); return yield($0) }
 }
 
-public func description<UI: Printable, FR>() -> Proxy<(), UI, (), String, FR> {
+public func description<UI: CustomStringConvertible, FR>() -> Proxy<(), UI, (), String, FR> {
     return map { $0.description }
 }
 
-public func debugDescription<UI: DebugPrintable, FR>() -> Proxy<(), UI, (), String, FR> {
+public func debugDescription<UI: CustomDebugStringConvertible, FR>() -> Proxy<(), UI, (), String, FR> {
     return map { $0.debugDescription }
 }
 
@@ -148,10 +148,7 @@ public func foldRet<A, V, FR, R>(p: Proxy<X, (), (), V, FR>, stepWith step: (A, 
 }
 
 public func isEmpty<V>(p: Proxy<X, (), (), V, ()>) -> Bool {
-    switch next(p) {
-    case .Left(_): return true
-    case .Right(_): return false
-    }
+    return next(p).isLeft
 }
 
 public func all<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Bool {
@@ -174,34 +171,33 @@ public func or(p: Proxy<X, (), (), Bool, ()>) -> Bool {
     return any(p) { b in b }
 }
 
-public func elem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
+public func elem<V: Equatable>(p: Proxy<X, (), (), V, ()>, _ x: V) -> Bool {
     return any(p) { x == $0 }
 }
 
-public func notElem<V: Equatable>(p: Proxy<X, (), (), V, ()>, x: V) -> Bool {
+public func notElem<V: Equatable>(p: Proxy<X, (), (), V, ()>, _ x: V) -> Bool {
     return all(p) { x != $0 }
 }
 
-public func find<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> V? {
+public func find<V>(p: Proxy<X, (), (), V, ()>, _ predicate: V -> Bool) -> V? {
     return head(p >-> filter(predicate))
 }
 
-public func findIndex<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Int? {
+public func findIndex<V>(p: Proxy<X, (), (), V, ()>, _ predicate: V -> Bool) -> Int? {
     return head(p >-> findIndices(predicate))
 }
 
 public func head<V>(p: Proxy<X, (), (), V, ()>) -> V? {
     switch next(p) {
     case .Left(_): return nil
-    case let .Right(k): return k.value.0
+    case let .Right(k): return k.0
     }
 }
 
-private func lastInner<V>(x: V, p: Proxy<X, (), (), V, ()>) -> V? {
+private func lastInner<V>(x: V, _ p: Proxy<X, (), (), V, ()>) -> V? {
     switch next(p) {
     case .Left(_): return x
-    case let .Right(k):
-        let (dO, q) = k.value
+    case let .Right((dO, q)):
         return lastInner(dO, q)
     }
 }
@@ -209,8 +205,7 @@ private func lastInner<V>(x: V, p: Proxy<X, (), (), V, ()>) -> V? {
 public func last<V>(p: Proxy<X, (), (), V, ()>) -> V? {
     switch next(p) {
     case .Left(_): return nil
-    case let .Right(k):
-        let (dO, q) = k.value
+    case let .Right((dO, q)):
         return lastInner(dO, q)
     }
 }
@@ -220,7 +215,7 @@ public func length<V>(p: Proxy<X, (), (), V, ()>) -> Int {
 }
 
 public func maximum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
-    func step(x: V?, v: V) -> V? {
+    func step(x: V?, _ v: V) -> V? {
         if let w = x {
             return max(v, w)
         } else {
@@ -231,7 +226,7 @@ public func maximum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
 }
 
 public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
-    func step(x: V?, v: V) -> V? {
+    func step(x: V?, _ v: V) -> V? {
         if let w = x {
             return min(v, w)
         } else {
@@ -266,19 +261,17 @@ public func toList<V>(p: Proxy<X, (), (), V, ()>) -> List<V> {
     return toListRepr(p.repr)
 }
 
-public func zip<V0, V1, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>) -> Proxy<X, (), (), (V0, V1), R> {
+public func zip<V0, V1, R>(p: Proxy<X, (), (), V0, R>, _ q: Proxy<X, (), (), V1, R>) -> Proxy<X, (), (), (V0, V1), R> {
     return zipWith(p, q) { ($0, $1) }
 }
 
-public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, q: Proxy<X, (), (), V1, R>, f: (V0, V1) -> V2) -> Proxy<X, (), (), V2, R> {
+public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, _ q: Proxy<X, (), (), V1, R>, _ f: (V0, V1) -> V2) -> Proxy<X, (), (), V2, R> {
     switch next(p) {
-    case let .Left(x): return pure(x.value)
-    case let .Right(k0):
-        let (dO0, r) = k0.value
+    case let .Left(x): return pure(x)
+    case let .Right((dO0, r)):
         switch next(q) {
-        case let .Left(y): return pure(y.value)
-        case let .Right(k1):
-            let (dO1, s) = k1.value
+        case let .Left(y): return pure(y)
+        case let .Right((dO1, s)):
             return yield(f(dO0, dO1)) >>- { _ in zipWith(r, s, f) }
         }
     }

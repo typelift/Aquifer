@@ -18,75 +18,76 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
 
     internal func fmap<NR>(f: FR -> NR) -> ProxyRepr<UO, UI, DI, DO, NR> {
         switch self {
-        case let Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { fUI($0).fmap(f) }
-        case let Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { fDI($0).fmap(f) }
-        case let Pure(x): return ProxyRepr<UO, UI, DI, DO, NR>.Pure { _ in f(x()) }
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { fUI($0).fmap(f) }
+        case let .Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { fDI($0).fmap(f) }
+        case let .Pure(x): return ProxyRepr<UO, UI, DI, DO, NR>.Pure { _ in f(x()) }
         }
     }
 
     internal func ap<NR>(f: ProxyRepr<UO, UI, DI, DO, FR -> NR>) -> ProxyRepr<UO, UI, DI, DO, NR> {
         switch f {
-        case let Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { self.ap(fUI($0)) }
-        case let Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { self.ap(fDI($0)) }
-        case let Pure(g): return self.fmap(g())
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { self.ap(fUI($0)) }
+        case let .Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { self.ap(fDI($0)) }
+        case let .Pure(g): return self.fmap(g())
         }
     }
 
     internal func bind<NR>(f: FR -> ProxyRepr<UO, UI, DI, DO, NR>) -> ProxyRepr<UO, UI, DI, DO, NR> {
         switch self {
-        case let Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { fUI($0).bind(f) }
-        case let Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { fDI($0).bind(f) }
-        case let Pure(x): return f(x())
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, DI, DO, NR>.Request(uO) { fUI($0).bind(f) }
+        case let .Respond(dO, fDI): return ProxyRepr<UO, UI, DI, DO, NR>.Respond(dO) { fDI($0).bind(f) }
+        case let .Pure(x): return f(x())
         }
     }
 
     internal func reflect() -> ProxyRepr<DO, DI, UI, UO, FR> {
         switch self {
-        case let Request(uO, fUI): return ProxyRepr<DO, DI, UI, UO, FR>.Respond(uO) { fUI($0).reflect() }
-        case let Respond(dO, fDI): return ProxyRepr<DO, DI, UI, UO, FR>.Request(dO) { fDI($0).reflect() }
-        case let Pure(x): return ProxyRepr<DO, DI, UI, UO, FR>.Pure(x)
+        case let .Request(uO, fUI): return ProxyRepr<DO, DI, UI, UO, FR>.Respond(uO) { fUI($0).reflect() }
+        case let .Respond(dO, fDI): return ProxyRepr<DO, DI, UI, UO, FR>.Request(dO) { fDI($0).reflect() }
+        case let .Pure(x): return ProxyRepr<DO, DI, UI, UO, FR>.Pure(x)
         }
     }
 
     internal func respondBind<NI, NO>(f: DO -> ProxyRepr<UO, UI, NI, NO, DI>) -> ProxyRepr<UO, UI, NI, NO, FR> {
         switch self {
-        case let Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { fUI($0).respondBind(f) }
-        case let Respond(dO, fDI): return f(dO()).bind { fDI($0).respondBind(f) }
-        case let Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { fUI($0).respondBind(f) }
+        case let .Respond(dO, fDI): return f(dO()).bind { fDI($0).respondBind(f) }
+        case let .Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
         }
     }
 
     internal func requestBind<NO, NI>(f: UO -> ProxyRepr<NO, NI, DI, DO, UI>) -> ProxyRepr<NO, NI, DI, DO, FR> {
         switch self {
-        case let Request(uO, fUI): return f(uO()).bind { fUI($0).requestBind(f) }
-        case let Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Respond(dO) { fDI($0).requestBind(f) }
-        case let Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
+        case let .Request(uO, fUI): return f(uO()).bind { fUI($0).requestBind(f) }
+        case let .Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Respond(dO) { fDI($0).requestBind(f) }
+        case let .Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
         }
     }
 
     internal func pushBind<NI, NO>(f: DO -> ProxyRepr<DI, DO, NI, NO, FR>) -> ProxyRepr<UO, UI, NI, NO, FR> {
         switch self {
-        case let Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { pushBindExt(fUI($0), f) }
-        case let Respond(dO, fDI): return pullBindExt(f(dO()), fDI)
-        case let Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { pushBindExt(fUI($0), f: f) }
+        case let .Respond(dO, fDI): return pullBindExt(f(dO()), f: fDI)
+        case let .Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
         }
     }
 
     internal func pullBind<NO, NI>(f: UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
         switch self {
-        case let Request(uO, fUI): return pushBindExt(f(uO()), fUI)
-        case let Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Respond(dO) { pullBindExt(fDI($0), f) }
-        case let Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
+        case let .Request(uO, fUI): return pushBindExt(f(uO()), fUI)
+        case let .Respond(dO, fDI): return ProxyRepr<NO, NI, DI, DO, FR>.Respond(dO) { pullBindExt(fDI($0), f) }
+        case let .Pure(x): return ProxyRepr<NO, NI, DI, DO, FR>.Pure(x)
         }
     }
 }
 
-private func pushBindExt<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, f: DO -> ProxyRepr<DI, DO, NI, NO, FR>) -> ProxyRepr<UO, UI, NI, NO, FR> {
+private func pushBindExt<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, _ f: DO -> ProxyRepr<DI, DO, NI, NO, FR>) -> ProxyRepr<UO, UI, NI, NO, FR> {
     return p.pushBind(f)
 }
 
-private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, f: UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
-    return p.pullBind(f)
+private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p: ProxyRepr<UO, UI, DI, DO, FR>, _
+    f: UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
+        return p.pullBind(f)
 }
 
 /// A bidirectional channel for information.
@@ -113,27 +114,19 @@ public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p: () -> Proxy<UO, 
     return Proxy(p().repr)
 }
 
-extension Proxy: Functor {
-    typealias B = Any
+extension Proxy/*: Functor*/ {
+    /*typealias B = Any*/
 
     public func fmap<NR>(f: FR -> NR) -> Proxy<UO, UI, DI, DO, NR> {
         return Proxy<UO, UI, DI, DO, NR>(self.repr.fmap(f))
     }
 }
 
-public func <^><UO, UI, DI, DO, FR, NR>(f: FR -> NR, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
+public func <^> <UO, UI, DI, DO, FR, NR>(f: FR -> NR, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
     return p.fmap(f)
 }
 
-public prefix func <^><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR> ) -> (FR -> NR) -> Proxy<UO, UI, DI, DO, NR> {
-    return { f in p.fmap(f) }
-}
-
-public postfix func <^><UO, UI, DI, DO, FR, NR>(f: FR -> NR) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { p in p.fmap(f) }
-}
-
-extension Proxy: Pointed {
+extension Proxy/*: Pointed*/ {
     public static func pure(x: FR) -> Proxy<UO, UI, DI, DO, FR> {
         return Aquifer.pure(x)
     }
@@ -143,40 +136,24 @@ public func pure<UO, UI, DI, DO, FR>(@autoclosure(escaping) x: () -> FR) -> Prox
     return Proxy(ProxyRepr.Pure(x))
 }
 
-extension Proxy: Applicative {
+extension Proxy/*: Applicative*/ {
     public func ap<NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, NR> {
         return Proxy<UO, UI, DI, DO, NR>(self.repr.ap(f.repr))
     }
 }
 
-public func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
+public func <*> <UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
     return p.ap(f)
 }
 
-public prefix func <*><UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR -> NR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { f in p.ap(f) }
-}
-
-public postfix func <*><UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { p in p.ap(f) }
-}
-
-extension Proxy: Monad {
+extension Proxy/*: Monad*/ {
     public func bind<NR>(f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
         return Proxy<UO, UI, DI, DO, NR>(self.repr.bind { f($0).repr })
     }
 }
 
-public func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+public func >>- <UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
     return p.bind(f)
-}
-
-public prefix func >>-<UO, UI, DI, DO, FR, NR>(f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { p in p.bind(f) }
-}
-
-public postfix func >>-<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>) -> (FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
-    return { f in p.bind(f) }
 }
 
 public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, DI, DO, FR>>) -> Proxy<UO, UI, DI, DO, FR> {

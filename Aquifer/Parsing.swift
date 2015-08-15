@@ -10,12 +10,12 @@
 
 import Foundation
 import Swiftz
+import Focus
 
-public func span<V, R>(p: Proxy<X, (), (), V, R>, predicate: V -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+public func span<V, R>(p: Proxy<X, (), (), V, R>, _ predicate: V -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     switch next(p) {
-    case let .Left(x): return pure(pure(x.value))
-    case let .Right(k):
-        let (dO, q) = k.value
+    case let .Left(x): return pure(pure(x))
+    case let .Right((dO, q)):
         if predicate(dO) {
             return yield(dO) >>- { _ in span(p, predicate) }
         } else {
@@ -24,24 +24,22 @@ public func span<V, R>(p: Proxy<X, (), (), V, R>, predicate: V -> Bool) -> Proxy
     }
 }
 
-public func splitAt<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+public func splitAt<V, R>(p: Proxy<X, (), (), V, R>, _ n: Int) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     if n <= 0 {
         return pure(p)
     } else {
         switch next(p) {
-        case let .Left(x): return pure(pure(x.value))
-        case let .Right(k):
-            let (dO, q) = k.value
+        case let .Left(x): return pure(pure(x))
+        case let .Right((dO, q)):
             return yield(dO) >>- { _ in splitAt(q, n - 1) }
         }
     }
 }
 
-public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, _ equals: (V, V) -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     switch next(p) {
-    case let .Left(x): return pure(pure(x.value))
-    case let .Right(k):
-        let (dO, q) = k.value
+    case let .Left(x): return pure(pure(x))
+    case let .Right((dO, q)):
         return span(yield(dO) >>- { _ in q }) { v in equals(dO, v) }
     }
 }
@@ -53,9 +51,8 @@ public func group<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> Proxy<X, (), ()
 public func draw<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, V?> {
     return get() >>- { p in
         switch next(p) {
-        case let .Left(x): return { _ in nil } <^> put(pure(x.value))
-        case let .Right(k):
-            let (dO, q) = k.value
+        case let .Left(x): return { _ in nil } <^> put(pure(x))
+        case let .Right((dO, q)):
             return { _ in dO } <^> put(q)
         }
     }
