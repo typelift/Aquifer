@@ -22,7 +22,9 @@
 		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
 		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		1186B05F1B7FCC9C00ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */; };
-		1186B0601B7FCCA400ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
+		1186B0641B7FCD0300ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
+		1186B0651B7FCD4D00ADADAD /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114E393C1B7FC6F800EF9CB1 /* SwiftCheck.framework */; };
+		1186B0661B7FCD5500ADADAD /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114E393C1B7FC6F800EF9CB1 /* SwiftCheck.framework */; };
 		11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 		11D195741A7B42260072F514 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 		11F032281B0C00E6004C6D59 /* NSFileHandleExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11200E891A7958580032A136 /* NSFileHandleExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -226,7 +228,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1186B0601B7FCCA400ADADAD /* Aquifer.framework in Frameworks */,
+				1186B0651B7FCD4D00ADADAD /* SwiftCheck.framework in Frameworks */,
+				1186B0641B7FCD0300ADADAD /* Aquifer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1186B0661B7FCD5500ADADAD /* SwiftCheck.framework in Frameworks */,
 				1186B05F1B7FCC9C00ADADAD /* Aquifer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
