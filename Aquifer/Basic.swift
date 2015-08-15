@@ -64,7 +64,7 @@ public func dropWhile<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR
 }
 
 public func concat<S: SequenceType, FR>() -> Proxy<(), S, (), S.Generator.Element, FR> {
-    return for_(cat(), f: each)
+    return for_(cat(), each)
 }
 
 public func drain<UI, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
@@ -104,7 +104,7 @@ public func findIndicesInner<UI, FR>(predicate: UI -> Bool, _ n: Int) -> Proxy<(
 }
 
 public func findIndices<UI, FR>(predicate: UI -> Bool) -> Proxy<(), UI, (), Int, FR> {
-    return findIndicesInner(predicate, n: 0)
+    return findIndicesInner(predicate, 0)
 }
 
 public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: A, extractWith extractor: A -> DO) -> Proxy<(), UI, (), DO, FR> {
@@ -137,7 +137,7 @@ public func fold<A, V, R>(p: Proxy<X, (), (), V, ()>, stepWith step: (A, V) -> A
 
 private func foldRetRepr<A, V, FR, R>(p: ProxyRepr<X, (), (), V, FR>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> (R, FR) {
     switch p {
-    case let .Request(uO, fUI): return closed(uO())
+    case let .Request(uO, _): return closed(uO())
     case let .Respond(dO, fDI): return foldRetRepr(fDI(()), stepWith: step, initializeWith: step(initial, dO()), extractWith: extractor)
     case let .Pure(x): return (extractor(initial), x())
     }
@@ -237,14 +237,14 @@ public func minimum<V: Comparable>(p: Proxy<X, (), (), V, ()>) -> V? {
 }
 
 public func mconcat<V: Monoid>(p: Proxy<X, (), (), V, ()>) -> V {
-    return fold(p, stepWith: { $0.op($1) }, initializeWith: V.mzero, extractWith: { $0 })
+    return fold(p, stepWith: { $0.op($1) }, initializeWith: V.mempty, extractWith: { $0 })
 }
 
-public func sum<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
+public func sum<V: NumericType>(p: Proxy<X, (), (), V, ()>) -> V {
     return fold(p, stepWith: { $0.plus($1) }, initializeWith: V.zero, extractWith: { $0 })
 }
 
-public func product<V: Num>(p: Proxy<X, (), (), V, ()>) -> V {
+public func product<V: NumericType>(p: Proxy<X, (), (), V, ()>) -> V {
     return fold(p, stepWith: { $0.times($1) }, initializeWith: V.one, extractWith: { $0 })
 }
 

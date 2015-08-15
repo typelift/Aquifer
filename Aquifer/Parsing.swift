@@ -106,6 +106,6 @@ public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initi
 /*public func toParser<V, I, R>(p: Proxy<(), V?, (), X, R>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, R> {
 }*/
 
-public func toParser<V, I, R>(endless p: Proxy<(), V, (), X, X>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
+public func toParser<V, I>(endless p: Proxy<(), V, (), X, X>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
     return IxState { q in ((), pure(runEffect(q >-> ({ closed($0) } <^> p)))) }
 }

@@ -66,8 +66,8 @@ internal enum ProxyRepr<UO, UI, DI, DO, FR> {
 
     internal func pushBind<NI, NO>(f: DO -> ProxyRepr<DI, DO, NI, NO, FR>) -> ProxyRepr<UO, UI, NI, NO, FR> {
         switch self {
-        case let .Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { pushBindExt(fUI($0), f: f) }
-        case let .Respond(dO, fDI): return pullBindExt(f(dO()), f: fDI)
+        case let .Request(uO, fUI): return ProxyRepr<UO, UI, NI, NO, FR>.Request(uO) { pushBindExt(fUI($0), f) }
+        case let .Respond(dO, fDI): return pullBindExt(f(dO()), fDI)
         case let .Pure(x): return ProxyRepr<UO, UI, NI, NO, FR>.Pure(x)
         }
     }
