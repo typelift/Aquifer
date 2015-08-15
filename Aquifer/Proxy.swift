@@ -153,7 +153,7 @@ public func runEffect<FR>(p: Proxy<X, (), (), X, FR>) -> FR {
     }
 }
 
-/// Implementation Details Follow
+// MARK: - Implementation Details Follow
 
 /// The underlying implementation in Pipes.Internal.
 ///

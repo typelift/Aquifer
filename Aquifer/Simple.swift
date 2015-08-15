@@ -129,7 +129,7 @@ public func <-< <UO, UI, DT, DI, DO, FR>(p: Proxy<(), DT, DI, DO, FR>, q: Proxy<
 }
 
 
-/// Implementation Details Follow
+// MARK: - Implementation Details Follow
 
 private func eachRepr<UO, UI, G: GeneratorType>(var gen: G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
     if let v = gen.next() {

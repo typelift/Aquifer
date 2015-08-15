@@ -309,7 +309,7 @@ public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, _ q: Proxy<X, (),
 /*public func generalize<UT, UI, DO, FR>(p: Proxy<(), UI, (), DO, FR>) -> Proxy<UT, UI, UT, DO, FR> {
 }*/
 
-/// Implementation Details Follow
+// MARK: - Implementation Details Follow
 
 private func dropInner<DT>(n: Int) -> Proxy<(), DT, (), DT, ()> {
     if n <= 0 {

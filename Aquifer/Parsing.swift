@@ -122,7 +122,7 @@ public func toParser<V, I>(endless p: Proxy<(), V, (), X, X>) -> IxState<Proxy<X
     return IxState { q in ((), pure(runEffect(q >-> ({ closed($0) } <^> p)))) }
 }
 
-/// Implementation Details Follow
+// MARK: - Implementation Details Follow
 
 private func drawAllInner<V, I>(diffAs: List<V> -> List<V>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
     return draw() >>- {

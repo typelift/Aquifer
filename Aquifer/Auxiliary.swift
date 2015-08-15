@@ -69,7 +69,7 @@ public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith ini
     return await() >>- { scan(stepWith: step, initializeWith: initial($0), extractWith: extractor) }
 }
 
-/// Implementation Details Follow
+// MARK: - Implementation Details Follow
 
 private func leftInner<A, B, C>() -> Proxy<(), Either<A, C>, (), Either<B, C>, A> {
 	return await() >>- {

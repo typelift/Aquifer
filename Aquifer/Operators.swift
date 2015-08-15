@@ -240,7 +240,7 @@ public func <~< <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, 
     return g >~> f
 }
 
-/// Implementation Details follow
+// MARK: - Implementation Details Follow
 
 private func pushRepr<UT, DT, FR>(dT: () -> DT) -> ProxyRepr<UT, DT, UT, DT, FR> {
     return ProxyRepr.Respond(dT) { uT in ProxyRepr.Request({ _ in uT }) { x in pushRepr { _ in x } } }
