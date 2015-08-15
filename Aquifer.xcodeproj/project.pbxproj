@@ -21,6 +21,8 @@
 		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
 		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
+		1186B05F1B7FCC9C00ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */; };
+		1186B0601B7FCCA400ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
 		11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 		11D195741A7B42260072F514 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 		11F032281B0C00E6004C6D59 /* NSFileHandleExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11200E891A7958580032A136 /* NSFileHandleExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -152,6 +154,34 @@
 			remoteGlobalIDString = 824B461D1B460AFA009AAF49;
 			remoteInfo = "Focus-iOSTests";
 		};
+		1186B04E1B7FCC6000ADADAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11862CC81A65FF66008F5696 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 11862CD01A65FF66008F5696;
+			remoteInfo = Aquifer;
+		};
+		1186B0581B7FCC6500ADADAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 844FCC8C198B320500EB242A;
+			remoteInfo = SwiftCheck;
+		};
+		1186B05A1B7FCC7C00ADADAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11862CC81A65FF66008F5696 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 11F0320A1B0BFF82004C6D59;
+			remoteInfo = "Aquifer-iOS";
+		};
+		1186B05C1B7FCC8200ADADAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 84DF75F71B0BD54600C912B0;
+			remoteInfo = "SwiftCheck-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -196,6 +226,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1186B0601B7FCCA400ADADAD /* Aquifer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +243,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1186B05F1B7FCC9C00ADADAD /* Aquifer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +465,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				1186B0591B7FCC6500ADADAD /* PBXTargetDependency */,
+				1186B04F1B7FCC6000ADADAD /* PBXTargetDependency */,
 			);
 			name = AquiferTests;
 			productName = AquiferTests;
@@ -470,6 +504,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				1186B05D1B7FCC8200ADADAD /* PBXTargetDependency */,
+				1186B05B1B7FCC7C00ADADAD /* PBXTargetDependency */,
 			);
 			name = "Aquifer-iOSTests";
 			productName = "Aquifer-iOSTests";
@@ -726,6 +762,26 @@
 			isa = PBXTargetDependency;
 			name = "Focus-iOS";
 			targetProxy = 114E394C1B7FC77A00EF9CB1 /* PBXContainerItemProxy */;
+		};
+		1186B04F1B7FCC6000ADADAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 11862CD01A65FF66008F5696 /* Aquifer */;
+			targetProxy = 1186B04E1B7FCC6000ADADAD /* PBXContainerItemProxy */;
+		};
+		1186B0591B7FCC6500ADADAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftCheck;
+			targetProxy = 1186B0581B7FCC6500ADADAD /* PBXContainerItemProxy */;
+		};
+		1186B05B1B7FCC7C00ADADAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 11F0320A1B0BFF82004C6D59 /* Aquifer-iOS */;
+			targetProxy = 1186B05A1B7FCC7C00ADADAD /* PBXContainerItemProxy */;
+		};
+		1186B05D1B7FCC8200ADADAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwiftCheck-iOS";
+			targetProxy = 1186B05C1B7FCC8200ADADAD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
