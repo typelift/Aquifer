@@ -56,18 +56,18 @@ import Swiftz
 ///
 /// Which can be represented diagrammatically by:
 ///
-/// Diagrammatically, you can think of a Proxy as having the following shape:
+/// Diagrammatically, you can think of a `Proxy` as having the following shape:
 ///
-///  Upstream | Downstream
-///      +---------+
-///      |         |
-///  UO <==       <== DI
-///      |         |
-///  UI ==>       ==> DO
-///      |    |    |
-///      +----|----+
-///           v
-///           FR
+///               Upstream | Downstream
+///                   +---------+
+///                   |         |
+///  Upstream Output <==       <== Downstream Input
+///                   |         |
+///  Upstream Input  ==>       ==> Downstream Output
+///                   |    |    |
+///                   +----|----+
+///                        v
+///                   Final Results
 public struct Proxy<UO, UI, DI, DO, FR> {
     private let _repr: () -> ProxyRepr<UO, UI, DI, DO, FR>
 
