@@ -47,11 +47,27 @@ import Swiftz
 ///     typealias Server<ReceiveT, RespondT, Result> = Proxy<X, (), ReceiveT, RespondT, Result>
 ///
 /// The type parameters are as follows:
+///
 /// UO - upstream   output
 /// UI - upstream   input
 /// DI — downstream input
 /// DO — downstream output
 /// FR — final      result
+///
+/// Which can be represented diagrammatically by:
+///
+/// Diagrammatically, you can think of a Proxy as having the following shape:
+///
+///  Upstream | Downstream
+///      +---------+
+///      |         |
+///  UO <==       <== DI
+///      |         |
+///  UI ==>       ==> DO
+///      |    |    |
+///      +----|----+
+///           v
+///           FR
 public struct Proxy<UO, UI, DI, DO, FR> {
     private let _repr: () -> ProxyRepr<UO, UI, DI, DO, FR>
 
