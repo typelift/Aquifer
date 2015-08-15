@@ -11,9 +11,20 @@
 import Foundation
 import Swiftz
 
+/// The underlying implementation in Pipes.Internal.
+///
+/// The type parameters are as follows:
+/// UO - upstream   output
+/// UI - upstream   input
+/// DI — downstream input
+/// DO — downstream output
+/// FR — final      result
 internal enum ProxyRepr<UO, UI, DI, DO, FR> {
+    /// Request a value from upstream.
     case Request(() -> UO, UI -> ProxyRepr<UO, UI, DI, DO, FR>)
+    /// Respond with a value downstream.
     case Respond(() -> DO, DI -> ProxyRepr<UO, UI, DI, DO, FR>)
+    /// Yields the value as a final result for all requests.
     case Pure(() -> FR)
 
     internal func fmap<NR>(f: FR -> NR) -> ProxyRepr<UO, UI, DI, DO, NR> {
@@ -110,6 +121,7 @@ public struct Proxy<UO, UI, DI, DO, FR> {
     }
 }
 
+/// Forces a pipe to evaluate its contents lazily.
 public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p: () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(p().repr)
 }
@@ -117,6 +129,7 @@ public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p: () -> Proxy<UO, 
 extension Proxy/*: Functor*/ {
     /*typealias B = Any*/
 
+    /// Yields a pipe that applies the given function to its final result.
     public func fmap<NR>(f: FR -> NR) -> Proxy<UO, UI, DI, DO, NR> {
         return Proxy<UO, UI, DI, DO, NR>(self.repr.fmap(f))
     }
@@ -127,16 +140,20 @@ public func <^> <UO, UI, DI, DO, FR, NR>(f: FR -> NR, p: Proxy<UO, UI, DI, DO, F
 }
 
 extension Proxy/*: Pointed*/ {
+    /// Yields a pipe that responds to all requests with the given value.
     public static func pure(x: FR) -> Proxy<UO, UI, DI, DO, FR> {
         return Aquifer.pure(x)
     }
 }
 
+/// Yields a pipe that responds to all requests with the given value.
 public func pure<UO, UI, DI, DO, FR>(@autoclosure(escaping) x: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(ProxyRepr.Pure(x))
 }
 
 extension Proxy/*: Applicative*/ {
+    /// Yields a pipe that responds with result of applying each function yielded in the given pipe
+    /// to the values yielded in the receiver.
     public func ap<NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>) -> Proxy<UO, UI, DI, DO, NR> {
         return Proxy<UO, UI, DI, DO, NR>(self.repr.ap(f.repr))
     }
@@ -147,6 +164,8 @@ public func <*> <UO, UI, DI, DO, FR, NR>(f: Proxy<UO, UI, DI, DO, FR -> NR>, p: 
 }
 
 extension Proxy/*: Monad*/ {
+    /// Yields a pipe that responds with the result of applying the function to each value yielded
+    /// in the receiver then concatenating the results of each produced pipe.
     public func bind<NR>(f: FR -> Proxy<UO, UI, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
         return Proxy<UO, UI, DI, DO, NR>(self.repr.bind { f($0).repr })
     }
@@ -156,16 +175,19 @@ public func >>- <UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, f: FR -> 
     return p.bind(f)
 }
 
+/// Flattens a Pipe that yields pipes by one level.
 public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, DI, DO, FR>>) -> Proxy<UO, UI, DI, DO, FR> {
     return p.bind { q in q }
 }
 
 extension Proxy {
+    /// Returns the pipe dual to the receiver.  That is, `awaits`s become `yield`s and vice-versa.
     public func reflect() -> Proxy<DO, DI, UI, UO, FR> {
         return Proxy<DO, DI, UI, UO, FR>(self.repr.reflect())
     }
 }
 
+/// Runs a self-contained "Effect" and yields a final value. 
 public func runEffect<FR>(p: Proxy<X, (), (), X, FR>) -> FR {
     switch p.repr {
     case let .Request(uO, _): return closed(uO())
