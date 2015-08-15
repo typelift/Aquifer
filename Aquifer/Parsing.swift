@@ -8,7 +8,6 @@
 
 // roughly `Pipes.Parse`
 
-import Foundation
 import Swiftz
 import Focus
 

@@ -8,7 +8,6 @@
 
 // roughly `Pipes`
 
-import Foundation
 import Swiftz
 
 /// Pull the first value out of the given pipe.

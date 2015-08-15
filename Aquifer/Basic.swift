@@ -8,7 +8,6 @@
 
 // roughly `Pipes.Prelude`
 
-import Foundation
 import Swiftz
 
 /// Returns a pipe that produces the given value then terminates.

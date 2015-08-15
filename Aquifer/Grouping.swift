@@ -8,7 +8,6 @@
 
 // roughly `Pipes.Group`
 
-import Foundation
 import Swiftz
 
 internal enum GroupedProducerRepr<V, R> {
