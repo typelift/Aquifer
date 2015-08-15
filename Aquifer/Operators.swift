@@ -11,23 +11,71 @@
 import Swiftz
 
 /// Send a value upstream and block waiting for a reply.
+///
+///            UO
+///             |
+///        +----|----+
+///        |    |    |
+///    UO <=====/   <== DI
+///        |         |
+///    UI ======\   ==> DO
+///        |    |    |
+///        +----|----+
+///             v
+///             UI
 public func request<UO, UI, DI, DO>(@autoclosure(escaping) uO: () -> UO) -> Proxy<UO, UI, DI, DO, UI> {
     return Proxy(ProxyRepr.Request(uO) { x in ProxyRepr.Pure { _ in x } })
 }
 
 /// Send a value downstream and block waiting for a reply.
+///
+///          DO
+///           |
+///      +----|----+
+///      |    |    |
+/// UO <===  \ / ==== DI
+///      |    X    |
+/// UI ===>  / \ ===> DO
+///      |    |    |
+///      +----|----+
+///           v
+///           DI
 public func respond<UO, UI, DI, DO>(@autoclosure(escaping) dO: () -> DO) -> Proxy<UO, UI, DI, DO, DI> {
     return Proxy(ProxyRepr.Respond(dO) { x in ProxyRepr.Pure { _ in x} })
 }
 
-/// Forward responses followed by requests.
-public func push<UT, DT, FR>(@autoclosure(escaping) dT: () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
-    return Proxy(pushRepr(dT))
-}
-
 /// Forward requests followed by responses.
+///
+///            UT
+///             |
+///        +----|----+
+///        |    v    |
+///    UT <============ UT
+///        |         |
+///    DT ============> DT
+///        |    |    |
+///        +----|----+
+///             v
+///             FR
 public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, DT, UT, DT, FR> {
     return Proxy(pullRepr(uT))
+}
+
+/// Forward responses followed by requests.
+///
+///            DT
+///             |
+///        +----|----+
+///        |    v    |
+///    UT <============ UT
+///        |         |
+///    DT ============> DT
+///        |    |    |
+///        +----|----+
+///             v
+///             FR
+public func push<UT, DT, FR>(@autoclosure(escaping) dT: () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
+    return Proxy(pushRepr(dT))
 }
 
 infix operator |>> {
