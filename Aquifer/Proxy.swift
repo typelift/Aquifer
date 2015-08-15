@@ -12,6 +12,40 @@ import Swiftz
 
 /// A bidirectional channel for information.
 ///
+/// A `Proxy` is so named because it can represent many different kinds of information flows.  There
+/// are 6 overarching specific types that a `Proxy` can represent, each with separate semantics.
+///
+///     /// An effectful computation.
+///     ///
+///     /// `Effect`s neither await nor yield.
+///     typealias Effect<Result> = Proxy<X, (), (), X, Result>
+///
+///     /// A computation that yields values of type `B`.
+///     ///
+///     /// `Producer`s can only yield.
+///     typealias Producer<B, Result> = Proxy<X, (), (), B, Result>
+///
+///     /// A computation that can await values of type `A` and yield values of type `B`.
+///     ///
+///     /// `Pipe`s can both await and yield.
+///     typealias Pipe<A, B, Result> = Proxy<(), A, (), B, Result>
+///
+///     /// A computation that can await values of type `A`.
+///     ///
+///     /// `Consumer`s can only await.
+///     typealias Consumer<A, Result> = Proxy<(), A, (), X, Result>
+///
+///
+///     /// Sends requests of type `RequestT` and recieves responses of type `RespondT`.
+///     ///
+///     /// `Client`s only request and never respond.
+///     typealias Client<RequestT, RespondT, Result> = Proxy<RequestT, RespondT, (), X, Result>
+///
+///     /// Receives values of type `ReceiveT` and responds with values of type `RespondT`.
+///     ///
+///     /// `Server`s only respond and never request.
+///     typealias Server<ReceiveT, RespondT, Result> = Proxy<X, (), ReceiveT, RespondT, Result>
+///
 /// The type parameters are as follows:
 /// UO - upstream   output
 /// UI - upstream   input
@@ -27,6 +61,11 @@ public struct Proxy<UO, UI, DI, DO, FR> {
 
     internal var repr: ProxyRepr<UO, UI, DI, DO, FR> {
         return _repr()
+    }
+    
+    /// Returns the pipe dual to the receiver.  That is, `awaits`s become `yield`s and vice-versa.
+    public func reflect() -> Proxy<DO, DI, UI, UO, FR> {
+        return Proxy<DO, DI, UI, UO, FR>(self.repr.reflect())
     }
 }
 
@@ -87,13 +126,6 @@ public func >>- <UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, f: FR -> 
 /// Flattens a Pipe that yields pipes by one level.
 public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, DI, DO, FR>>) -> Proxy<UO, UI, DI, DO, FR> {
     return p.bind { q in q }
-}
-
-extension Proxy {
-    /// Returns the pipe dual to the receiver.  That is, `awaits`s become `yield`s and vice-versa.
-    public func reflect() -> Proxy<DO, DI, UI, UO, FR> {
-        return Proxy<DO, DI, UI, UO, FR>(self.repr.reflect())
-    }
 }
 
 /// Runs a self-contained "Effect" and yields a final value. 
