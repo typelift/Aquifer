@@ -15,7 +15,7 @@ import Swiftz
 ///
 /// Ideally:
 ///
-///    typealias GroupedProducer<V, R> = Free<Producer<V> R>
+///    typealias GroupedProducer<V, R> = Free<Producer<V, $0> R>
 public struct GroupedProducer<V, R> {
     private let _repr: () -> GroupedProducerRepr<V, R>
 

@@ -122,12 +122,12 @@ public func concat<S: SequenceType, FR>() -> Proxy<(), S, (), S.Generator.Elemen
 }
 
 
-/// Returns whether all elements of the receiver satisfy a given predicate.
+/// Returns whether all elements of the receiver satisfy the given predicate.
 public func all<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Bool {
     return isEmpty(p >-> filter { !predicate($0) })
 }
 
-/// Returns whether any element of the receiver satisfy a given predicate.
+/// Returns whether any element of the receiver satisfies the given predicate.
 public func any<V>(p: Proxy<X, (), (), V, ()>, predicate: V -> Bool) -> Bool {
     return !isEmpty(p >-> filter(predicate))
 }
