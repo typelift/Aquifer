@@ -8,7 +8,6 @@
 
 // part of `Pipes.Internal`
 
-import Foundation
 import Swiftz
 
 /// The (nominally) empty type, implemented as a semi-strictly self-recursive struct.

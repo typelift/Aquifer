@@ -8,10 +8,11 @@
 
 // roughly `Pipes.Parse`
 
-import Foundation
 import Swiftz
 import Focus
 
+/// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest 
+/// consecutive group of elements that satisfy the given predicate.
 public func span<V, R>(p: Proxy<X, (), (), V, R>, _ predicate: V -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     switch next(p) {
     case let .Left(x): return pure(pure(x))
@@ -24,6 +25,13 @@ public func span<V, R>(p: Proxy<X, (), (), V, R>, _ predicate: V -> Bool) -> Pro
     }
 }
 
+/// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest 
+/// consecutive group of elements that do not satisfy the given predicate.
+public func extreme<V, R>(p: Proxy<X, (), (), V, R>, _ predicate: V -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
+    return span(p, (!) • predicate)
+}
+
+/// Splits a `Producer` into two `Producer`s after a fixed number of elements
 public func splitAt<V, R>(p: Proxy<X, (), (), V, R>, _ n: Int) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     if n <= 0 {
         return pure(p)
@@ -36,6 +44,8 @@ public func splitAt<V, R>(p: Proxy<X, (), (), V, R>, _ n: Int) -> Proxy<X, (), (
     }
 }
 
+/// Splits a `Producer` into two `Producer`s after the first group of elements that are equal 
+/// according to the equality predicate.
 public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, _ equals: (V, V) -> Bool) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     switch next(p) {
     case let .Left(x): return pure(pure(x))
@@ -44,10 +54,12 @@ public func groupBy<V, R>(p: Proxy<X, (), (), V, R>, _ equals: (V, V) -> Bool) -
     }
 }
 
+/// Splits a `Producer` into two `Producer`s after the first group of elements that are equal.
 public func group<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> Proxy<X, (), (), V, Proxy<X, (), (), V, R>> {
     return groupBy(p) { v0, v1 in v0 == v1 }
 }
 
+/// Draws one element from the underlying `Producer`, returning `.None` if the Producer is empty
 public func draw<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, V?> {
     return get() >>- { p in
         switch next(p) {
@@ -58,40 +70,39 @@ public func draw<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, 
     }
 }
 
+/// Skips one element of the underlying `Producer`.  The final result of the returned pipe is `true`
+/// if the operation was successful or `false` if the pipe was empty.
 public func skip<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
     return { if let _ = $0 { return true } else { return false } } <^> draw()
 }
 
-private func drawAllInner<V, I>(diffAs: List<V> -> List<V>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
-    return draw() >>- {
-        if let v = $0 {
-            return drawAllInner(diffAs • curry(List.cons)(v))
-        } else {
-            return pure(diffAs([]))
-        }
-    }
-}
-
+/// Draw all elements from the underlying `Producer`.
 public func drawAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
     return drawAllInner { v in v }
 }
 
+/// Drops all elements from the underlying `Producer`.
 public func skipAll<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
     return draw() >>- { if let _ = $0 { return skipAll() } else { return pure(()) } }
 }
 
+/// Push back an element onto the underlying `Producer`.
 public func unDraw<V, I>(x: V) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
     return modify { p in yield(x) >>- { _ in p } }
 }
 
+/// Checks the first element of the pipe, but uses `unDraw` to push the element back so that it is 
+/// available for the next `draw` command.
 public func peek<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, V?> {
     return draw() >>- { k in if let v = k { return { _ in k } <^> unDraw(v) } else { return pure(k) } }
 }
 
+/// Returns whether the underlying `Producer` is empty
 public func isEndOfInput<V, I>() -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, Bool> {
     return { if let _ = $0 { return true } else { return false } } <^> peek()
 }
 
+/// Fold all input values.
 public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, R> {
     return draw() >>- {
         if let v = $0 {
@@ -106,6 +117,20 @@ public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initi
 /*public func toParser<V, I, R>(p: Proxy<(), V?, (), X, R>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, R> {
 }*/
 
+/// Convert a never-ending Consumer to a Parser
 public func toParser<V, I>(endless p: Proxy<(), V, (), X, X>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, ()> {
     return IxState { q in ((), pure(runEffect(q >-> ({ closed($0) } <^> p)))) }
 }
+
+// MARK: - Implementation Details Follow
+
+private func drawAllInner<V, I>(diffAs: List<V> -> List<V>) -> IxState<Proxy<X, (), (), V, I>, Proxy<X, (), (), V, I>, List<V>> {
+    return draw() >>- {
+        if let v = $0 {
+            return drawAllInner(diffAs • curry(List.cons)(v))
+        } else {
+            return pure(diffAs([]))
+        }
+    }
+}
+
