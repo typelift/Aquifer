@@ -10,10 +10,11 @@
 
 import Swiftz
 
-/// Pull the first value out of the given pipe.
+/// Pull the first value out of the given `Pipe`.
 ///
-/// If the subsequent state of the pipe is `.Pure` or terminated, the result is `.Left` containing
-/// the value.  Else the result is `.Right` containing the value and the next state of the pipe.
+/// If the subsequent state of the `Pipe` is a single value or termination, the result is `.Left`
+/// containing the value.  Otherwise the result is `.Right` containing the value and the next state
+/// of the pipe.
 public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X, (), (), DO, FR>)> {
     switch p.repr {
     case let .Request(uO, _): return closed(uO())
@@ -22,9 +23,7 @@ public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X
     }
 }
 
-/// Discards the value it is given.
-///
-/// The resulting pipe responds to all requests with `()`.
+/// Discards the given value and returns a pipe that responds to requests with `()`.
 public func discard<UO, UI, DI, DO>(_: Any) -> Proxy<UO, UI, DI, DO, ()> {
     return Proxy(ProxyRepr.Pure { _ in () })
 }
@@ -57,8 +56,8 @@ public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {
     return pull(())
 }
 
-/// For each value `yield`ed in the given pipe and replaces it with the result of applying the
-/// function.
+/// Iterates over each value in the given pipe and replaces it with the result of applying the 
+/// given function.
 public func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
     return p |>> f
 }

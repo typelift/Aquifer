@@ -35,7 +35,6 @@ import Swiftz
 ///     /// `Consumer`s can only await.
 ///     typealias Consumer<A, Result> = Proxy<(), A, (), X, Result>
 ///
-///
 ///     /// Sends requests of type `RequestT` and recieves responses of type `RespondT`.
 ///     ///
 ///     /// `Client`s only request and never respond.
@@ -55,8 +54,6 @@ import Swiftz
 /// FR — final      result
 ///
 /// Which can be represented diagrammatically by:
-///
-/// Diagrammatically, you can think of a `Proxy` as having the following shape:
 ///
 ///               Upstream | Downstream
 ///                   +---------+

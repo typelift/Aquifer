@@ -45,9 +45,9 @@ public func delay<V, R>(@autoclosure(escaping) p: () -> GroupedProducer<V, R>) -
 
 /// Pull the first value out of the given `GroupedProducer`.
 ///
-/// If the subsequent state of the `Producer` is `.End` or terminated, the result is `.Left`
-/// containing the value.  Else the result is `.Right` containing the value and the next state of 
-/// the `Producer`.
+/// If the subsequent state of the `Producer` is a single value or termination, the result is 
+/// `.Left` containing the value.  Otherwise the result is `.Right` containing the value and the 
+/// next state of the `Producer`.
 public func next<V, R>(p: GroupedProducer<V, R>) -> Either<R, Proxy<X, (), (), V, GroupedProducer<V, R>>> {
     switch p.repr {
     case let .End(x): return .Left(x())
