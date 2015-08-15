@@ -50,7 +50,7 @@ public func await<UI, DI, DO>() -> Proxy<(), UI, DI, DO, UI> {
     return request(())
 }
 
-/// The identity pipe.
+/// The identity `Pipe`.
 ///
 /// Like the Unix `cat` program, pushes any given input as output without modification.
 public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {

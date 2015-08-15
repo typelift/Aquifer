@@ -12,24 +12,24 @@ import Swiftz
 
 // MARK: - Data.Pipes
 
-/// Returns a pipe that produces the given value then terminates.
+/// Returns a `Pipe` that produces the given value then terminates.
 public func once<UO, UI, DI, DO, FR>(v: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(ProxyRepr.Pure(v))
 }
 
-/// Returns a pipe that discards all incoming values.
+/// Returns a `Pipe` that discards all incoming values.
 public func drain<UI, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
     return for_(cat()) { discard($0) }
 }
 
-/// Returns a pipe that applies a (side-effecting) action to all values flowing downstream.
+/// Returns a `Pipe` that applies a (side-effecting) action to all values flowing downstream.
 public func chain<DT, FR>(action: DT -> Void) -> Proxy<(), DT, (), DT, FR> {
     return for_(cat()) { action($0); return yield($0) }
 }
 
 // MARK: - Data.Bool
 
-/// Returns a pipe that negates any `Bool`ean input flowing downstream.
+/// Returns a `Pipe` that negates any `Bool`ean input flowing downstream.
 public func not<FR>() -> Proxy<(), Bool, (), Bool, FR> {
     return map(!)
 }
@@ -104,12 +104,12 @@ public func debugDescription<UI: CustomDebugStringConvertible, FR>() -> Proxy<()
 
 // MARK: Folds
 
-/// Folds over the elements of the given pipe.
+/// Folds over the elements of the given `Producer`.
 public func fold<A, V, R>(p: Proxy<X, (), (), V, ()>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> R {
     return foldRepr(p.repr, stepWith: step, initializeWith: initial, extractWith: extractor)
 }
 
-/// A version of `fold` that preserve the return value of the given pipe.
+/// A version of `fold` that preserve the return value of the given `Producer`.
 public func foldRet<A, V, FR, R>(p: Proxy<X, (), (), V, FR>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> (R, FR) {
     return foldRetRepr(p.repr, stepWith: step, initializeWith: initial, extractWith: extractor)
 }
@@ -217,12 +217,12 @@ public func takeWhile<DT>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, ()> {
     }
 }
 
-/// Returns a pipe that discards a given amount of values.
+/// Returns a `Pipe` that discards a given amount of values.
 public func drop<DT, FR>(n: Int) -> Proxy<(), DT, (), DT, FR> {
     return dropInner(n) >>- { _ in cat() }
 }
 
-/// Returns a pipe that discards values as long as the given predicate is true.
+/// Returns a `Pipe` that discards values as long as the given predicate is true.
 public func dropWhile<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
     return await() >>- { v in
         if predicate(v) {
@@ -252,7 +252,7 @@ public func find<V>(p: Proxy<X, (), (), V, ()>, _ predicate: V -> Bool) -> V? {
     return head(p >-> filter(predicate))
 }
 
-/// Returns a pipe that only forwards values that satisfy the given predicate.
+/// Returns a `Pipe` that only forwards values that satisfy the given predicate.
 public func filter<DT, FR>(predicate: DT -> Bool) -> Proxy<(), DT, (), DT, FR> {
     return for_(cat()) { v in
         if predicate(v) {
@@ -282,13 +282,14 @@ public func findIndices<UI, FR>(predicate: UI -> Bool) -> Proxy<(), UI, (), Int,
 
 // MARK: Zipping
 
-/// Returns a pipe that zips the downstream output of the two given pipes together.
+/// Returns a `Producer` of pairs that zips the downstream output of the two given `Producer`s 
+/// together.
 public func zip<V0, V1, R>(p: Proxy<X, (), (), V0, R>, _ q: Proxy<X, (), (), V1, R>) -> Proxy<X, (), (), (V0, V1), R> {
     return zipWith(p, q) { ($0, $1) }
 }
 
-/// Returns a pipe that zips the downstream output of the two given pipes together using the given
-/// function.
+/// Returns a `Producer` of values that zips the downstream output of the two given pipes together
+/// using the given function.
 public func zipWith<V0, V1, V2, R>(p: Proxy<X, (), (), V0, R>, _ q: Proxy<X, (), (), V1, R>, _ f: (V0, V1) -> V2) -> Proxy<X, (), (), V2, R> {
     switch next(p) {
     case let .Left(x): return pure(x)
