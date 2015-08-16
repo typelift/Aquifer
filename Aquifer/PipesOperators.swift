@@ -6,7 +6,7 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
-// MARK: - Respond Category
+// MARK: - Request Category
 
 infix operator |>| {
 	associativity right
@@ -16,6 +16,28 @@ infix operator |>| {
 infix operator |<| {
 	associativity left
 	precedence 140
+}
+
+infix operator >>| {
+	associativity right
+	precedence 130
+}
+
+infix operator |<< {
+	associativity left
+	precedence 130
+}
+
+// MARK: - Respond Category
+
+infix operator >|> {
+	associativity right
+	precedence 140
+}
+
+infix operator <|< {
+	associativity left
+	precedence 130
 }
 
 infix operator |>> {
@@ -28,28 +50,6 @@ infix operator <<| {
 	precedence 120
 }
 
-// MARK: - Request Category
-
-infix operator >|> {
-	associativity right
-	precedence 140
-}
-
-infix operator <|< {
-	associativity left
-	precedence 130
-}
-
-
-infix operator >>| {
-	associativity right
-	precedence 130
-}
-
-infix operator |<< {
-	associativity left
-	precedence 130
-}
 
 // MARK: - Push Category
 

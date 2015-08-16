@@ -84,34 +84,42 @@ public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, D
 ///
 /// Yields a new pipe that replaces all `request`s in the body of the latter given pipe with the 
 /// given former pipe.
+///
+/// This operator is `\>\` in `pipes`.
 public func |>| <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
     return { f($0) |>> g }
 }
 
 /// Compose Folds Backwards | Like Compose Folds but backwards.
+/// 
+/// This operator is `/</` in `pipes`.
 public func |<| <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
     return g |>| f
 }
 
-/// Replace Upstream | Replaces each `request` in the pipe with the given pipe awaiting upstream 
+/// Replace Upstream | Replaces each `request` in the pipe with the given pipe awaiting upstream
 /// output.
 ///
-///          b'<=====\
+///          UO<=====\
 ///          |        \
 ///     +----|----+    \         +---------+            +-----------+
 ///     |    v    |     \        |         |            |           |
-/// a' <==       <== y'  \== b' <==       <== y'    a' <==         <== y'
+/// NO <==       <== DI  \== UO <==       <== DI    NO <==         <== DI
 ///     |    f    |              |    g    |     =      | f '>>|' g |
-/// a  ==>       ==> y   /=> b  ==>       ==> y     a  ==>         ==> y
+/// NI ==>       ==> DO  /=> UI ==>       ==> DO    NI ==>         ==> DO
 ///     |    |    |     /        |    |    |            |     |     |
 ///     +----|----+    /         +----|----+            +-----|-----+
 ///          v        /               v                       v
-///          b ======/                c                       c
+///          UI======/                FR                      FR
+///
+/// This operator is `>\\` in `pipes`.
 public func >>| <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
     return p |<< f
 }
 
 /// Replace Upstream | Like Replace Upstream but backwards.
+///
+/// This operator is `//<` in `pipes`.
 public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, DI, DO, UI>) -> Proxy<NO, NI, DI, DO, FR> {
     return Proxy(p.repr.requestBind { f($0).repr })
 }
@@ -122,11 +130,15 @@ public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO
 ///
 /// Yields a new pipe that replaces all `responds`s in the body of the latter given pipe with the
 /// given former pipe.
+/// 
+/// This operator is `/>/` in `pipes`.
 public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return { f($0) |<< g }
 }
 
 /// Compose Unfolds Backwards | Like Compose Unfolds but backwards.
+///
+/// This operator is `\<\` in `pipes`.
 public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return g >|> f
 }
@@ -134,24 +146,26 @@ public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, 
 /// Replace Downstream | Replaces each `respond` in the pipe with the given pipe awaiting downstream
 /// output.
 ///
-///
-///
-///                              /===> b
+///                              /===> DO
 ///                             /      |
-///     +---------+            /  +----|----+            +-----------+
-///     |         |           /   |    v    |            |           |
-/// x' <==       <== b' <==\ / x'<==       <== c'    x' <==         <== c'
-///     |    f    |         X     |    g    |     =      | f '>>|' g |
-/// x  ==>       ==> b  ===/ \ x ==>       ==> c     x  ==>         ==> c'
-///     |    |    |           \   |    |    |            |     |     |
-///     +----|----+            \  +----|----+            +-----|-----+
-///          v                  \      v                       v
-///          a'                  \==== b'                      a'
+///     +---------+            /  +----|----+            +---------+
+///     |         |           /   |    v    |            |         |
+/// UO <==       <== DI <==\ / UO<==       <== NI    UO <==       <== NI
+///     |    f    |         X     |    g    |     =      | f |>> g |
+/// UI ==>       ==> DO ===/ \ UI==>       ==> NO    UI ==>       ==> NI
+///     |    |    |           \   |    |    |            |    |    |
+///     +----|----+            \  +----|----+            +----|----+
+///          v                  \      v                      v
+///          FR                  \==== DI                     FR
+///
+/// This operator is `//>` in `pipes`.
 public func |>> <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
     return Proxy(p.repr.respondBind { f($0).repr })
 }
 
 /// Replace Downstream Backwards | Like Replace Downstream but backwards.
+///
+/// This operator is `<\\` in `pipes`.
 public func <<| <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
     return p |>> f
 }
