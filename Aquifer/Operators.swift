@@ -78,32 +78,12 @@ public func push<UT, DT, FR>(@autoclosure(escaping) dT: () -> DT) -> Proxy<UT, D
     return Proxy(pushRepr(dT))
 }
 
-infix operator |>> {
-associativity left
-precedence 120
-}
-
-/// For | Loops over all downstream values in the given pipe replacing them with the pipe given by
-/// the application of the given function.
-public func |>> <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
-    return Proxy(p.repr.respondBind { f($0).repr })
-}
-
-infix operator <<| {
-associativity right
-precedence 120
-}
-
-/// For | Loops over all downstream values in the given pipe replacing them with the pipe given by
-/// the application of the given function.
-public func <<| <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
-    return p |>> f
-}
-
 infix operator |>| {
 associativity right
 precedence 130
 }
+
+// MARK: - Respond Category
 
 /// Compose Unfolds | Composes two unfolds.
 public func |>| <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
@@ -120,15 +100,46 @@ public func |<| <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, 
     return g |>| f
 }
 
-infix operator >>| {
+infix operator |>> {
+associativity left
+precedence 120
+}
+
+/// replaces each 'respond' in @p@ with @f@.
+///
+///
+///
+///                              /===> b
+///                             /      |
+///     +---------+            /  +----|----+            +-----------+
+///     |         |           /   |    v    |            |           |
+/// x' <==       <== b' <==\ / x'<==       <== c'    x' <==         <== c'
+///     |    f    |         X     |    g    |     =      | f '>>|' g |
+/// x  ==>       ==> b  ===/ \ x ==>       ==> c     x  ==>         ==> c'
+///     |    |    |           \   |    |    |            |     |     |
+///     +----|----+            \  +----|----+            +-----|-----+
+///          v                  \      v                       v
+///          a'                  \==== b'                      a'
+public func |>> <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
+    return Proxy(p.repr.respondBind { f($0).repr })
+}
+
+infix operator <<| {
 associativity right
-precedence 130
+precedence 120
+}
+
+/// replaces each 'request' in @p@ with @f@.
+public func <<| <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
+    return p |>> f
 }
 
 infix operator >|> {
 associativity right
 precedence 140
 }
+
+// MARK: - Request Category
 
 /// Compose two unfolds, creating a new unfold
 public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
@@ -145,7 +156,24 @@ public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, 
     return g >|> f
 }
 
+infix operator >>| {
+associativity right
+precedence 130
+}
+
 /// replaces each 'request' in @p@ with @f@.
+///
+///          b'<=====\
+///          |        \
+///     +----|----+    \         +---------+            +-----------+
+///     |    v    |     \        |         |            |           |
+/// a' <==       <== y'  \== b' <==       <== y'    a' <==         <== y'
+///     |    f    |              |    g    |     =      | f '>>|' g |
+/// a  ==>       ==> y   /=> b  ==>       ==> y     a  ==>         ==> y
+///     |    |    |     /        |    |    |            |     |     |
+///     +----|----+    /         +----|----+            +-----|-----+
+///          v        /               v                       v
+///          b ======/                c                       c
 public func >>| <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
     return p |<< f
 }
@@ -160,10 +188,27 @@ public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO
     return Proxy(p.repr.requestBind { f($0).repr })
 }
 
-infix operator +>> {
-associativity right
-precedence 150
+// MARK: - Push Category
+
+/// Connect-Upstream | Connect push-based streams.
+///
+/// Given two pipes awaiting upstream input, and with compatible upstream and downstream interfaces,
+/// produces a pipe awaiting upstream input to be passed through the former pipe then down through
+/// the latter pipe.
+public func >~> <UO, UI, DI, DO, NI, NO, FR>(f: UI -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<DI, DO, NI, NO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
+    return { f($0) >>~ g }
 }
+
+infix operator <~< {
+associativity left
+precedence 170
+}
+
+/// Connect-Upstream | Like Connect-Upstream but backwards.
+public func <~< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, g: UI -> Proxy<UO, UI, DI, DO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
+    return g >~> f
+}
+
 
 infix operator >>~ {
 associativity left
@@ -186,40 +231,7 @@ public func ~<< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>,
     return p >>~ f
 }
 
-/// Pair-Down | Given an upstream pipe requesting a downstream response and a downstream pipe of
-/// responses, pairs each request with a response and unblocks the waiting pipe.
-public func +>> <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
-    return p <<+ f
-}
-
-infix operator <<+ {
-associativity left
-precedence 150
-}
-
-/// Pair-Down | Like Pair-Up but backwards.
-public func <<+ <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, UO, UI, FR>) -> Proxy<NO, NI, DI, DO, FR> {
-    return Proxy(p.repr.pullBind { f($0).repr })
-}
-
-/// Connect-Upstream | Connect push-based streams.
-///
-/// Given two pipes awaiting upstream input, and with compatible upstream and downstream interfaces,
-/// produces a pipe awaiting upstream input to be passed through the former pipe then down through
-/// the latter pipe.
-public func >~> <UO, UI, DI, DO, NI, NO, FR>(f: UI -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<DI, DO, NI, NO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
-    return { f($0) >>~ g }
-}
-
-infix operator <~< {
-associativity left
-precedence 170
-}
-
-/// Connect-Upstream | Like Connect-Upstream but backwards.
-public func <~< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, g: UI -> Proxy<UO, UI, DI, DO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
-    return g >~> f
-}
+// MARK: - Pull Category
 
 infix operator >+> {
 associativity left
@@ -228,7 +240,7 @@ precedence 160
 
 /// Connect-Downstream | Connect pull-based streams
 ///
-/// Given two pipes awaiting downstream input, and with compatible downstream and upstream 
+/// Given two pipes awaiting downstream input, and with compatible downstream and upstream
 /// interfaces, produces a pipe awaiting downstream input to be passed through the former pipe then
 /// up through the latter pipe.
 public func >+> <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
@@ -244,6 +256,28 @@ precedence 160
 public func <+< <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, UO, UI, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return { f($0) <<+ g }
 }
+
+infix operator +>> {
+associativity right
+precedence 150
+}
+
+/// Pair-Down | Given an upstream pipe requesting a downstream response and a downstream pipe of
+/// responses, pairs each request with a response and unblocks the waiting pipe.
+public func +>> <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
+    return p <<+ f
+}
+
+infix operator <<+ {
+associativity left
+precedence 150
+}
+
+/// Pair-Down | Like Pair-Down but backwards.
+public func <<+ <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, UO, UI, FR>) -> Proxy<NO, NI, DI, DO, FR> {
+    return Proxy(p.repr.pullBind { f($0).repr })
+}
+
 
 infix operator >~> {
 associativity right
