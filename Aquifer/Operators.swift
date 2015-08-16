@@ -202,12 +202,35 @@ public func <<+ <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO
     return Proxy(p.repr.pullBind { f($0).repr })
 }
 
+/// Connect-Upstream | Connect push-based streams.
+///
+/// Given two pipes awaiting upstream input, and with compatible upstream and downstream interfaces,
+/// produces a pipe awaiting upstream input to be passed through the former pipe then down through
+/// the latter pipe.
+public func >~> <UO, UI, DI, DO, NI, NO, FR>(f: UI -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<DI, DO, NI, NO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
+    return { f($0) >>~ g }
+}
+
+infix operator <~< {
+associativity left
+precedence 170
+}
+
+/// Connect-Upstream | Like Connect-Upstream but backwards.
+public func <~< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, g: UI -> Proxy<UO, UI, DI, DO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
+    return g >~> f
+}
+
 infix operator >+> {
 associativity left
 precedence 160
 }
 
-/// Connect | Connect pull-based streams
+/// Connect-Downstream | Connect pull-based streams
+///
+/// Given two pipes awaiting downstream input, and with compatible downstream and upstream 
+/// interfaces, produces a pipe awaiting downstream input to be passed through the former pipe then
+/// up through the latter pipe.
 public func >+> <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return g <+< f
 }
@@ -217,7 +240,7 @@ associativity right
 precedence 160
 }
 
-/// Connect | Connect pull-based streams
+/// Connect-Downstream | Like Connect-Downstream but backwards.
 public func <+< <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, UO, UI, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return { f($0) <<+ g }
 }
@@ -225,21 +248,6 @@ public func <+< <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, 
 infix operator >~> {
 associativity right
 precedence 170
-}
-
-/// Connect | Connect push-based streams.
-public func >~> <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<DI, DO, NI, NO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return { f($0) >>~ g }
-}
-
-infix operator <~< {
-associativity left
-precedence 170
-}
-
-/// Connect | Connect push-based streams.
-public func <~< <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return g >~> f
 }
 
 // MARK: - Implementation Details Follow
