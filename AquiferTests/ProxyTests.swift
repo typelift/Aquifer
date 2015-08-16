@@ -9,15 +9,25 @@
 import Aquifer
 import SwiftCheck
 import XCTest
-import func Swiftz.identity
-import func Swiftz.•
 import func Swiftz.const
+import func Swiftz.identity
+import func Swiftz.curry
+import func Swiftz.•
+import func Swiftz.<*>
+import func Swiftz.<^>
 
 class ProxySpec : XCTestCase {
     func testProperties() {
-        property("Proxy respects the Functor identity law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
+        property("Proxy obeys the Functor identity law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return (identity • p, p) ==== (s, c)
+            return (identity <^> p, p) ==== (s, c)
+        }
+        
+        /// Functor composition law follows from Arrow composition laws in Swiftz.
+        
+        property("Proxy obeys the Applicative identity law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
+            let p = aProxy(p2)
+            return (const(identity) <*> p, p) ==== (s, c)
         }
         
         property("Respond distributes over composition") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in

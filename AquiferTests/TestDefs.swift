@@ -12,7 +12,7 @@ import func Swiftz.const
 import Aquifer
 import SwiftCheck
 
-enum ClientStep : CustomStringConvertible {
+enum ClientStep : Int, CustomStringConvertible {
 	case ClientRequest
 	case ClientLog
 	case ClientInc
@@ -41,7 +41,7 @@ extension ClientStep : Arbitrary {
 	}
 }
 
-enum ServerStep : CustomStringConvertible {
+enum ServerStep : Int, CustomStringConvertible {
 	case ServerRespond
 	case ServerLog
 	case ServerInc
@@ -70,7 +70,7 @@ extension ServerStep : Arbitrary {
 	}
 }
 
-enum ProxyStep : CustomStringConvertible {
+enum ProxyStep : Int, CustomStringConvertible {
 	case ProxyRequest
 	case ProxyRespond
 	case ProxyLog
@@ -183,12 +183,20 @@ func aServer(server : AServer) -> (Int -> Proxy<X, (), Int, Int, Int> /* Server<
 	}).reduce(Proxy.pure, combine: >->)
 }
 
-struct AProxy : CustomStringConvertible {
+struct AProxy : Hashable, CustomStringConvertible {
 	let unAProxy : [ProxyStep]
 	
 	var description : String {
 		return correct(self.unAProxy.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
 	}
+	
+	var hashValue : Int {
+		return Set(self.unAProxy).hashValue
+	}
+}
+
+func == (l : AProxy, r : AProxy) -> Bool {
+	return l.unAProxy == r.unAProxy
 }
 
 extension AProxy : Arbitrary {
@@ -198,6 +206,12 @@ extension AProxy : Arbitrary {
 	
 	static func shrink(c : AProxy) -> [AProxy] {
 		return [ProxyStep].shrink(c.unAProxy).map(AProxy.init)
+	}
+}
+
+extension AProxy : CoArbitrary {
+	static func coarbitrary<C>(x : AProxy) -> (Gen<C> -> Gen<C>) {
+		return [ProxyStep].coarbitrary(x.unAProxy)
 	}
 }
 
@@ -235,14 +249,7 @@ func ==== (l : (ProxyK.T, ProxyK.T), r : (AServer, AClient)) -> Bool {
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)
 }
 
-
-func >>-<A, B, C>(f : (C -> A), k : (A -> C -> B)) -> (C -> B) {
-	return { (let r) in
-		return k(f(r))(r)
-	}
-}
-
-/// Kleisli Composition of Arrows.
+/// Kleisli Composition.
 func >-> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
 	return { r in
 		return m1(r) >>- m2
