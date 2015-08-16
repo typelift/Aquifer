@@ -82,6 +82,30 @@ public struct Proxy<UO, UI, DI, DO, FR> {
     }
 }
 
+struct Effect<Result> {
+    typealias T = Proxy<X, (), (), X, Result>
+}
+
+struct Producer<B, Result> {
+    typealias T = Proxy<X, (), (), B, Result>
+}
+
+struct Pipe<A, B, Result> {
+    typealias T = Proxy<(), A, (), B, Result>
+}
+
+struct Consumer<A, Result> {
+    typealias T = Proxy<(), A, (), X, Result>
+}
+
+struct Client<RequestT, RespondT, Result> {
+    typealias T = Proxy<RequestT, RespondT, (), X, Result>
+}
+
+struct Server<ReceiveT, RespondT, Result> {
+    typealias T = Proxy<X, (), ReceiveT, RespondT, Result>
+}
+
 /// Forces a pipe to evaluate its contents lazily.
 public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p: () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(p().repr)
