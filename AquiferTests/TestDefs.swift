@@ -238,12 +238,7 @@ struct Operation {
 	typealias T = (ProxyK.T, ProxyK.T) -> ProxyK.T
 }
 
-infix operator ==== {}
-
-func ==== (l : (ProxyK.T, ProxyK.T), r : (AServer, AClient)) -> Bool {
-	let (pl, pr) = l
-	let (p0, p1) = r
-	
+func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -> Bool {	
 	let sv  = aServer(p0)
 	let cl  = aClient(p1)
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)

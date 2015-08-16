@@ -20,14 +20,14 @@ class ProxySpec : XCTestCase {
     func testProperties() {
         property("Proxy obeys the Functor identity law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return (identity <^> p, p) ==== (s, c)
+            return formulate(identity <^> p, p)(s, c)
         }
         
         /// Functor composition law follows from Arrow composition laws in Swiftz.
         
         property("Proxy obeys the Applicative identity law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return (const(identity) <*> p, p) ==== (s, c)
+            return formulate(const(identity) <*> p, p)(s, c)
         }
         
         property("Respond distributes over composition") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
@@ -35,7 +35,7 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return ((f >-> g) |>| h, (f |>| h) >-> (g |>| h)) ==== (s, c)
+            return formulate((f >-> g) |>| h, (f |>| h) >-> (g |>| h))(s, c)
         }
 
         property("Request distributes over composition") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
@@ -43,20 +43,20 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return (f >|> (g >-> h), (f >|> g) >-> (f >|> h)) ==== (s, c)
+            return formulate(f >|> (g >-> h), (f >|> g) >-> (f >|> h))(s, c)
         }
         
         /// Need closures here.  Autoclosures crash Swiftc.
         property("Request-Respond duality") <- forAll { (s : AServer, c : AClient) in
             return
-                ({ $0.reflect() } • { respond($0) }, { request($0) }) ==== (s, c)
+                formulate({ $0.reflect() } • { respond($0) }, { request($0) })(s, c)
                 ^&&^
-                ({ $0.reflect() } • { request($0) }, { respond($0) }) ==== (s, c)
+                formulate({ $0.reflect() } • { request($0) }, { respond($0) })(s, c)
         }
 
         property("Request Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return (p >|> Proxy.pure, Proxy.pure) ==== (s, c)
+            return formulate(p >|> Proxy.pure, Proxy.pure)(s, c)
         }
         
         property("Push-Pull respect associativity") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
@@ -64,19 +64,19 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
             
-            return ((f >+> g) >~> h, f >+> (g >~> h)) ==== (s, c)
+            return formulate((f >+> g) >~> h, f >+> (g >~> h))(s, c)
         }
         
         property("Request Composition Reflection") <- forAll { (f2 : AProxy, g2 : AProxy, s : AServer, c : AClient) in
             let f = aProxy(f2)
             let g = aProxy(g2)
             
-            return ({ $0.reflect() } • (f >|> g), ({ $0.reflect() } • g) |>| ({ $0.reflect() } • f)) ==== (s, c)
+            return formulate({ $0.reflect() } • (f >|> g), ({ $0.reflect() } • g) |>| ({ $0.reflect() } • f))(s, c)
         }
         
         property("Involution") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return ({ $0.reflect() } • { $0.reflect() } • p >-> Proxy.pure, p) ==== (s, c)
+            return formulate({ $0.reflect() } • { $0.reflect() } • p >-> Proxy.pure, p)(s, c)
         }
     }
     
@@ -104,12 +104,12 @@ class ProxySpec : XCTestCase {
     
     private func rightIdentity(op : Operation.T, _ idt : ProxyK.T)(_ f2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
         let f = aProxy(f2)
-        return (f, op(f, idt)) ==== (s, c)
+        return formulate(f, op(f, idt))(s, c)
     }
 
     private func leftIdentity(op : Operation.T, _ idt : ProxyK.T)(_ f2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
         let f = aProxy(f2)
-        return (op(f, idt), f) ==== (s, c)
+        return formulate(op(f, idt), f)(s, c)
     }
 
     
@@ -117,6 +117,6 @@ class ProxySpec : XCTestCase {
         let f = aProxy(f2)
         let g = aProxy(g2)
         let h = aProxy(h2)
-        return (op(f, op(g, h)), op(op(f, g), h)) ==== (s, c)
+        return formulate(op(f, op(g, h)), op(op(f, g), h))(s, c)
     }
 }
