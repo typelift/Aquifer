@@ -82,7 +82,7 @@ public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, D
 
 /// Compose Folds | Composes two folds.
 ///
-/// Yields a new pipe that replaces all `request`s in the body of the latter given pipe with the 
+/// Yields a new pipe that replaces all `request`s in the body of the given latter pipe with the
 /// given former pipe.
 ///
 ///         IS                   /===> b                     IS
@@ -140,7 +140,7 @@ public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO
 
 /// Compose Unfolds | Compose two unfolds, creating a new unfold.
 ///
-/// Yields a new pipe that replaces all `responds`s in the body of the latter given pipe with the
+/// Yields a new pipe that replaces all `responds`s in the body of the given latter pipe with the
 /// given former pipe.
 /// 
 ///          UO<=====\               IS                     IS
