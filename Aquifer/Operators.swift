@@ -44,6 +44,23 @@ public func respond<UO, UI, DI, DO>(@autoclosure(escaping) dO: () -> DO) -> Prox
     return Proxy(ProxyRepr.Respond(dO) { x in ProxyRepr.Pure { _ in x} })
 }
 
+/// Forward responses followed by requests.
+///
+///            DT
+///             |
+///        +----|----+
+///        |    v    |
+///    UT <============ UT
+///        |         |
+///    DT ============> DT
+///        |    |    |
+///        +----|----+
+///             v
+///             FR
+public func push<UT, DT, FR>(@autoclosure(escaping) dT: () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
+    return Proxy(pushRepr(dT))
+}
+
 /// Forward requests followed by responses.
 ///
 ///            UT
@@ -61,21 +78,38 @@ public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, D
     return Proxy(pullRepr(uT))
 }
 
-/// Forward responses followed by requests.
+// MARK: - Request Category
+
+/// Compose two unfolds, creating a new unfold
+public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { f($0) |<< g }
+}
+
+/// Compose two unfolds, creating a new unfold
+public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return g >|> f
+}
+
+/// replaces each 'request' in @p@ with @f@.
 ///
-///            DT
-///             |
-///        +----|----+
-///        |    v    |
-///    UT <============ UT
-///        |         |
-///    DT ============> DT
-///        |    |    |
-///        +----|----+
-///             v
-///             FR
-public func push<UT, DT, FR>(@autoclosure(escaping) dT: () -> DT) -> Proxy<UT, DT, UT, DT, FR> {
-    return Proxy(pushRepr(dT))
+///          b'<=====\
+///          |        \
+///     +----|----+    \         +---------+            +-----------+
+///     |    v    |     \        |         |            |           |
+/// a' <==       <== y'  \== b' <==       <== y'    a' <==         <== y'
+///     |    f    |              |    g    |     =      | f '>>|' g |
+/// a  ==>       ==> y   /=> b  ==>       ==> y     a  ==>         ==> y
+///     |    |    |     /        |    |    |            |     |     |
+///     +----|----+    /         +----|----+            +-----|-----+
+///          v        /               v                       v
+///          b ======/                c                       c
+public func >>| <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
+    return p |<< f
+}
+
+/// replaces each 'request' in @p@ with @f@.
+public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, DI, DO, UI>) -> Proxy<NO, NI, DI, DO, FR> {
+    return Proxy(p.repr.requestBind { f($0).repr })
 }
 
 // MARK: - Respond Category
@@ -112,40 +146,6 @@ public func |>> <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO
 /// replaces each 'request' in @p@ with @f@.
 public func <<| <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
     return p |>> f
-}
-
-// MARK: - Request Category
-
-/// Compose two unfolds, creating a new unfold
-public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
-    return { f($0) |<< g }
-}
-
-/// Compose two unfolds, creating a new unfold
-public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
-    return g >|> f
-}
-
-/// replaces each 'request' in @p@ with @f@.
-///
-///          b'<=====\
-///          |        \
-///     +----|----+    \         +---------+            +-----------+
-///     |    v    |     \        |         |            |           |
-/// a' <==       <== y'  \== b' <==       <== y'    a' <==         <== y'
-///     |    f    |              |    g    |     =      | f '>>|' g |
-/// a  ==>       ==> y   /=> b  ==>       ==> y     a  ==>         ==> y
-///     |    |    |     /        |    |    |            |     |     |
-///     +----|----+    /         +----|----+            +-----|-----+
-///          v        /               v                       v
-///          b ======/                c                       c
-public func >>| <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
-    return p |<< f
-}
-
-/// replaces each 'request' in @p@ with @f@.
-public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, DI, DO, UI>) -> Proxy<NO, NI, DI, DO, FR> {
-    return Proxy(p.repr.requestBind { f($0).repr })
 }
 
 // MARK: - Push Category
