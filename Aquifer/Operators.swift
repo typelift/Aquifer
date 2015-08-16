@@ -85,7 +85,19 @@ public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, D
 /// Yields a new pipe that replaces all `request`s in the body of the latter given pipe with the 
 /// given former pipe.
 ///
-/// This operator is `\>\` in `pipes`.
+///         IS                   /===> b                     IS
+///          |                  /      |                      |
+///     +----|----+            /  +----|----+            +----|----+
+///     |    v    |           /   |    v    |            |    v    |
+/// UO <==       <== DI <==\ / UO<==       <== NI    UO <==       <== NI
+///     |    f    |         X     |    g    |     =      | f />/ g |
+/// UI ==>       ==> DO ===/ \ UI==>       ==> NO    UI ==>       ==> NI
+///     |    |    |           \   |    |    |            |    |    |
+///     +----|----+            \  +----|----+            +----|----+
+///          v                  \      v                      v
+///          FR                  \==== DI                     FR
+///
+/// This operator is `/>/` in `pipes`.
 public func |>| <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
     return { f($0) |>> g }
 }
@@ -102,15 +114,15 @@ public func |<| <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, 
 ///
 ///          UO<=====\
 ///          |        \
-///     +----|----+    \         +---------+            +-----------+
-///     |    v    |     \        |         |            |           |
-/// NO <==       <== DI  \== UO <==       <== DI    NO <==         <== DI
-///     |    f    |              |    g    |     =      | f '>>|' g |
-/// NI ==>       ==> DO  /=> UI ==>       ==> DO    NI ==>         ==> DO
-///     |    |    |     /        |    |    |            |     |     |
-///     +----|----+    /         +----|----+            +-----|-----+
-///          v        /               v                       v
-///          UI======/                FR                      FR
+///     +----|----+    \         +---------+            +---------+
+///     |    v    |     \        |         |            |         |
+/// NO <==       <== DI  \== UO <==       <== DI    NO <==       <== DI
+///     |    f    |              |    g    |     =      | f >>| g |
+/// NI ==>       ==> DO  /=> UI ==>       ==> DO    NI ==>       ==> DO
+///     |    |    |     /        |    |    |            |    |    |
+///     +----|----+    /         +----|----+            +----|----+
+///          v        /               v                      v
+///          UI======/                FR                     FR
 ///
 /// This operator is `>\\` in `pipes`.
 public func >>| <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
@@ -131,9 +143,21 @@ public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO
 /// Yields a new pipe that replaces all `responds`s in the body of the latter given pipe with the
 /// given former pipe.
 /// 
-/// This operator is `/>/` in `pipes`.
-public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
-    return { f($0) |<< g }
+///          UO<=====\               IS                     IS
+///          |        \               |                      |
+///     +----|----+    \         +----|----+            +----|----+
+///     |    v    |     \        |    v    |            |    v    |
+/// NO <==       <== DI  \== UO <==       <== DI    NO <==       <== DI
+///     |    f    |              |    g    |     =      | f \>\ g |
+/// NI ==>       ==> DO  /=> UI ==>       ==> DO    NI ==>       ==> DO
+///     |    |    |     /        |    |    |            |    |    |
+///     +----|----+    /         +----|----+            +----|----+
+///          v        /               v                      v
+///          UI======/                FR                     FR
+///
+/// This operator is `\>\` in `pipes`.
+public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { f >>| g($0) }
 }
 
 /// Compose Unfolds Backwards | Like Compose Unfolds but backwards.
