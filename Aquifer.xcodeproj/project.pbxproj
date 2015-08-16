@@ -41,6 +41,8 @@
 		11F032341B0C00FC004C6D59 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		11F032381B0C0179004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11F032391B0C017B004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		82F317461B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
+		82F317471B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +214,7 @@
 		11D195731A7B42260072F514 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
 		11F0320B1B0BFF82004C6D59 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F032151B0BFF82004C6D59 /* AquiferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AquiferTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		82F317451B80335E007B80E2 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDefs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -390,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				11862D311A67316B008F5696 /* ProxyTests.swift */,
+				82F317451B80335E007B80E2 /* TestDefs.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -716,6 +720,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11862D321A67316B008F5696 /* ProxyTests.swift in Sources */,
+				82F317461B80335E007B80E2 /* TestDefs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -741,6 +746,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11F032341B0C00FC004C6D59 /* ProxyTests.swift in Sources */,
+				82F317471B80335E007B80E2 /* TestDefs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
