@@ -31,15 +31,12 @@ enum ClientStep : CustomStringConvertible {
 
 extension ClientStep : Arbitrary {
 	static var arbitrary : Gen<ClientStep> {
-		return Gen.sized { n in
-			switch (n % 3) {
-			case 0:
-				return Gen.pure(.ClientInc)
-			case 1:
-				return Gen.pure(.ClientLog)
-			default:
-				return Gen.pure(.ClientRequest)
-			}
+		return Gen.sized { _ in
+			return Gen.fromElementsOf([
+				.ClientInc,
+				.ClientLog,
+				.ClientRequest,
+			])
 		}
 	}
 }
@@ -63,15 +60,12 @@ enum ServerStep : CustomStringConvertible {
 
 extension ServerStep : Arbitrary {
 	static var arbitrary : Gen<ServerStep> {
-		return Gen.sized { n in
-			switch (n % 3) {
-			case 0:
-				return Gen.pure(.ServerInc)
-			case 1:
-				return Gen.pure(.ServerLog)
-			default:
-				return Gen.pure(.ServerRespond)
-			}
+		return Gen.sized { _ in
+			return Gen.fromElementsOf([
+				.ServerInc,
+				.ServerLog,
+				.ServerRespond,
+			])
 		}
 	}
 }
@@ -98,17 +92,13 @@ enum ProxyStep : CustomStringConvertible {
 
 extension ProxyStep : Arbitrary {
 	static var arbitrary : Gen<ProxyStep> {
-		return Gen.sized { n in
-			switch (n % 4) {
-			case 0:
-				return Gen.pure(.ProxyRequest)
-			case 1:
-				return Gen.pure(.ProxyRespond)
-			case 2:
-				return Gen.pure(.ProxyLog)
-			default:
-				return Gen.pure(.ProxyInc)
-			}
+		return Gen.sized { _ in
+			return Gen.fromElementsOf([
+				.ProxyRequest,
+				.ProxyRespond,
+				.ProxyLog,
+				.ProxyInc,
+			])
 		}
 	}
 }
@@ -143,7 +133,9 @@ extension AClient : Arbitrary {
 		return [ClientStep].arbitrary.fmap(AClient.init)
 	}
 	
-	// shrink = map AClient . shrink . unAClient
+	static func shrink(c : AClient) -> [AClient] {
+		return [ClientStep].shrink(c.unAClient).map(AClient.init)
+	}
 }
 
 func aClient(client : AClient) -> (Int -> Proxy<Int, Int, (), X, Int> /* Client<Int, Int, Int> */) {
@@ -173,7 +165,9 @@ extension AServer : Arbitrary {
 		return [ServerStep].arbitrary.fmap(AServer.init)
 	}
 	
-	// shrink = map AServer . shrink . unAServer
+	static func shrink(c : AServer) -> [AServer] {
+		return [ServerStep].shrink(c.unAServer).map(AServer.init)
+	}
 }
 
 func aServer(server : AServer) -> (Int -> Proxy<X, (), Int, Int, Int> /* Server<Int, Int, Int> */) {
@@ -202,7 +196,9 @@ extension AProxy : Arbitrary {
 		return [ProxyStep].arbitrary.fmap(AProxy.init)
 	}
 	
-	// shrink = map AProxy . shrink . unAProxy
+	static func shrink(c : AProxy) -> [AProxy] {
+		return [ProxyStep].shrink(c.unAProxy).map(AProxy.init)
+	}
 }
 
 func aProxy(proxy : AProxy) -> (Int -> Proxy<Int, Int, Int, Int, Int>) {
