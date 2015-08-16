@@ -201,6 +201,18 @@ public func <<| <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>,
 /// Given two pipes awaiting upstream input, and with compatible upstream and downstream interfaces,
 /// produces a pipe awaiting upstream input to be passed through the former pipe then down through
 /// the latter pipe.
+///
+///         UI               DO                     UI
+///          |                |                      |
+///     +----|----+      +----|----+            +----|----+
+///     |    v    |      |    v    |            |    v    |
+/// UO <==       <== DI <==       <== NI    UO <==       <== NI
+///     |    f    |      |    g    |     =      | f >~> g |
+/// UI ==>       ==> DO ==>       ==> NO    UI ==>       ==> NO
+///     |    |    |      |    |    |            |    |    |
+///     +----|----+      +----|----+            +----|----+
+///          v                v                      v
+///          FR               FR                     FR
 public func >~> <UO, UI, DI, DO, NI, NO, FR>(f: UI -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<DI, DO, NI, NO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
     return { f($0) >>~ g }
 }
@@ -228,6 +240,18 @@ public func ~<< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>,
 /// Given two pipes awaiting downstream input, and with compatible downstream and upstream
 /// interfaces, produces a pipe awaiting downstream input to be passed through the former pipe then
 /// up through the latter pipe.
+///
+///         UO               DI                     DI
+///          |                |                      |
+///     +----|----+      +----|----+            +----|----+
+///     |    v    |      |    v    |            |    v    |
+/// NO <==       <== UO <==       <== DI    NO <==       <== DI
+///     |    f    |      |    g    |     =      | f >+> g |
+/// NI ==>       ==> UI ==>       ==> DO    NI ==>       ==> DO
+///     |    |    |      |    |    |            |    |    |
+///     +----|----+      +----|----+            +----|----+
+///          v                v                      v
+///          FR               FR                     FR
 public func >+> <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return g <+< f
 }
