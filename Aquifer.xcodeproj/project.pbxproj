@@ -43,6 +43,8 @@
 		11F032391B0C017B004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82F317461B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F317471B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
+		82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
+		82F3176E1B81220C007B80E2 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +217,7 @@
 		11F0320B1B0BFF82004C6D59 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F032151B0BFF82004C6D59 /* AquiferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AquiferTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82F317451B80335E007B80E2 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDefs.swift; sourceTree = "<group>"; };
+		82F3176C1B81220C007B80E2 /* PipesOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipesOperators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +379,7 @@
 				11862D261A66392B008F5696 /* Proxy.swift */,
 				11200E741A7723BD0032A136 /* Simple.swift */,
 				11862D2B1A670B0A008F5696 /* Operators.swift */,
+				82F3176C1B81220C007B80E2 /* PipesOperators.swift */,
 				11862D281A66E8EB008F5696 /* X.swift */,
 			);
 			name = Core;
@@ -705,6 +709,7 @@
 				11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */,
 				11862D291A66E8EB008F5696 /* X.swift in Sources */,
 				11200E751A7723BD0032A136 /* Simple.swift in Sources */,
+				82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */,
 				11200E871A7953120032A136 /* IO.swift in Sources */,
 				11862D271A66392B008F5696 /* Proxy.swift in Sources */,
 				11200E831A784D230032A136 /* Parsing.swift in Sources */,
@@ -731,6 +736,7 @@
 				11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */,
 				11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */,
 				11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */,
+				82F3176E1B81220C007B80E2 /* PipesOperators.swift in Sources */,
 				11F032321B0C00F8004C6D59 /* IO.swift in Sources */,
 				11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */,
 				11F032301B0C00F8004C6D59 /* Parsing.swift in Sources */,
