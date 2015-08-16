@@ -43,7 +43,7 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return ((f >-> g) >|> h, (f >|> h) >-> (g >|> h)) ==== (s, c)
+            return (f >|> (g >-> h), (f >|> g) >-> (f >|> h)) ==== (s, c)
         }
         
         /// Need closures here.  Autoclosures crash Swiftc.
@@ -71,7 +71,7 @@ class ProxySpec : XCTestCase {
             let f = aProxy(f2)
             let g = aProxy(g2)
             
-            return ({ $0.reflect() } • (f >|> g), ({ $0.reflect() } • f) |>| ({ $0.reflect() } • g)) ==== (s, c)
+            return ({ $0.reflect() } • (f >|> g), ({ $0.reflect() } • g) |>| ({ $0.reflect() } • f)) ==== (s, c)
         }
         
         property("Involution") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
