@@ -80,17 +80,21 @@ public func pull<UT, DT, FR>(@autoclosure(escaping) uT: () -> UT) -> Proxy<UT, D
 
 // MARK: - Request Category
 
-/// Compose two unfolds, creating a new unfold
-public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
-    return { f($0) |<< g }
+/// Compose Folds | Composes two folds.
+///
+/// Yields a new pipe that replaces all `request`s in the body of the latter given pipe with the 
+/// given former pipe.
+public func |>| <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return { f($0) |>> g }
 }
 
-/// Compose two unfolds, creating a new unfold
-public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
-    return g >|> f
+/// Compose Folds Backwards | Like Compose Folds but backwards.
+public func |<| <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+    return g |>| f
 }
 
-/// replaces each 'request' in @p@ with @f@.
+/// Replace Upstream | Replaces each `request` in the pipe with the given pipe awaiting upstream 
+/// output.
 ///
 ///          b'<=====\
 ///          |        \
@@ -107,24 +111,28 @@ public func >>| <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>,
     return p |<< f
 }
 
-/// replaces each 'request' in @p@ with @f@.
+/// Replace Upstream | Like Replace Upstream but backwards.
 public func |<< <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, DI, DO, UI>) -> Proxy<NO, NI, DI, DO, FR> {
     return Proxy(p.repr.requestBind { f($0).repr })
 }
 
 // MARK: - Respond Category
 
-/// Compose Unfolds | Composes two unfolds.
-public func |>| <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return { f($0) |>> g }
+/// Compose Unfolds | Compose two unfolds, creating a new unfold.
+///
+/// Yields a new pipe that replaces all `responds`s in the body of the latter given pipe with the
+/// given former pipe.
+public func >|> <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, DI, DO, UI>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return { f($0) |<< g }
 }
 
-/// Compose Unfolds Backwards | Composes two unfolds.
-public func |<| <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return g |>| f
+/// Compose Unfolds Backwards | Like Compose Unfolds but backwards.
+public func <|< <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, DI, DO, UI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
+    return g >|> f
 }
 
-/// replaces each 'respond' in @p@ with @f@.
+/// Replace Downstream | Replaces each `respond` in the pipe with the given pipe awaiting downstream
+/// output.
 ///
 ///
 ///
@@ -143,7 +151,7 @@ public func |>> <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO
     return Proxy(p.repr.respondBind { f($0).repr })
 }
 
-/// replaces each 'request' in @p@ with @f@.
+/// Replace Downstream Backwards | Like Replace Downstream but backwards.
 public func <<| <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
     return p |>> f
 }
@@ -159,7 +167,7 @@ public func >~> <UO, UI, DI, DO, NI, NO, FR>(f: UI -> Proxy<UO, UI, DI, DO, FR>,
     return { f($0) >>~ g }
 }
 
-/// Connect-Upstream | Like Connect-Upstream but backwards.
+/// Connect-Upstream Backwards | Like Connect-Upstream but backwards.
 public func <~< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, g: UI -> Proxy<UO, UI, DI, DO, FR>) -> UI -> Proxy<UO, UI, NI, NO, FR> {
     return g >~> f
 }
@@ -170,7 +178,7 @@ public func >>~ <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO
     return Proxy(p.repr.pushBind { f($0).repr })
 }
 
-/// Pair-Up | Like Pair-Up but backwards.
+/// Pair-Up Backwards | Like Pair-Up but backwards.
 public func ~<< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
     return p >>~ f
 }
@@ -186,7 +194,7 @@ public func >+> <IS, UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, 
     return g <+< f
 }
 
-/// Connect-Downstream | Like Connect-Downstream but backwards.
+/// Connect-Downstream Backwards | Like Connect-Downstream but backwards.
 public func <+< <IS, UO, UI, DI, DO, NO, NI, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: UO -> Proxy<NO, NI, UO, UI, FR>) -> IS -> Proxy<NO, NI, DI, DO, FR> {
     return { f($0) <<+ g }
 }
@@ -197,7 +205,7 @@ public func +>> <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>,
     return p <<+ f
 }
 
-/// Pair-Down | Like Pair-Down but backwards.
+/// Pair-Down Backwards | Like Pair-Down but backwards.
 public func <<+ <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, UO, UI, FR>) -> Proxy<NO, NI, DI, DO, FR> {
     return Proxy(p.repr.pullBind { f($0).repr })
 }
