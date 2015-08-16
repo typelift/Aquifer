@@ -165,27 +165,13 @@ associativity right
 precedence 150
 }
 
-/// Pair-Up | pairs each 'request' in @p@ with a 'respond' in @f@.
-public func +>> <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
-    return p <<+ f
-}
-
-infix operator <<+ {
-associativity left
-precedence 150
-}
-
-/// Pair-Up | pairs each 'request' in @p@ with a 'respond' in @f@.
-public func <<+ <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, UO, UI, FR>) -> Proxy<NO, NI, DI, DO, FR> {
-    return Proxy(p.repr.pullBind { f($0).repr })
-}
-
 infix operator >>~ {
 associativity left
 precedence 160
 }
 
-/// Pair-Up | Pairs each 'respond' in @p@ with an 'request' in @f@.
+/// Pair-Up | Given a pipe of upstream responses and a pipe requesting upstream responses, pairs
+/// each request with a response and unblocks the waiting pipe.
 public func >>~ <UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<DI, DO, NI, NO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
     return Proxy(p.repr.pushBind { f($0).repr })
 }
@@ -195,9 +181,25 @@ associativity right
 precedence 160
 }
 
-/// Pair-Up | Pairs each 'respond' in @p@ with an 'request' in @f@.
+/// Pair-Up | Like Pair-Up but backwards.
 public func ~<< <UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<DI, DO, NI, NO, FR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, NI, NO, FR> {
     return p >>~ f
+}
+
+/// Pair-Down | Given an upstream pipe requesting a downstream response and a downstream pipe of
+/// responses, pairs each request with a response and unblocks the waiting pipe.
+public func +>> <UO, UI, DI, DO, NO, NI, FR>(f: UO -> Proxy<NO, NI, UO, UI, FR>, p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<NO, NI, DI, DO, FR> {
+    return p <<+ f
+}
+
+infix operator <<+ {
+associativity left
+precedence 150
+}
+
+/// Pair-Down | Like Pair-Up but backwards.
+public func <<+ <UO, UI, DI, DO, NO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: UO -> Proxy<NO, NI, UO, UI, FR>) -> Proxy<NO, NI, DI, DO, FR> {
+    return Proxy(p.repr.pullBind { f($0).repr })
 }
 
 infix operator >+> {
