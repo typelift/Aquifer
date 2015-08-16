@@ -82,27 +82,27 @@ public struct Proxy<UO, UI, DI, DO, FR> {
     }
 }
 
-struct Effect<Result> {
+public enum Effect<Result> {
     typealias T = Proxy<X, (), (), X, Result>
 }
 
-struct Producer<B, Result> {
+public enum Producer<B, Result> {
     typealias T = Proxy<X, (), (), B, Result>
 }
 
-struct Pipe<A, B, Result> {
+public enum Pipe<A, B, Result> {
     typealias T = Proxy<(), A, (), B, Result>
 }
 
-struct Consumer<A, Result> {
+public enum Consumer<A, Result> {
     typealias T = Proxy<(), A, (), X, Result>
 }
 
-struct Client<RequestT, RespondT, Result> {
+public enum Client<RequestT, RespondT, Result> {
     typealias T = Proxy<RequestT, RespondT, (), X, Result>
 }
 
-struct Server<ReceiveT, RespondT, Result> {
+public enum Server<ReceiveT, RespondT, Result> {
     typealias T = Proxy<X, (), ReceiveT, RespondT, Result>
 }
 
