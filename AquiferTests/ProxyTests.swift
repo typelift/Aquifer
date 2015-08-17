@@ -54,9 +54,14 @@ class ProxySpec : XCTestCase {
                 formulate({ $0.reflect() } • { request($0) }, { respond($0) })(s, c)
         }
 
-        property("Request Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
+        property("Request Right Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
             return formulate(p >|> Proxy.pure, Proxy.pure)(s, c)
+        }
+
+        property("Respond Left Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
+            let p = aProxy(p2)
+            return formulate(Proxy.pure |>| p, Proxy.pure)(s, c)
         }
         
         property("Push-Pull respect associativity") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
