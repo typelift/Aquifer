@@ -124,7 +124,7 @@ struct AClient : CustomStringConvertible {
 	let unAClient : [ClientStep]
 	
 	var description : String {
-		return correct(self.unAClient.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
+		return correct(self.unAClient.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
 }
 
@@ -187,7 +187,7 @@ struct AProxy : Hashable, CustomStringConvertible {
 	let unAProxy : [ProxyStep]
 	
 	var description : String {
-		return correct(self.unAProxy.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
+		return correct(self.unAProxy.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
 	
 	var hashValue : Int {
@@ -227,7 +227,7 @@ func aProxy(proxy : AProxy) -> (Int -> Proxy<Int, Int, Int, Int, Int>) {
 		case .ProxyInc:
 			return inc
 		}
-	}).reduce(Proxy.pure, combine: >->)
+	}).reduce(Proxy.pure, combine: >>->>)
 }
 
 struct ProxyK {
@@ -245,7 +245,12 @@ func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -
 }
 
 /// Kleisli Composition.
-func >-> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
+infix operator >>->> {
+associativity left
+precedence 110
+}
+
+func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
 	return { r in
 		return m1(r) >>- m2
 	}

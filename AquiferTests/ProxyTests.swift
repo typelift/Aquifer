@@ -35,7 +35,7 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return formulate((f >-> g) |>| h, (f |>| h) >-> (g |>| h))(s, c)
+            return formulate((f >>->> g) |>| h, (f |>| h) >>->> (g |>| h))(s, c)
         }
 
         property("Request distributes over composition") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
@@ -43,7 +43,7 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return formulate(f >|> (g >-> h), (f >|> g) >-> (f >|> h))(s, c)
+            return formulate(f >|> (g >>->> h), (f >|> g) >>->> (f >|> h))(s, c)
         }
         
         /// Need closures here.  Autoclosures crash Swiftc.
@@ -81,7 +81,7 @@ class ProxySpec : XCTestCase {
     }
     
     func testCategoricalProperties() {
-        property("Kleisli Category") <- self.testCategory(>->)(Proxy<Int, Int, Int, Int, Int>.pure)
+        property("Kleisli Category") <- self.testCategory(>>->>)(Proxy<Int, Int, Int, Int, Int>.pure)
         property("Respond Category") <- self.testCategory(|>|)({ respond($0) })
         property("Request Category") <- self.testCategory(>|>)({ request($0) })
         property("Pull Category") <- self.testCategory(>+>)({ pull($0) })
