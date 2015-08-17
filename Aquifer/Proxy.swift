@@ -12,39 +12,6 @@ import Swiftz
 
 /// A bidirectional channel for information.
 ///
-/// A `Proxy` is so named because it can represent many different kinds of information flows.  There
-/// are 6 overarching specific types that a `Proxy` can represent, each with separate semantics.
-///
-///     /// An effectful computation.
-///     ///
-///     /// `Effect`s neither await nor yield.
-///     typealias Effect<Result> = Proxy<X, (), (), X, Result>
-///
-///     /// A computation that yields values of type `B`.
-///     ///
-///     /// `Producer`s can only yield.
-///     typealias Producer<B, Result> = Proxy<X, (), (), B, Result>
-///
-///     /// A computation that can await values of type `A` and yield values of type `B`.
-///     ///
-///     /// `Pipe`s can both await and yield.
-///     typealias Pipe<A, B, Result> = Proxy<(), A, (), B, Result>
-///
-///     /// A computation that can await values of type `A`.
-///     ///
-///     /// `Consumer`s can only await.
-///     typealias Consumer<A, Result> = Proxy<(), A, (), X, Result>
-///
-///     /// Sends requests of type `RequestT` and recieves responses of type `RespondT`.
-///     ///
-///     /// `Client`s only request and never respond.
-///     typealias Client<RequestT, RespondT, Result> = Proxy<RequestT, RespondT, (), X, Result>
-///
-///     /// Receives values of type `ReceiveT` and responds with values of type `RespondT`.
-///     ///
-///     /// `Server`s only respond and never request.
-///     typealias Server<ReceiveT, RespondT, Result> = Proxy<X, (), ReceiveT, RespondT, Result>
-///
 /// The type parameters are as follows:
 ///
 /// UO - upstream   output
@@ -82,26 +49,47 @@ public struct Proxy<UO, UI, DI, DO, FR> {
     }
 }
 
+/// A `Proxy` is so named because it can represent many different kinds of information flows.  There
+/// are 6 overarching specific types that a `Proxy` can represent, each with separate semantics.
+
+/// An effectful computation.
+///
+/// `Effect`s neither await nor yield.
 public enum Effect<Result> {
     public typealias T = Proxy<X, (), (), X, Result>
 }
 
+/// A computation that yields values of type `B`.
+///
+/// `Producer`s can only yield.
 public enum Producer<B, Result> {
     public typealias T = Proxy<X, (), (), B, Result>
 }
 
+/// A computation that can await values of type `A` and yield values of type `B`.
+///
+/// `Pipe`s can both await and yield.
 public enum Pipe<A, B, Result> {
     public typealias T = Proxy<(), A, (), B, Result>
 }
 
+/// A computation that can await values of type `A`.
+///
+/// `Consumer`s can only await.
 public enum Consumer<A, Result> {
     public typealias T = Proxy<(), A, (), X, Result>
 }
 
+/// Sends requests of type `RequestT` and recieves responses of type `RespondT`.
+///
+/// `Client`s only request and never respond.
 public enum Client<RequestT, RespondT, Result> {
     public typealias T = Proxy<RequestT, RespondT, (), X, Result>
 }
 
+/// Receives values of type `ReceiveT` and responds with values of type `RespondT`.
+///
+/// `Server`s only respond and never request.
 public enum Server<ReceiveT, RespondT, Result> {
     public typealias T = Proxy<X, (), ReceiveT, RespondT, Result>
 }
