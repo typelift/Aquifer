@@ -110,7 +110,7 @@ precedence 160
 /// Compose | Composes two pipes by attaching the output of the first to the input of the second.
 ///
 /// This operation is analogous to the Unix `|` operator.
-public func >-> <UO, UI, DT, DI, DO, FR>(p: Proxy<UO, UI, (), DT, FR>, q: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+public func >-> <UO, UI, DI, DO, DDI, DDO, FR>(p: Proxy<UO, UI, DI, DO, FR>, q: Proxy<DI, DO, DDI, DDO, FR>) -> Proxy<UO, UI, DDI, DDO, FR> {
     return { _ in p } +>> q
 }
 
@@ -123,7 +123,7 @@ precedence 160
 /// first.
 ///
 /// The operator is the flipped form of `>->`.
-public func <-< <UO, UI, DT, DI, DO, FR>(p: Proxy<(), DT, DI, DO, FR>, q: Proxy<UO, UI, (), DT, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+public func <-< <UO, UI, DI, DO, DDI, DDO, FR>(p: Proxy<DI, DO, DDI, DDO, FR>, q: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DDI, DDO, FR> {
     return q >-> p
 }
 
