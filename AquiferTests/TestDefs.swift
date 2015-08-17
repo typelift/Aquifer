@@ -149,14 +149,14 @@ func aClient(client : AClient) -> (Int -> Proxy<Int, Int, (), X, Int> /* Client<
 			return inc
 		}
 	})
-	return p.reduce(Proxy.pure, combine: >->)
+	return p.reduce(Proxy.pure, combine: >>->>)
 }
 
 struct AServer : CustomStringConvertible {
 	let unAServer : [ServerStep]
 	
 	var description : String {
-		return correct(self.unAServer.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
+		return correct(self.unAServer.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
 }
 
@@ -180,7 +180,7 @@ func aServer(server : AServer) -> (Int -> Proxy<X, (), Int, Int, Int> /* Server<
 		case .ServerInc:
 			return inc
 		}
-	}).reduce(Proxy.pure, combine: >->)
+	}).reduce(Proxy.pure, combine: >>->>)
 }
 
 struct AProxy : Hashable, CustomStringConvertible {
