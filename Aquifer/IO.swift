@@ -48,6 +48,6 @@ public func debugDescribe<UI: CustomDebugStringConvertible, DI, DO, FR>() -> Pro
 }
 
 /// Returns a `Pipe` that prints the streamable data of input values to the given output stream.
-public func writeTo<DT: Streamable, OS: OutputStreamType, FR>(inout stream: OS) -> Proxy<(), DT, (), DT, FR> {
+public func writeTo<DT: Streamable, OS: OutputStreamType, FR>(inout stream: OS) -> Pipe<DT, DT, FR>.T {
     return chain { $0.writeTo(&stream) }
 }

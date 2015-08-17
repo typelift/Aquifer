@@ -83,27 +83,27 @@ public struct Proxy<UO, UI, DI, DO, FR> {
 }
 
 public enum Effect<Result> {
-    typealias T = Proxy<X, (), (), X, Result>
+    public typealias T = Proxy<X, (), (), X, Result>
 }
 
 public enum Producer<B, Result> {
-    typealias T = Proxy<X, (), (), B, Result>
+    public typealias T = Proxy<X, (), (), B, Result>
 }
 
 public enum Pipe<A, B, Result> {
-    typealias T = Proxy<(), A, (), B, Result>
+    public typealias T = Proxy<(), A, (), B, Result>
 }
 
 public enum Consumer<A, Result> {
-    typealias T = Proxy<(), A, (), X, Result>
+    public typealias T = Proxy<(), A, (), X, Result>
 }
 
 public enum Client<RequestT, RespondT, Result> {
-    typealias T = Proxy<RequestT, RespondT, (), X, Result>
+    public typealias T = Proxy<RequestT, RespondT, (), X, Result>
 }
 
 public enum Server<ReceiveT, RespondT, Result> {
-    typealias T = Proxy<X, (), ReceiveT, RespondT, Result>
+    public typealias T = Proxy<X, (), ReceiveT, RespondT, Result>
 }
 
 /// Forces a pipe to evaluate its contents lazily.
@@ -166,7 +166,7 @@ public func flatten<UO, UI, DI, DO, FR>(p: Proxy<UO, UI, DI, DO, Proxy<UO, UI, D
 }
 
 /// Runs a self-contained "Effect" and yields a final value. 
-public func runEffect<FR>(p: Proxy<X, (), (), X, FR>) -> FR {
+public func runEffect<FR>(p: Effect<FR>.T) -> FR {
     switch p.repr {
     case let .Request(uO, _): return closed(uO())
     case let .Respond(dO, _): return closed(dO())
