@@ -115,7 +115,7 @@ func inc<UO, UI, DI, DO>(n : Int) -> Proxy<UO, UI, DI, DO, Int> {
 
 func correct(str : String) -> String {
 	if str.isEmpty {
-		return "return"
+		return "pure"
 	}
 	return str
 }
@@ -124,7 +124,7 @@ struct AClient : CustomStringConvertible {
 	let unAClient : [ClientStep]
 	
 	var description : String {
-		return correct(self.unAClient.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
+		return correct(self.unAClient.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
 }
 
@@ -149,14 +149,14 @@ func aClient(client : AClient) -> (Int -> Proxy<Int, Int, (), X, Int> /* Client<
 			return inc
 		}
 	})
-	return p.reduce(Proxy.pure, combine: >->)
+	return p.reduce(Proxy.pure, combine: >>->>)
 }
 
 struct AServer : CustomStringConvertible {
 	let unAServer : [ServerStep]
 	
 	var description : String {
-		return correct(self.unAServer.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
+		return correct(self.unAServer.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
 }
 
@@ -180,14 +180,14 @@ func aServer(server : AServer) -> (Int -> Proxy<X, (), Int, Int, Int> /* Server<
 		case .ServerInc:
 			return inc
 		}
-	}).reduce(Proxy.pure, combine: >->)
+	}).reduce(Proxy.pure, combine: >>->>)
 }
 
 struct AProxy : Hashable, CustomStringConvertible {
 	let unAProxy : [ProxyStep]
 	
 	var description : String {
-		return correct(self.unAProxy.map({ $0.description }).intersperse(" >-> ").reduce("", combine: +))
+		return correct(self.unAProxy.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
 	
 	var hashValue : Int {
@@ -227,7 +227,7 @@ func aProxy(proxy : AProxy) -> (Int -> Proxy<Int, Int, Int, Int, Int>) {
 		case .ProxyInc:
 			return inc
 		}
-	}).reduce(Proxy.pure, combine: >->)
+	}).reduce(Proxy.pure, combine: >>->>)
 }
 
 struct ProxyK {
@@ -245,10 +245,13 @@ func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -
 }
 
 /// Kleisli Composition.
-func >-> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
+infix operator >>->> {
+associativity left
+precedence 110
+}
+
+func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
 	return { r in
 		return m1(r) >>- m2
 	}
 }
-
-

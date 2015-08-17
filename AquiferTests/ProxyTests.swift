@@ -35,7 +35,7 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return formulate((f >-> g) |>| h, (f |>| h) >-> (g |>| h))(s, c)
+            return formulate((f >>->> g) |>| h, (f |>| h) >>->> (g |>| h))(s, c)
         }
 
         property("Request distributes over composition") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
@@ -43,7 +43,7 @@ class ProxySpec : XCTestCase {
             let g = aProxy(g2)
             let h = aProxy(h2)
 
-            return formulate(f >|> (g >-> h), (f >|> g) >-> (f >|> h))(s, c)
+            return formulate(f >|> (g >>->> h), (f >|> g) >>->> (f >|> h))(s, c)
         }
         
         /// Need closures here.  Autoclosures crash Swiftc.
@@ -54,9 +54,14 @@ class ProxySpec : XCTestCase {
                 formulate({ $0.reflect() } • { request($0) }, { respond($0) })(s, c)
         }
 
-        property("Request Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
+        property("Request Right Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
             return formulate(p >|> Proxy.pure, Proxy.pure)(s, c)
+        }
+
+        property("Respond Left Zero Law") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
+            let p = aProxy(p2)
+            return formulate(Proxy.pure |>| p, Proxy.pure)(s, c)
         }
         
         property("Push-Pull respect associativity") <- forAll { (f2 : AProxy, g2 : AProxy, h2 : AProxy, s : AServer, c : AClient) in
@@ -76,12 +81,12 @@ class ProxySpec : XCTestCase {
         
         property("Involution") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return formulate({ $0.reflect() } • { $0.reflect() } • p >-> Proxy.pure, p)(s, c)
+            return formulate({ $0.reflect() } • { $0.reflect() } • p, p)(s, c)
         }
     }
     
     func testCategoricalProperties() {
-        property("Kleisli Category") <- self.testCategory(>->)(Proxy<Int, Int, Int, Int, Int>.pure)
+        property("Kleisli Category") <- self.testCategory(>>->>)(Proxy<Int, Int, Int, Int, Int>.pure)
         property("Respond Category") <- self.testCategory(|>|)({ respond($0) })
         property("Request Category") <- self.testCategory(>|>)({ request($0) })
         property("Pull Category") <- self.testCategory(>+>)({ pull($0) })
