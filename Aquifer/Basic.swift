@@ -361,4 +361,3 @@ private func toListRepr<V>(p: ProxyRepr<X, (), (), V, ()>) -> List<V> {
     case .Pure(_): return []
     }
 }
-

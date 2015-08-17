@@ -76,7 +76,7 @@ class ProxySpec : XCTestCase {
         
         property("Involution") <- forAll { (p2 : AProxy, s : AServer, c : AClient) in
             let p = aProxy(p2)
-            return formulate({ $0.reflect() } • { $0.reflect() } • p >-> Proxy.pure, p)(s, c)
+            return formulate({ $0.reflect() } • { $0.reflect() } • p, p)(s, c)
         }
     }
     

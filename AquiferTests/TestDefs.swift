@@ -115,7 +115,7 @@ func inc<UO, UI, DI, DO>(n : Int) -> Proxy<UO, UI, DI, DO, Int> {
 
 func correct(str : String) -> String {
 	if str.isEmpty {
-		return "return"
+		return "pure"
 	}
 	return str
 }
@@ -255,5 +255,3 @@ func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B 
 		return m1(r) >>- m2
 	}
 }
-
-
