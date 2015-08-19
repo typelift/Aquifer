@@ -15,7 +15,7 @@ import Swiftz
 /// If the subsequent state of the `Pipe` is a single value or termination, the result is `.Left`
 /// containing the value.  Otherwise the result is `.Right` containing the value and the next state
 /// of the pipe.
-public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X, (), (), DO, FR>)> {
+public func next<DO, FR>(p: Producer<DO, FR>.T) -> Either<FR, (DO, Producer<DO, FR>.T)> {
     switch p.repr {
     case let .Request(uO, _): return closed(uO())
     case let .Respond(dO, fDI): return .Right((dO(), Proxy(fDI(()))))
@@ -52,7 +52,7 @@ public func await<UI, DI, DO>() -> Proxy<(), UI, DI, DO, UI> {
 /// The identity `Pipe`.
 ///
 /// Like the Unix `cat` program, pushes any given input as output without modification.
-public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {
+public func cat<DT, FR>() -> Pipe<DT, DT, FR>.T {
     return pull(())
 }
 

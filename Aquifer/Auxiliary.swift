@@ -12,7 +12,7 @@ import Swiftz
 
 /// Lifts an arrow into a pipe by connecting its inputs to the upstream input and its outputs to the
 /// downstream output of the pipe.
-public func arr<A, B, R>(f: A -> B) -> Proxy<(), A, (), B, R> {
+public func arr<A, B, R>(f: A -> B) -> Pipe<A, B, R>.T {
     return map(f)
 }
 
@@ -21,7 +21,7 @@ public func arr<A, B, R>(f: A -> B) -> Proxy<(), A, (), B, R> {
 /// Values sent along the upstream input in a `.Left` will appear downstream in a `.Left` after the
 /// pipe has operated on them.  Values appearing along the upstream input in a `.Right` will appear
 /// downstream in a `.Right` unchanged.
-public func left<A, B, C, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), Either<A, C>, (), Either<B, C>, R> {
+public func left<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B, C>, R>.T {
     return leftInner() >~ for_(p) { v in yield(Either.Left(v)) }
 }
 
@@ -30,7 +30,7 @@ public func left<A, B, C, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), Either<A, C
 /// Values sent along the upstream input in a `.Right` will appear downstream in a `.Right` after 
 /// the pipe has operated on them.  Values appearing along the upstream input in a `.Left` will
 /// appear downstream in a `.Left` unchanged.
-public func right<A, B, C, R>(p: Proxy<(), A, (), B, R>) -> Proxy<(), Either<C, A>, (), Either<C, B>, R> {
+public func right<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<C, A>, Either<C, B>, R>.T {
     return rightInner() >~ for_(p) { v in yield(Either.Right(v)) }
 }
 
@@ -44,7 +44,7 @@ precedence 180
 /// `.Left` values fed to the pipe's upstream input will appear downstream as `.Left`s that have
 /// been operated on by the first pipe.  `.Right` values fed to the pipe's upstream input will 
 /// appear downstream as `.Right`s that have been operated on by the second pipe.
-public func +++ <A, B, C, D, R>(p: Proxy<(), A, (), B, R>, q: Proxy<(), C, (), D, R>) -> Proxy<(), Either<A, C>, (), Either<B, D>, R> {
+public func +++ <A, B, C, D, R>(p: Pipe<A, B, R>.T, q: Pipe<C, D, R>.T) -> Pipe<Either<A, C>, Either<B, D>, R>.T {
     return left(p) >-> right(q)
 }
 
@@ -59,19 +59,19 @@ public func mapOutput<UO, UI, DI, DO, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f:
 }
 
 /// Yields a pipe that produces left-scanned values with the given step function.
-public func scan1i<DT, FR>(stepWith step: (DT, DT) -> DT) -> Proxy<(), DT, (), DT, FR> {
+public func scan1i<DT, FR>(stepWith step: (DT, DT) -> DT) -> Pipe<DT, DT, FR>.T {
     return scan1(stepWith: step, initializeWith: identity, extractWith: identity)
 }
 
 /// Yields a pipe that produces left-scanned values with the given step function.  The pipe is not
 /// required to have an initial value, but one is expected to be produced by the `initial` function.
-public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: UI -> A, extractWith extractor: A -> DO) -> Proxy<(), UI, (), DO, FR> {
+public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: UI -> A, extractWith extractor: A -> DO) -> Pipe<UI, DO, FR>.T {
     return await() >>- { scan(stepWith: step, initializeWith: initial($0), extractWith: extractor) }
 }
 
 // MARK: - Implementation Details Follow
 
-private func leftInner<A, B, C>() -> Proxy<(), Either<A, C>, (), Either<B, C>, A> {
+private func leftInner<A, B, C>() -> Pipe<Either<A, C>, Either<B, C>, A>.T {
 	return await() >>- {
 		switch $0 {
 		case let .Left(x): return pure(x)
@@ -81,7 +81,7 @@ private func leftInner<A, B, C>() -> Proxy<(), Either<A, C>, (), Either<B, C>, A
 }
 
 
-private func rightInner<A, B, C>() -> Proxy<(), Either<C, A>, (), Either<C, B>, A> {
+private func rightInner<A, B, C>() -> Pipe<Either<C, A>, Either<C, B>, A>.T {
 	return await() >>- {
 		switch $0 {
 		case let .Left(x): return yield(Either.Left(x)) >>- { _ in rightInner() }
