@@ -138,7 +138,7 @@ extension AClient : Arbitrary {
 	}
 }
 
-func aClient(client : AClient) -> (Int -> Proxy<Int, Int, (), X, Int> /* Client<Int, Int, Int> */) {
+func aClient(client : AClient) -> (Int -> Client<Int, Int, Int>.T) {
 	let p = client.unAClient.map({ (x : ClientStep) -> (Int -> Proxy<Int, Int, (), X, Int>) in
 		switch x {
 		case .ClientRequest:
@@ -170,7 +170,7 @@ extension AServer : Arbitrary {
 	}
 }
 
-func aServer(server : AServer) -> (Int -> Proxy<X, (), Int, Int, Int> /* Server<Int, Int, Int> */) {
+func aServer(server : AServer) -> (Int -> Server<Int, Int, Int>.T) {
 	return server.unAServer.map({ (x : ServerStep) -> (Int -> Proxy<X, (), Int, Int, Int>) in
 		switch x {
 		case .ServerRespond:
