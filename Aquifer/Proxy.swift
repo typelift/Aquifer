@@ -12,6 +12,33 @@ import Swiftz
 
 /// A bidirectional channel for information.
 ///
+/// A `Proxy` is so named because it can represent many different kinds of information flows.  There
+/// are 6 overarching specific types that a `Proxy` can represent, each with separate semantics.
+///
+/// An effectful computation.
+///
+///     typealias Effect<Result> = Proxy<X, (), (), X, Result>
+///
+/// A computation that yields values of type `B`.
+///
+///     typealias Producer<B, Result> = Proxy<X, (), (), B, Result>
+///
+/// A computation that can await values of type `A` and yield values of type `B`.
+///
+///     typealias Pipe<A, B, Result> = Proxy<(), A, (), B, Result>
+///
+/// A computation that can await values of type `A`.
+///
+///     typealias Consumer<A, Result> = Proxy<(), A, (), X, Result>
+///
+/// Sends requests of type `RequestT` and recieves responses of type `RespondT`.
+///
+///     typealias Client<RequestT, RespondT, Result> = Proxy<RequestT, RespondT, (), X, Result>
+///
+/// Receives values of type `ReceiveT` and responds with values of type `RespondT`.
+///
+///     typealias Server<ReceiveT, RespondT, Result> = Proxy<X, (), ReceiveT, RespondT, Result>
+///
 /// The type parameters are as follows:
 ///
 /// UO - upstream   output
@@ -48,9 +75,6 @@ public struct Proxy<UO, UI, DI, DO, FR> {
         return Proxy<DO, DI, UI, UO, FR>(self.repr.reflect())
     }
 }
-
-/// A `Proxy` is so named because it can represent many different kinds of information flows.  There
-/// are 6 overarching specific types that a `Proxy` can represent, each with separate semantics.
 
 /// An effectful computation.
 ///
