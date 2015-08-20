@@ -1,4 +1,4 @@
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/Archives.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Global/Archives.gitignore
 
 # It's better to unpack these files and commit the raw source because
 # git has its own built in compression methods.
@@ -29,7 +29,7 @@
 *.msp
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/Tags.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Global/Tags.gitignore
 
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
@@ -47,7 +47,7 @@ cscope.po.out
 
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/OSX.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Global/OSX.gitignore
 
 .DS_Store
 .AppleDouble
@@ -75,7 +75,7 @@ Temporary Items
 .apdisk
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/Emacs.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Global/Emacs.gitignore
 
 # -*- mode: gitignore; -*-
 *~
@@ -111,7 +111,7 @@ tramp
 .cask/
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/Vim.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Global/Vim.gitignore
 
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
@@ -121,7 +121,7 @@ Session.vim
 *~
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/Xcode.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Global/Xcode.gitignore
 
 # Xcode
 #
@@ -148,7 +148,7 @@ xcuserdata
 *.xcuserstate
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Objective-C.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Objective-C.gitignore
 
 # Xcode
 #
@@ -195,7 +195,7 @@ xcuserdata
 Carthage/Build
 
 
-### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Swift.gitignore
+### https://raw.github.com/github/gitignore/5d5de5306f9d4d47f6a3643410febcd9db6b145c/Swift.gitignore
 
 # Xcode
 #
