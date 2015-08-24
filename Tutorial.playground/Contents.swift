@@ -285,7 +285,7 @@ runEffect <|
 
 //: In other words, `yield` and (`~>`) form a `Category`, specifically the
 //: generator category, where (`~>`) plays the role of the composition operator
-//: and `yield` is the identity.  If you don`t know what a `Category` is, that`s
+//: and `yield` is the identity.  If you don't know what a `Category` is, that`s
 //: okay, and category theory is not a prerequisite for using `Aquifer`.  All you
 //: really need to know is that `Aquifer` uses some simple category theory to keep
 //: the API intuitive and easy to use.
@@ -331,3 +331,103 @@ runEffect <| for_(stdinLn(), (duplicate ~> (Effect<()>.T.pure • print)))
 //:
 //: * Think compositionally instead of sequentially
 
+// MARK: - Consumers
+
+//: Sometimes you don't want to use a `for` loop because you don't want to consume
+//: every element of a `Producer` or because you don't want to process every
+//: value of a `Producer` the exact same way.
+//:
+//: The most general solution is to externally iterate over the `Producer` using
+//: the `next` command:
+//
+//     func next(p : Producer<A, R>) -> Either<R, (A, Producer<A, R>)>
+//
+//: Think of `next` as pattern matching on the head of the `Producer`.  This
+//: `Either` returns a `Left` if the `Producer` is done or it returns a `Right`
+//: containing the next value, `A`, along with the remainder of the `Producer`.
+//:
+//: However, sometimes we can get away with something a little more simple and
+//: elegant, like a `Consumer`, which represents an effectful sink of values.  A
+//: `Consumer` is a monad transformer that extends the base monad with a new
+//: `await` command. This `await` command lets you receive input from an
+//: anonymous upstream source.
+//:
+//: The following `stdoutByLine` `Consumer` shows how to incrementally `await`
+//: `String`s and print them to standard output, terminating gracefully when
+//: receiving a broken pipe error:
+
+//          +--------+-- A `Consumer` that awaits `String`s
+//          |        |
+//          v        v
+func stdoutByLine() -> Consumer<String, ()>
+
+//: `await` is the dual of `yield`: we suspend our `Consumer` until we receive a
+//: new value.  If nobody provides a value (which is possible) then `await`
+//: never returns.  You can think of `await` as having the following type:
+//
+//     await() -> Consumer<A, A>
+//
+//: One way to feed a `Consumer` is to repeatedly feed the same input using
+//: using (`>~`) (pronounced "feed"):
+//
+//                          +- Feed               +- Consumer to    +- Returns new
+//				            |  action             |  feed           |  Effect
+//				            v                     v                 v
+//				            ---------             --------------     ---------
+//     func >~ <B, C>(eff : Effect<B>, consumer : Consumer<B, C>) -> Effect<C>
+//
+//: `draw >~ consumer` loops over `consumer`, substituting each `await` in
+//: `consumer` with `draw`.
+//:
+//: So the following code replaces every `await` in `P.stdoutLn` with
+//: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
+//:
+
+runEffect <| (Effect<String>.T.pure(readLine()!) >~ stdoutLn)
+
+//: You might wonder why (`>~`) uses an `Effect` instead of a raw action in the
+//: base monad.  The reason why is that (`>~`) actually permits the following
+//: more general type:
+//
+//     func >~ <A, B, C>(eff : Consumer<A, B>, consumer : Consumer<B, C>) -> Consumer<A, C>
+//
+//: (`>~`) is the dual of (`~>`), composing `Consumer`s instead of `Producer`s.
+//:
+//: This means that you can feed a `Consumer` with yet another `Consumer` so
+//: that you can `await` while you `await`.  For example, we could define the
+//: following intermediate `Consumer` that requests two `String`s and returns
+//: them concatenated:
+
+let doubleUp : Consumer<String, String>.T = (await() as Consumer<String, String>.T) >>- { str1 in
+	(await() as Consumer<String, String>.T) >>- { str2 in
+		str1 + str2
+	}
+}
+
+//: more concise: 
+
+let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
+
+//: We can now insert this in between `Consumer<String, String>.T.pure(readLine()!)` and `stdoutByLine` and see
+//: what happens:
+
+runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ stdoutLn()
+
+//
+// Associativity
+//    (f >~ g) >~ h = f >~ (g >~ h)
+//
+//: ... so we can always omit the parentheses since the meaning is unambiguous:
+//
+//    f >~ g >~ h
+//
+//: Also, (`>~`) has an identity, which is `await`!
+//
+// Left identity
+//     await() >~ f == f
+//
+// Right Identity
+//     f >~ await() == f
+//
+//: In other words, (`>~`) and `await` form a `Category`, too, specifically the
+//: iteratee category, and `Consumer`s are also composable.
