@@ -165,7 +165,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //:
 
 // more concise: `return for_(stdinByLine(), Effect.T.pure • print)`
-func loop() -> Effect<()> {
+func loop() -> Effect<()>.T {
     return for_(stdinByLine()) { str in
         return Effect.T.pure(print(str))    
     }
@@ -193,7 +193,7 @@ runEffect(loop())
 
 //: ... or you could inline the entire `loop` into the following one-liner:
     
-runEffect <| for_(stdinLn(), Effect.T.pure • putStrLn)
+runEffect <| for_(stdinLn(), Effect.T.pure • print)
 
 //: Our final program loops over standard input and echoes every line to
 //: standard output until we hit `Ctrl-D` to end the input stream:
@@ -201,22 +201,15 @@ runEffect <| for_(stdinLn(), Effect.T.pure • putStrLn)
 //: You can also use `for_` to loop over lists, too.  To do so, convert the list
 //: to a `Producer` using `each`, which is exported by default from `Aquifer`:
 //:
-public func each<T>(xs : [T]) -> Producer<T, ()> {
-    return Proxy(eachRepr(xs.generate()))
-}
+//
+//     public func each<T>(xs : [T]) -> Producer<T, ()>
+//
 //: Combine 'for' and 'each' to iterate over lists using a "foreach" loop:
 
 runEffect <| for_(each([1...4]), Effect.T.pure • print)
 
-//: 'each' is actually more general and works for any 'SequenceType':
-//     public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
+//: `each` is actually more general and works for any `SequenceType`
+//
+//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
+//
 
-//: 
-//:
-//:
-//:
-//;
-//;
-//;
-//;
-//;
