@@ -53,6 +53,12 @@ import Aquifer
 //: command lets you send output downstream to an anonymous handler, decoupling
 //: how you generate values from how you consume them.
 
+//: As an aside: Swift does not *technically* allow for the definition of polymorphic
+//: typealiases like `Producer`.  Instead, `Aquifer` uses a number of polymorphic enums
+//: with typealiases inside (the `.T` in all of the types presented hereafter).  We 
+//: specifically chose to use enums with no cases so there would be no option to instantiate
+//: them.  This way, they are markers and nothing more.
+ 
 //: The following `stdinByLine` `Producer` shows how to incrementally read in
 //: `String`s from standard input and `yield` them downstream, terminating
 //: gracefully when reaching the end of the input:
@@ -86,8 +92,8 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: you may be able to use `yield` in other contexts, too."
 //:
 //: Jump to the definition of `yield` to navigate to its documentation.  There you
-//: will see that `yield` actually uses the `Producer` (with an apostrophe) type
-//: synonym which hides a lot of polymorphism behind a simple veneer.  The
+//: will see that `yield` actually uses the `Producer` enum and its underlying
+//: typealias `T` which hides a lot of polymorphism behind a simple veneer.  The
 //: documentation for `yield` says that you can also use `yield` within a
 //: `Pipe`, too, because of this polymorphism:
 //:
