@@ -1,4 +1,4 @@
-//: Introduction
+// MARK: - Introduction
 
 //: The `Aquifer` library decouples stream processing stages from each other so
 //: that you can mix and match diverse stages to produce useful streaming
@@ -46,7 +46,7 @@
 import Swiftz
 import Aquifer
 
-//: Producers
+// MARK: - Producers
 
 //: `Producer`s are effectful streams of input.  Specifically, a `Producer` is a
 //: Type that extends any other type with a new `yield` command. This `yield` 
@@ -65,11 +65,11 @@ import Aquifer
 
 import class Foundation.NSFileHandle
 
-//:                                  +----------  A `Producer` that yields `String`s
-//:                                  |
-//:                                  |        +-- Every action has a return value.
-//:                                  |        |   This action returns `()` when finished
-//:                                  v        v
+//                                   +----------  A `Producer` that yields `String`s
+//                                   |
+//                                   |        +-- Every action has a return value.
+//                                   |        |   This action returns `()` when finished
+//                                   v        v
 public func stdinByLine() -> Producer<String, ()>.T {
 	let handle = NSFileHandle.fileHandleWithStandardInput() // Grab the handle
 	if handle.isAtEndOfFile { // If we`re at the end of the line, stop.
@@ -165,10 +165,8 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //:
 
 // more concise: `return for_(stdinByLine(), Effect.T.pure • print)`
-func loop() -> Effect<()>.T {
-    return for_(stdinByLine()) { str in
-        return Effect.T.pure(print(str))    
-    }
+let stdinLoop = for_(stdinByLine()) { str in
+	return Effect.T.pure(print(str))
 }
 
 //: In this example, `for` loops over `stdinByLine` and replaces every `yield` in
@@ -177,11 +175,10 @@ func loop() -> Effect<()>.T {
 //: You can think of `yield` as creating a hole and a `for` loop is one way
 //: to fill that hole.
 //;
-//: Notice how the final `loop` only `lift`s actions from the base
-//: monad and does nothing else.  This property is true for all `Effect`s,
-//: which are just glorified wrappers around actions in the base monad.
-//: This means we can run these `Effect`s to remove their `lift`s and lower
-//: them back to the equivalent computation in the base monad:
+//: Notice how the final `stdinLoop` only lifts actions and does nothing else.  This 
+//: property is true for all `Effect`s, which are just glorified wrappers around 
+//: actions. This means we can run these `Effect`s to remove the lifting and lower
+//: them back to the equivalent computation:
 //
 //     func runEffect<R>(eff : Effect<R>) -> R
 //
@@ -189,9 +186,9 @@ func loop() -> Effect<()>.T {
 //: anything other than an `Effect`. This ensures that we handle all
 //: inputs and outputs before streaming data:
 
-runEffect(loop())
+runEffect(stdinLoop)
 
-//: ... or you could inline the entire `loop` into the following one-liner:
+//: ... or you could inline the entire `stdinLoop` into the following one-liner:
     
 runEffect <| for_(stdinLn(), Effect.T.pure • print)
 
@@ -204,7 +201,7 @@ runEffect <| for_(stdinLn(), Effect.T.pure • print)
 //
 //     public func each<T>(xs : [T]) -> Producer<T, ()>
 //
-//: Combine 'for' and 'each' to iterate over lists using a "foreach" loop:
+//: Combine `for` and `each` to iterate over lists using a "foreach" loop:
 
 runEffect <| for_(each([1...4]), Effect.T.pure • print)
 
@@ -212,4 +209,125 @@ runEffect <| for_(each([1...4]), Effect.T.pure • print)
 //
 //  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
 //
+
+// MARK: - Composability
+
+//: You might wonder why the body of a `for_` loop can be a `Producer`.  Let`s
+//: test out this feature by defining a new loop body that `duplicate`s every
+//: value:
+
+func duplicate<A>(x : A) -> Producer<A, ()>.T {
+	return yield(x) >>- { _ in  yield(x) }
+}
+
+let loop = for_(stdinLn(), duplicate)
+
+//: Which is the exact same as:
+
+let loop2 = for_(stdinLn()) { x in
+	return yield(x) >>- { _ in  yield(x) }
+}
+
+//: This time our @loop@ is a `Producer` that outputs `String`s, specifically
+//: two copies of each line that we read from standard input.  Since @loop@ is a
+//: `Producer` we cannot run it because there is still unhandled output.
+//: However, we can use yet another `for` to handle this new duplicated stream:
+
+runEffect <| for_(loop, Effect<()>.T.pure • print)
+
+//: This creates a program which echoes every line from standard input to
+//: standard output twice:
+//:
+//: But is this really necessary?  Couldn`t we have instead written this using a
+//: nested for loop?
+	
+runEffect <|
+	for_(stdinLn()) { str1 in
+		return for_(duplicate(str1)) { str2 in
+			return Effect<()>.T.pure(print(str2))
+		}
+	}
+
+//: Yes, we could have!  In fact, this is a special case of the following
+//: equality, which always holds no matter what:
+//
+// let s :      Producer<A, ()>  // i.e. `stdinLn()`
+// let f : A -> Producer<B, ()>  // i.e. `duplicate`
+// let g : B -> Producer<C, ()>  // i.e. `(Effect<()>.T • print)`
+//
+// for_(for_(s, f), g) == for_(s, { x in for_(f(x), g) })
+//
+//: We can understand the rationale behind this equality if we first define the
+//: following operator that is the point-free counterpart to `for`:
+//
+//     func ~> <A, B, C, R>(f : A -> Producer<B, R>.T, g : B -> Producer<C, R>.T) -> (A -> Producer<C, R>.T) {
+// 	       return { x in for_(f(x), g) }
+//     }
+//
+//: Using (`~>`) (pronounced "into"), we can transform our original equality
+//: into the following more symmetric equation:
+//
+// let f : A -> Producer<B, R>
+// let g : B -> Producer<C, R>
+// let h : C -> Producer<D, R>
+//
+// (f ~> g) ~> h == f ~> (g ~> h)
+//
+//: This looks just like an associativity law.  In fact, (`~>`) has another nice
+//: property, which is that `yield` is its left and right identity:
+//
+// Left Identity
+//     yield ~> f == f
+//
+// Right Identity
+//     f ~> yield == f
+//
+
+//: In other words, `yield` and (`~>`) form a `Category`, specifically the
+//: generator category, where (`~>`) plays the role of the composition operator
+//: and `yield` is the identity.  If you don`t know what a `Category` is, that`s
+//: okay, and category theory is not a prerequisite for using @pipes@.  All you
+//: really need to know is that @pipes@ uses some simple category theory to keep
+//: the API intuitive and easy to use.
+//:
+//: Notice that if we translate the left identity law to use `for` instead of
+//: (`~>`) we get:
+//
+//     for_(yield(x), f) == f(x)
+//
+//: This just says that if you iterate over a pure single-element `Producer`,
+//: then you could instead cut out the middle man and directly apply the body of
+//: the loop to that single element.
+//:
+//: If we translate the right identity law to use `for` instead of (`~>`) we
+//: get:
+//
+//     for_(s, yield) == s
+//
+//: This just says that if the only thing you do is re-`yield` every element of
+//: a stream, you get back your original stream.
+
+//: These three "for loop" laws summarize our intuition for how `for` loops
+//: should behave and because these are `Category` laws in disguise that means
+//: that `Producer`s are composable in a rigorous sense of the word.
+//:
+//: In fact, we get more out of this than just a bunch of equations.  We also
+//: get a useful operator: (`~>`).  We can use this operator to condense
+//: our original code into the following more succinct form that composes two
+//: transformations:
+
+runEffect <| for_(stdinLn(), (duplicate ~> (Effect<()>.T.pure • print)))
+
+//: This means that we can also choose to program in a more functional style and
+//: think of stream processing in terms of composing transformations using
+//: (`~>`) instead of nesting a bunch of `for` loops.
+//:
+//: The above example is a microcosm of the design philosophy behind the @pipes@
+//: library:
+//:
+//: * Define the API in terms of categories
+//:
+//: * Specify expected behavior in terms of category laws
+//:
+//: * Think compositionally instead of sequentially
 

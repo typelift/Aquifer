@@ -67,7 +67,7 @@ associativity left
 precedence 130
 }
 
-/// Composes two loops to yield one large loop.
+/// Into | Composes two loops to yield one large loop.
 public func <~ <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
     return f |>| g
 }
@@ -77,7 +77,7 @@ associativity right
 precedence 130
 }
 
-/// Composes two loops to yield one large loop.
+/// Into | Composes two loops to yield one large loop.
 public func ~> <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
     return g |>| f
 }
