@@ -49,9 +49,9 @@ import Aquifer
 //: Producers
 
 //: `Producer`s are effectful streams of input.  Specifically, a `Producer` is a
-//: monad transformer that extends any base monad with a new `yield` command.
-//: This `yield` command lets you send output downstream to an anonymous
-//: handler, decoupling how you generate values from how you consume them.
+//: Type that extends any other type with a new `yield` command. This `yield` 
+//: command lets you send output downstream to an anonymous handler, decoupling
+//: how you generate values from how you consume them.
 
 //: The following `stdinByLine` `Producer` shows how to incrementally read in
 //: `String`s from standard input and `yield` them downstream, terminating
@@ -59,14 +59,11 @@ import Aquifer
 
 import class Foundation.NSFileHandle
 
-//:                          +----------  A `Producer` that yields `String`s
-//:                          |
-//:                          |       +-- Every monad transformer has a base monad.
-//:                          |       |   This time the base monad is `IO`.
-//:                          |       |
-//:                          |       |     +-- Every action has a return value.
-//:                          |       |     |   This action returns `()` when finished
-//:                          v       v     v
+//:                                  +----------  A `Producer` that yields `String`s
+//:                                  |
+//:                                  |        +-- Every action has a return value.
+//:                                  |        |   This action returns `()` when finished
+//:                                  v        v
 public func stdinByLine() -> Producer<String, ()>.T {
 	let handle = NSFileHandle.fileHandleWithStandardInput() // Grab the handle
 	if handle.isAtEndOfFile { // If we`re at the end of the line, stop.
@@ -141,7 +138,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //     construct an `X` will fail catastrophically.
 //     struct X { //... }
 //
-//: This is why 'for' permits two different type signatures.  The first type
+//: This is why `for` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
 //     func for_<A, B, R>(p : Producer<A, R>, f : (A -> Producer<B, ()>) -> Producer<B, R> 
@@ -153,12 +150,12 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //     func for_<A, R>(p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
 //
 //: This is the same trick that all `Aquifer` functions use to work with various
-//: combinations of 'Producer's, 'Consumer's, 'Pipe's, and 'Effect's.  Each
+//: combinations of `Producer`s, `Consumer`s, `Pipe`s, and `Effect`s.  Each
 //: function really has just one general type, which you can then simplify
 //: down to multiple useful alternative types.
 //:
-//: Here's an example use of a 'for' @loop@, where the second
-//: argument (the loop body) is an 'Effect':
+//: Here`s an example use of a `for` `loop`, where the second
+//: argument (the loop body) is an `Effect`:
 //:
 
 // more concise: `return for_(stdinByLine, Effect.T.pure • print)`
