@@ -164,12 +164,53 @@ func loop() -> Effect<()> {
         return Effect.T.pure(print(str))    
     }
 }
-//: In this example, 'for' loops over @stdinLn@ and replaces every 'yield' in
-//: `stdinByLine` with the body of the loop, printing each line.  This is exactly
-//: equivalent to the following code, which I've placed side-by-side with the
-//: original definition of @stdinLn@ for comparison:
+
+//: In this example, `for` loops over `stdinByLine` and replaces every `yield` in
+//: `stdinByLine` with the body of the loop, printing each line.
+
+//: You can think of `yield` as creating a hole and a `for` loop is one way
+//: to fill that hole.
+//;
+//: Notice how the final `loop` only `lift`s actions from the base
+//: monad and does nothing else.  This property is true for all `Effect`s,
+//: which are just glorified wrappers around actions in the base monad.
+//: This means we can run these `Effect`s to remove their `lift`s and lower
+//: them back to the equivalent computation in the base monad:
+//
+//     func runEffect<R>(eff : Effect<R>) -> R
+//
+//: This is the real type signature of `runEffect`, which refuses to accept
+//: anything other than an `Effect`. This ensures that we handle all
+//: inputs and outputs before streaming data:
+
+runEffect(loop())
+
+//: ... or you could inline the entire `loop` into the following one-liner:
+    
+runEffect <| for_(stdinLn(), Effect.T.pure • putStrLn)
+
+//: Our final program loops over standard input and echoes every line to
+//: standard output until we hit `Ctrl-D` to end the input stream:
+
+//: You can also use `for_` to loop over lists, too.  To do so, convert the list
+//: to a `Producer` using `each`, which is exported by default from `Aquifer`:
 //:
+public func each<T>(xs : [T]) -> Producer<T, ()> {
+    return Proxy(eachRepr(xs.generate()))
+}
+//: Combine 'for' and 'each' to iterate over lists using a "foreach" loop:
+
+runEffect <| for_(each([1...4]), Effect.T.pure • print)
+
+//: 'each' is actually more general and works for any 'SequenceType':
+//     public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
+
 //: 
-//
-//
-//
+//:
+//:
+//:
+//;
+//;
+//;
+//;
+//;
