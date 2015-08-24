@@ -85,8 +85,8 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: signature as simply saying: "You can use `yield` within a `Producer`, but
 //: you may be able to use `yield` in other contexts, too."
 //:
-//: Click the link to `yield` to navigate to its documentation.  There you will
-//: see that `yield` actually uses the `Producer` (with an apostrophe) type
+//: Jump to the definition of `yield` to navigate to its documentation.  There you
+//: will see that `yield` actually uses the `Producer` (with an apostrophe) type
 //: synonym which hides a lot of polymorphism behind a simple veneer.  The
 //: documentation for `yield` says that you can also use `yield` within a
 //: `Pipe`, too, because of this polymorphism:
@@ -123,10 +123,10 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: argument of `for_` is a `Producer` and the second argument returns an
 //: `Effect`, then the final result must be an `Effect`."
 //:
-//: Click the link to `for_` to navigate to its documentation.  There you will
-//: see the fully general type and underneath you will see equivalent simpler
-//: types.  One of these says that if the body of the loop is a `Producer`, then
-//: the result is a `Producer`, too:
+//: Jump to the definition of (⌘+Click) `for_` to navigate to its documentation.
+//: There you will see the fully general type and underneath you will see equivalent 
+//: simpler types.  One of these says that if the body of the loop is a `Producer`, 
+//: then the result is a `Producer`, too:
 //:
 //     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
 //:
@@ -158,7 +158,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: argument (the loop body) is an `Effect`:
 //:
 
-// more concise: `return for_(stdinByLine, Effect.T.pure • print)`
+// more concise: `return for_(stdinByLine(), Effect.T.pure • print)`
 func loop() -> Effect<()> {
     return for_(stdinByLine()) { str in
         return Effect.T.pure(print(str))    
