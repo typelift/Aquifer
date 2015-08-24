@@ -85,8 +85,8 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: The true type of `yield` is actually more general and powerful.  Throughout
 //: the tutorial I will present type signatures like this that are simplified at
 //: first and then later reveal more general versions.  So read the above type
-//: signature as simply saying: \"You can use `yield` within a `Producer`, but
-//: you may be able to use `yield` in other contexts, too.\"
+//: signature as simply saying: "You can use `yield` within a `Producer`, but
+//: you may be able to use `yield` in other contexts, too."
 //:
 //: Click the link to `yield` to navigate to its documentation.  There you will
 //: see that `yield` actually uses the `Producer` (with an apostrophe) type
@@ -122,9 +122,9 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: anything.
 //:
 //: The above type signature is not the true type of `for_`, which is actually
-//: more general.  Think of the above type signature as saying: \"If the first
+//: more general.  Think of the above type signature as saying: "If the first
 //: argument of `for_` is a `Producer` and the second argument returns an
-//: `Effect`, then the final result must be an `Effect`.\"
+//: `Effect`, then the final result must be an `Effect`."
 //:
 //: Click the link to `for_` to navigate to its documentation.  There you will
 //: see the fully general type and underneath you will see equivalent simpler
@@ -136,4 +136,43 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: The first type signature I showed for `for_` was a special case of this
 //: slightly more general signature because a `Producer` that never `yield`s is
 //: also an `Effect`:
+//:
+//     `X` is an "uninhabited" type.  Practically, this means all attempts to
+//     construct an `X` will fail catastrophically.
+//     struct X { //... }
+//
+//: This is why 'for' permits two different type signatures.  The first type
+//: signature is just a special case of the second one:
+//
+//     func for_<A, B, R>(p : Producer<A, R>, f : (A -> Producer<B, ()>) -> Producer<B, R> 
+//
+//     Specialize `B` to `X`
+//     func for_<A, R>(p : Producer<A, R>, f : (A -> Producer<X, ()>) -> Producer<X, R>
+//
+//     Producer<X, ?> == Effect
+//     func for_<A, R>(p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
+//
+//: This is the same trick that all `Aquifer` functions use to work with various
+//: combinations of 'Producer's, 'Consumer's, 'Pipe's, and 'Effect's.  Each
+//: function really has just one general type, which you can then simplify
+//: down to multiple useful alternative types.
+//:
+//: Here's an example use of a 'for' @loop@, where the second
+//: argument (the loop body) is an 'Effect':
+//:
 
+// more concise: `return for_(stdinByLine, Effect.T.pure • print)`
+func loop() -> Effect<()> {
+    return for_(stdinByLine()) { str in
+        return Effect.T.pure(print(str))    
+    }
+}
+//: In this example, 'for' loops over @stdinLn@ and replaces every 'yield' in
+//: `stdinByLine` with the body of the loop, printing each line.  This is exactly
+//: equivalent to the following code, which I've placed side-by-side with the
+//: original definition of @stdinLn@ for comparison:
+//:
+//: 
+//
+//
+//
