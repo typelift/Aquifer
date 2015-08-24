@@ -116,7 +116,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //:
 //: You can also deduce that behavior purely from the type signature:
 //:
-//: * The body of the loop takes exactly one argument of type @(a)@, which is
+//: * The body of the loop takes exactly one argument of type `A`, which is
 //: the same as the output type of the `Producer`.  Therefore, the body of the
 //: loop must get its input from that `Producer` and nowhere else.
 //:
@@ -228,8 +228,8 @@ let loop2 = for_(stdinLn()) { x in
 	return yield(x) >>- { _ in  yield(x) }
 }
 
-//: This time our @loop@ is a `Producer` that outputs `String`s, specifically
-//: two copies of each line that we read from standard input.  Since @loop@ is a
+//: This time our `loop` is a `Producer` that outputs `String`s, specifically
+//: two copies of each line that we read from standard input.  Since `loop` is a
 //: `Producer` we cannot run it because there is still unhandled output.
 //: However, we can use yet another `for` to handle this new duplicated stream:
 
@@ -286,8 +286,8 @@ runEffect <|
 //: In other words, `yield` and (`~>`) form a `Category`, specifically the
 //: generator category, where (`~>`) plays the role of the composition operator
 //: and `yield` is the identity.  If you don`t know what a `Category` is, that`s
-//: okay, and category theory is not a prerequisite for using @pipes@.  All you
-//: really need to know is that @pipes@ uses some simple category theory to keep
+//: okay, and category theory is not a prerequisite for using `Aquifer`.  All you
+//: really need to know is that `Aquifer` uses some simple category theory to keep
 //: the API intuitive and easy to use.
 //:
 //: Notice that if we translate the left identity law to use `for` instead of
@@ -322,7 +322,7 @@ runEffect <| for_(stdinLn(), (duplicate ~> (Effect<()>.T.pure • print)))
 //: think of stream processing in terms of composing transformations using
 //: (`~>`) instead of nesting a bunch of `for` loops.
 //:
-//: The above example is a microcosm of the design philosophy behind the @pipes@
+//: The above example is a microcosm of the design philosophy behind the `Aquifer`
 //: library:
 //:
 //: * Define the API in terms of categories
