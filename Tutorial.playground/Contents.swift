@@ -86,7 +86,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //:     func yield<A>(value : A) -> Producer<A, ()>.T
 //:
 //: The true type of `yield` is actually more general and powerful.  Throughout
-//: the tutorial I will present type signatures like this that are simplified at
+//: the tutorial we will present type signatures like this that are simplified at
 //: first and then later reveal more general versions.  So read the above type
 //: signature as simply saying: "You can use `yield` within a `Producer`, but
 //: you may be able to use `yield` in other contexts, too."
@@ -136,7 +136,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //:
 //     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
 //:
-//: The first type signature I showed for `for_` was a special case of this
+//: The first type signature we showed for `for_` was a special case of this
 //: slightly more general signature because a `Producer` that never `yield`s is
 //: also an `Effect`:
 //:
@@ -190,7 +190,7 @@ runEffect(stdinLoop)
 
 //: ... or you could inline the entire `stdinLoop` into the following one-liner:
     
-runEffect <| for_(stdinLn(), Effect.T.pure • print)
+runEffect <| for_(stdinLn(), { Effect<()>.T.pure(print($0)) })
 
 //: Our final program loops over standard input and echoes every line to
 //: standard output until we hit `Ctrl-D` to end the input stream:
@@ -203,7 +203,7 @@ runEffect <| for_(stdinLn(), Effect.T.pure • print)
 //
 //: Combine `for` and `each` to iterate over lists using a "foreach" loop:
 
-runEffect <| for_(each([1...4]), Effect.T.pure • print)
+runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 
 //: `each` is actually more general and works for any `SequenceType`
 //
@@ -233,7 +233,7 @@ let loop2 = for_(stdinLn()) { x in
 //: `Producer` we cannot run it because there is still unhandled output.
 //: However, we can use yet another `for` to handle this new duplicated stream:
 
-runEffect <| for_(loop, Effect<()>.T.pure • print)
+runEffect <| for_(loop, { Effect<()>.T.pure(print($0)) })
 
 //: This creates a program which echoes every line from standard input to
 //: standard output twice:
@@ -316,7 +316,7 @@ runEffect <|
 //: our original code into the following more succinct form that composes two
 //: transformations:
 
-runEffect <| for_(stdinLn(), (duplicate ~> (Effect<()>.T.pure • print)))
+runEffect <| for_(stdinLn(), (duplicate ~> { Effect<()>.T.pure(print($0)) }))
 
 //: This means that we can also choose to program in a more functional style and
 //: think of stream processing in terms of composing transformations using
@@ -398,9 +398,9 @@ runEffect <| (Effect<String>.T.pure(readLine()!) >~ stdoutLn)
 //: following intermediate `Consumer` that requests two `String`s and returns
 //: them concatenated:
 
-let doubleUp : Consumer<String, String>.T = (await() as Consumer<String, String>.T) >>- { str1 in
-	(await() as Consumer<String, String>.T) >>- { str2 in
-		str1 + str2
+let doubleUp : Consumer<String, String>.T = await() >>- { str1 in
+	await() >>- { str2 in
+		return Consumer.T.pure(str1 + str2)
 	}
 }
 
@@ -557,7 +557,7 @@ func head<A>(n : Int) -> Pipe<A, A, ()>.T  {
 	return take(n)
 }
 
-func yes<R>() -> Producer<String, R> {
+func yes<R>() -> Producer<String, R>.T {
 	return yield("y") >>- { _ in yes() }
 }
 
@@ -591,7 +591,7 @@ public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 
 // Read this as: Keep feeding "y" downstream
 func yesAgain<R>() -> Producer<String, R>.T {
-	return Producer.T.pure("y") >~ cat
+	return Producer.T.pure("y") >~ cat()
 }
 
 //: You can even compose pipes inside of another pipe:
@@ -607,7 +607,7 @@ func customerService() -> Producer<String, ()>.T {
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
-runEffect <| (each ~> each ~> each ~> Effect.T.pure • print)([[.Some(1), .None], [.Some(2), .Some(3)]])
+runEffect <| (each ~> each ~> each ~> { Effect<()>.T.pure(print($0)) })([[.Some(1), .None], [.Some(2), .Some(3)]])
 
 //: Conclusion
 
@@ -616,7 +616,7 @@ runEffect <| (each ~> each ~> each ~> Effect.T.pure • print)([[.Some(1), .None
 // ecosystem of streaming components.
 //
 // The framework is still a work in progress that does not explore the full potential of
-// `pipes`'' functionality, which actually permits bidirectional communication.
+// `pipes` functionality, which actually permits bidirectional communication.
 // Advanced `pipes` and `Aquifer` users can explore this library in greater detail by
 // studying the documentation in the "Core" module to learn about the
 // symmetry of the underlying `Proxy` type and operators.
