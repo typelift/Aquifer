@@ -199,7 +199,7 @@ runEffect <| for_(stdinLn(), Effect.T.pure • print)
 //: to a `Producer` using `each`, which is exported by default from `Aquifer`:
 //:
 //
-//     public func each<T>(xs : [T]) -> Producer<T, ()>
+//     public func each<T>(xs : [T]) -> Producer<T, ()>.T
 //
 //: Combine `for` and `each` to iterate over lists using a "foreach" loop:
 
@@ -207,7 +207,7 @@ runEffect <| for_(each([1...4]), Effect.T.pure • print)
 
 //: `each` is actually more general and works for any `SequenceType`
 //
-//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
+//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()>.T {
 //
 
 // MARK: - Composability
@@ -244,7 +244,7 @@ runEffect <| for_(loop, Effect<()>.T.pure • print)
 runEffect <|
 	for_(stdinLn()) { str1 in
 		return for_(duplicate(str1)) { str2 in
-			return Effect<()>.T.pure(print(str2))
+			return Effect.T.pure(print(str2))
 		}
 	}
 
@@ -285,7 +285,7 @@ runEffect <|
 
 //: In other words, `yield` and (`~>`) form a `Category`, specifically the
 //: generator category, where (`~>`) plays the role of the composition operator
-//: and `yield` is the identity.  If you don't know what a `Category` is, that`s
+//: and `yield` is the identity.  If you don`t know what a `Category` is, that`s
 //: okay, and category theory is not a prerequisite for using `Aquifer`.  All you
 //: really need to know is that `Aquifer` uses some simple category theory to keep
 //: the API intuitive and easy to use.
@@ -333,14 +333,14 @@ runEffect <| for_(stdinLn(), (duplicate ~> (Effect<()>.T.pure • print)))
 
 // MARK: - Consumers
 
-//: Sometimes you don't want to use a `for` loop because you don't want to consume
-//: every element of a `Producer` or because you don't want to process every
+//: Sometimes you don`t want to use a `for` loop because you don`t want to consume
+//: every element of a `Producer` or because you don`t want to process every
 //: value of a `Producer` the exact same way.
 //:
 //: The most general solution is to externally iterate over the `Producer` using
 //: the `next` command:
 //
-//     func next(p : Producer<A, R>) -> Either<R, (A, Producer<A, R>)>
+//     func next(p : Producer<A, R>.T) -> Either<R, (A, Producer<A, R>.T)>
 //
 //: Think of `next` as pattern matching on the head of the `Producer`.  This
 //: `Either` returns a `Left` if the `Producer` is done or it returns a `Right`
@@ -356,10 +356,10 @@ runEffect <| for_(stdinLn(), (duplicate ~> (Effect<()>.T.pure • print)))
 //: `String`s and print them to standard output, terminating gracefully when
 //: receiving a broken pipe error:
 
-//          +--------+-- A `Consumer` that awaits `String`s
-//          |        |
-//          v        v
-func stdoutByLine() -> Consumer<String, ()>
+//                     +--------+-- A `Consumer` that awaits `String`s
+//                     |        |
+//                     v        v
+func stdoutByLine() -> Consumer<String, ()>.T
 
 //: `await` is the dual of `yield`: we suspend our `Consumer` until we receive a
 //: new value.  If nobody provides a value (which is possible) then `await`
@@ -379,7 +379,7 @@ func stdoutByLine() -> Consumer<String, ()>
 //: `draw >~ consumer` loops over `consumer`, substituting each `await` in
 //: `consumer` with `draw`.
 //:
-//: So the following code replaces every `await` in `P.stdoutLn` with
+//: So the following code replaces every `await` in `stdoutLn` with
 //: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
 //:
 
@@ -431,3 +431,193 @@ runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ stdoutLn()
 //
 //: In other words, (`>~`) and `await` form a `Category`, too, specifically the
 //: iteratee category, and `Consumer`s are also composable.
+
+//: Pipes
+
+//: Our previous programs were unsatisfactory because they were biased either
+//: towards the `Producer` end or the `Consumer` end.  As a result, we had to
+//: choose between gracefully handling end of input (using `stdinLn`) or
+//: gracefully handling end of output (using `stdoutLn`), but not both at the
+//: same time.
+//:
+//: However, we don`t need to restrict ourselves to using `Producer`s
+//: exclusively or `Consumer`s exclusively.  We can connect `Producer`s and
+//: `Consumer`s directly together using (`>->`) (pronounced "pipe"):
+//
+//     func >-> (p : Producer<A, R>.T, c : Consumer<A, R>.T) -> Effect<R>.T
+//
+//: This returns an `Effect` which we can run:
+
+runEffect <| stdinLn() >-> stdoutLn()
+
+//: This program is more declarative of our intent: we want to stream values
+//: from `stdinLn` to `stdoutLn`.  The above "pipeline" not only echoes
+//: standard input to standard output, but also handles both end of input and
+//: broken pipe errors:
+//:
+//: `>->` is "pull-based" meaning that control flow begins at the most
+//: downstream component (i.e. `stdoutLn` in the above example).  Any time a
+//: component `await`s a value it blocks and transfers control upstream and
+//: every time a component `yield`s a value it blocks and restores control back
+//: downstream, satisfying the `await`.  So in the above example, (`>->`)
+//: matches every `await` from `stdoutLn` with a `yield` from `stdinLn`.
+//:
+//: Streaming stops when either `stdinLn` terminates (i.e. end of input) or
+//: `stdoutLn` terminates (i.e. broken pipe).  This is why (`>->`) requires
+//: that both the `Producer` and `Consumer` share the same type of return value:
+//: whichever one terminates first provides the return value for the entire
+//: `Effect`.
+//:
+//: Let`s test this by modifying our `Producer` and `Consumer` to each return a
+//: diagnostic `String`:
+//:
+//: <EXAMPLE>
+//:
+//: You might wonder why (`>->`) returns an `Effect` that we have to run instead
+//: of directly returning an action in the base monad.  This is because you can
+//: connect things other than `Producer`s and `Consumer`s, like `Pipe`s, which
+//: are effectful stream transformations.
+//:
+//: A `Pipe` is a monad transformer that is a mix between a `Producer` and
+//: `Consumer`, because a `Pipe` can both `await` and `yield`.  The following
+//: example `Pipe` is analagous to the Prelude`s `take`, only allowing a fixed
+//: number of values to flow through:
+/// Returns a pipe that only allows a given number of values to pass through it.
+
+//                               +--------- A `Pipe` that
+//                               |    +---- `await`s `a`s and
+//                               |    |  +-- `yield`s `a`s
+//                               |    |  |
+//                               v    v  v
+public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
+	if n <= 0 {
+		return pure(())
+	} else {
+		return await() >>- { yield($0) >>- { _ in take(n - 1) } }
+	}
+}
+
+//: You can use `Pipe`s to transform `Producer`s, `Consumer`s, or even other
+//: `Pipe`s using the same (`>->`) operator:
+//
+//     func >-> <A, B, R>(Producer<A, R>.T, Pipe<A, B, R>.T) -> Producer<B, R>.T
+//     func >-> <A, B, R>(Pipe<A, B, R>.T, Consumer<B, R>.T) -> Consumer<A, R>.T
+//     func >-> <A, B, C, R>(Pipe<A, B, R>.T, Pipe<B, C, R>.T) -> Pipe<A, C, R>.T
+//
+//: For example, you can compose `take` after `stdinLn` to limit the number
+//: of lines drawn from standard input:
+
+func maxInput(n : Int) -> Producer<String, ()>.T {
+	return stdinLn() >-> take(n)
+}
+
+runEffect <| maxInput(3) >-> stdoutLn()
+
+//: ... or you can pre-compose `take` before `stdoutLn` to limit the number
+//: of lines written to standard output:
+
+func maxOutput(n : Int) -> Consumer<String, ()>.T {
+	return take(n) >-> stdoutLn()
+}
+	
+runEffect <| stdinLn() >-> maxOutput(3)
+
+//: Those both gave the same behavior because (`>->`) is associative:
+//
+// (p1 >-> p2) >-> p3 = p1 >-> (p2 >-> p3)
+//
+//: Therefore we can just leave out the parentheses:
+
+runEffect <| stdinLn() >-> take(3) >-> stdoutLn()
+
+//: `>->` is designed to behave like the Unix pipe operator, except with less
+//: quirks.  In fact, we can continue the analogy to Unix by defining `cat`
+//: (named after the Unix `cat` utility), which reforwards elements endlessly:
+
+// > cat :: Monad m => Pipe a a m r
+// > cat = forever $ do
+// >     x <- await
+// >     yield x
+//
+// `cat` is the identity of `>->`, meaning that `cat` satisfies the
+// following two laws:
+//
+// > -- Useless use of `cat`
+// > cat >-> p = p
+// >
+// > -- Forwarding output to `cat` does nothing
+// > p >-> cat = p
+//
+// Therefore, `>->` and `cat` form a `Category`, specifically the category of
+// Unix pipes, and `Pipe`s are also composable.
+//
+// A lot of Unix tools have very simple definitions when written using `pipes`:
+
+func head<A>(n : Int) -> Pipe<A, A, ()>.T  {
+	return take(n)
+}
+
+func yes<R>() -> Producer<String, R> {
+	return yield("y") >>- { _ in yes() }
+}
+
+//: This prints out 3 ``y``s, just like the equivalent Unix pipeline:
+//:     `yes | head -3`
+
+runEffect <| yes() >-> head(3) >-> stdoutLn()
+
+//: This lets us write "Swift pipes" instead of Unix pipes.  These are much
+//: easier to build than Unix pipes and we can connect them directly within
+//: Swift for interoperability with the Swift language and ecosystem.
+
+//: Tricks
+
+//: `Aquifer` is more powerful than meets the eye so this section presents some
+//: non-obvious tricks you may find useful.
+//:
+//: Many pipe combinators will work on unusual pipe types and the next few
+//: examples will use the `cat` pipe to demonstrate this.
+//:
+//: For example, you can loop over the output of a `Pipe` using `for`, which is
+//: how `map` is defined:
+
+// Read this as: For all values flowing downstream, apply `f`
+public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
+	return for_(cat()) { v in yield(f(v)) }
+}
+
+//: You can also feed a `Pipe` input using (`>~`).  This means we could have
+//: instead defined the @yes@ pipe like this:
+
+// Read this as: Keep feeding "y" downstream
+func yesAgain<R>() -> Producer<String, R>.T {
+	return Producer.T.pure("y") >~ cat
+}
+
+//: You can even compose pipes inside of another pipe:
+
+func customerService() -> Producer<String, ()>.T {
+	return each([
+		"Hello, how can I help you?",
+		"Hold for one second.",
+	]) >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
+}
+
+//: Also, you can often use `each` in conjunction with (`~>`) to traverse nested
+//: data structures.  For example, you can print all non-`Nothing` elements
+//: from a doubly-nested list:
+
+runEffect <| (each ~> each ~> each ~> Effect.T.pure • print)([[.Some(1), .None], [.Some(2), .Some(3)]])
+
+//: Conclusion
+
+// This tutorial covers the concepts of connecting, building, and reading
+// `Aquifer` code.  However, this library is only the core component in an
+// ecosystem of streaming components.
+//
+// The framework is still a work in progress that does not explore the full potential of
+// `pipes`'' functionality, which actually permits bidirectional communication.
+// Advanced `pipes` and `Aquifer` users can explore this library in greater detail by
+// studying the documentation in the "Core" module to learn about the
+// symmetry of the underlying `Proxy` type and operators.
+
