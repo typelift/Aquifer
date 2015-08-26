@@ -43,7 +43,8 @@
 //: when you get an `Effect`, meaning that you have handled all inputs and
 //: outputs.  You run this final `Effect` to begin streaming.
 
-import Swiftz
+import func Swiftz.curry
+import func Swiftz.<|
 import Aquifer
 
 // MARK: - Producers
@@ -316,7 +317,7 @@ runEffect <|
 //: our original code into the following more succinct form that composes two
 //: transformations:
 
-runEffect <| for_(stdinLn(), (duplicate ~> { Effect<()>.T.pure(print($0)) }))
+runEffect <| for_(stdinLn(), (duplicate ~> { Effect<()>.T.pure(print("\($0)")) }))
 
 //: This means that we can also choose to program in a more functional style and
 //: think of stream processing in terms of composing transformations using
@@ -359,7 +360,10 @@ runEffect <| for_(stdinLn(), (duplicate ~> { Effect<()>.T.pure(print($0)) }))
 //                     +--------+-- A `Consumer` that awaits `String`s
 //                     |        |
 //                     v        v
-func stdoutByLine() -> Consumer<String, ()>.T
+func stdoutByLine() -> Consumer<String, ()>.T {
+	let handle = NSFileHandle.fileHandleWithStandardOutput()
+	return for_(cat()) { handle.writeLine($0); return pure(()) }
+}
 
 //: `await` is the dual of `yield`: we suspend our `Consumer` until we receive a
 //: new value.  If nobody provides a value (which is possible) then `await`
@@ -383,7 +387,7 @@ func stdoutByLine() -> Consumer<String, ()>.T
 //: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
 //:
 
-runEffect <| (Effect<String>.T.pure(readLine()!) >~ stdoutLn)
+runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
 //: You might wonder why (`>~`) uses an `Effect` instead of a raw action in the
 //: base monad.  The reason why is that (`>~`) actually permits the following
@@ -411,7 +415,7 @@ let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
 //: We can now insert this in between `Consumer<String, String>.T.pure(readLine()!)` and `stdoutByLine` and see
 //: what happens:
 
-runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ stdoutLn()
+runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
 //
 // Associativity
@@ -587,7 +591,7 @@ public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 }
 
 //: You can also feed a `Pipe` input using (`>~`).  This means we could have
-//: instead defined the @yes@ pipe like this:
+//: instead defined the `yes`pipe like this:
 
 // Read this as: Keep feeding "y" downstream
 func yesAgain<R>() -> Producer<String, R>.T {
@@ -597,17 +601,19 @@ func yesAgain<R>() -> Producer<String, R>.T {
 //: You can even compose pipes inside of another pipe:
 
 func customerService() -> Producer<String, ()>.T {
-	return each([
-		"Hello, how can I help you?",
-		"Hold for one second.",
-	]) >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
+	return each("Hello, how can I help you?", "Hold for one second.") >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
 }
 
 //: Also, you can often use `each` in conjunction with (`~>`) to traverse nested
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
-runEffect <| (each ~> each ~> each ~> { Effect<()>.T.pure(print($0)) })([[.Some(1), .None], [.Some(2), .Some(3)]])
+func each<T>(seq: [T]) -> Producer<T, ()>.T {
+	return seq.reduce(Producer<T, ()>.T.pure(()), combine: { p,a in yield(a) >>- { _ in p } })
+}
+
+let ll : [[Int?]] = [[.Some(1), .None], [.Some(2), .Some(3)]]
+runEffect <| ((each) ~> ((each) ~> ((each) ~> { x in Proxy.pure(print("\(x)")) })))(ll)
 
 //: Conclusion
 
