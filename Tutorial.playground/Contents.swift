@@ -318,7 +318,9 @@ runEffect <|
 //: our original code into the following more succinct form that composes two
 //: transformations:
 
-runEffect <| for_(stdinLn(), (duplicate ~> { Effect<()>.T.pure(print("\($0)")) }))
+runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
+	return Effect<()>.T.pure(print(x))
+}))
 
 //: This means that we can also choose to program in a more functional style and
 //: think of stream processing in terms of composing transformations using
@@ -615,8 +617,10 @@ func each<T>(seq: [T]) -> Producer<T, ()>.T {
 	return seq.reduce(Producer<T, ()>.T.pure(()), combine: { p,a in yield(a) >>- { _ in p } })
 }
 
-let ll : [[Int?]] = [[.Some(1), .None], [.Some(2), .Some(3)]]
-runEffect <| ((each) ~> ((each) ~> ((each) ~> { x in Proxy.pure(print("\(x)")) })))(ll)
+let ll : [[[Int]]] = [[[1], []], [[2], [3]]]
+let tt = (each ~> (each ~> (each ~> { x in
+	return Effect<()>.T.pure(print(x))
+})))(ll)
 
 //: Conclusion
 
