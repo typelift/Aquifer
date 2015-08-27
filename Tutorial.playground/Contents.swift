@@ -291,7 +291,7 @@ runEffect <|
 // 	       return { x in for_(f(x), g) }
 //     }
 //
-//: Using (`~>`) (pronounced "into"), we can transform our original equality
+//: Using `~>` (pronounced "into"), we can transform our original equality
 //: into the following more symmetric equation:
 //
 // let f : A -> Producer<B, R>
@@ -300,7 +300,7 @@ runEffect <|
 //
 // (f ~> g) ~> h == f ~> (g ~> h)
 //
-//: This looks just like an associativity law.  In fact, (`~>`) has another nice
+//: This looks just like an associativity law.  In fact, `~>` has another nice
 //: property, which is that `yield` is its left and right identity:
 //
 // Left Identity
@@ -310,15 +310,15 @@ runEffect <|
 //     f ~> yield == f
 //
 
-//: In other words, `yield` and (`~>`) form a `Category`, specifically the
-//: generator category, where (`~>`) plays the role of the composition operator
+//: In other words, `yield` and `~>` form a `Category`, specifically the
+//: generator category, where `~>` plays the role of the composition operator
 //: and `yield` is the identity.  If you don`t know what a `Category` is, that`s
 //: okay, and category theory is not a prerequisite for using `Aquifer`.  All you
 //: really need to know is that `Aquifer` uses some simple category theory to keep
 //: the API intuitive and easy to use.
 //:
 //: Notice that if we translate the left identity law to use `for` instead of
-//: (`~>`) we get:
+//: `~>` we get:
 //
 //     for_(yield(x), f) == f(x)
 //
@@ -326,7 +326,7 @@ runEffect <|
 //: then you could instead cut out the middle man and directly apply the body of
 //: the loop to that single element.
 //:
-//: If we translate the right identity law to use `for` instead of (`~>`) we
+//: If we translate the right identity law to use `for` instead of `~>` we
 //: get:
 //
 //     for_(s, yield) == s
@@ -339,7 +339,7 @@ runEffect <|
 //: that `Producer`s are composable in a rigorous sense of the word.
 //:
 //: In fact, we get more out of this than just a bunch of equations.  We also
-//: get a useful operator: (`~>`).  We can use this operator to condense
+//: get a useful operator: `~>`.  We can use this operator to condense
 //: our original code into the following more succinct form that composes two
 //: transformations:
 
@@ -349,7 +349,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
 
 //: This means that we can also choose to program in a more functional style and
 //: think of stream processing in terms of composing transformations using
-//: (`~>`) instead of nesting a bunch of `for` loops.
+//: `~>` instead of nesting a bunch of `for` loops.
 //:
 //: The above example is a microcosm of the design philosophy behind the `Aquifer`
 //: library:
@@ -400,7 +400,7 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //     await() -> Consumer<A, A>
 //
 //: One way to feed a `Consumer` is to repeatedly feed the same input using
-//: using (`>~`) (pronounced "feed"):
+//: using `>~` (pronounced "feed"):
 //
 //                          +- Feed               +- Consumer to    +- Returns new
 //				            |  action             |  feed           |  Effect
@@ -417,13 +417,13 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 
 runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
-//: You might wonder why (`>~`) uses an `Effect` instead of a raw action in the
-//: base monad.  The reason why is that (`>~`) actually permits the following
+//: You might wonder why `>~` uses an `Effect` instead of a raw action in the
+//: base monad.  The reason why is that `>~` actually permits the following
 //: more general type:
 //
 //     func >~ <A, B, C>(eff : Consumer<A, B>, consumer : Consumer<B, C>) -> Consumer<A, C>
 //
-//: (`>~`) is the dual of (`~>`), composing `Consumer`s instead of `Producer`s.
+//: `>~` is the dual of `~>`, composing `Consumer`s instead of `Producer`s.
 //:
 //: This means that you can feed a `Consumer` with yet another `Consumer` so
 //: that you can `await` while you `await`.  For example, we could define the
@@ -453,7 +453,7 @@ runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Pr
 //
 //    f >~ g >~ h
 //
-//: Also, (`>~`) has an identity, which is `await`!
+//: Also, `>~` has an identity, which is `await`!
 //
 // Left identity
 //     await() >~ f == f
@@ -461,7 +461,7 @@ runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Pr
 // Right Identity
 //     f >~ await() == f
 //
-//: In other words, (`>~`) and `await` form a `Category`, too, specifically the
+//: In other words, `>~` and `await` form a `Category`, too, specifically the
 //: iteratee category, and `Consumer`s are also composable.
 
 //: Pipes
@@ -474,7 +474,7 @@ runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Pr
 //:
 //: However, we don`t need to restrict ourselves to using `Producer`s
 //: exclusively or `Consumer`s exclusively.  We can connect `Producer`s and
-//: `Consumer`s directly together using (`>->`) (pronounced "pipe"):
+//: `Consumer`s directly together using `>->` (pronounced "pipe"):
 //
 //     func >-> (p : Producer<A, R>.T, c : Consumer<A, R>.T) -> Effect<R>.T
 //
@@ -491,11 +491,11 @@ runEffect <| stdinLn() >-> stdoutLn()
 //: downstream component (i.e. `stdoutLn` in the above example).  Any time a
 //: component `await`s a value it blocks and transfers control upstream and
 //: every time a component `yield`s a value it blocks and restores control back
-//: downstream, satisfying the `await`.  So in the above example, (`>->`)
+//: downstream, satisfying the `await`.  So in the above example, `>->`
 //: matches every `await` from `stdoutLn` with a `yield` from `stdinLn`.
 //:
 //: Streaming stops when either `stdinLn` terminates (i.e. end of input) or
-//: `stdoutLn` terminates (i.e. broken pipe).  This is why (`>->`) requires
+//: `stdoutLn` terminates (i.e. broken pipe).  This is why `>->` requires
 //: that both the `Producer` and `Consumer` share the same type of return value:
 //: whichever one terminates first provides the return value for the entire
 //: `Effect`.
@@ -507,7 +507,7 @@ runEffect <| stdinLn() >-> stdoutLn()
 let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken pipe!") <^> stdoutLn())
 
 //:
-//: You might wonder why (`>->`) returns an `Effect` that we have to run instead
+//: You might wonder why `>->` returns an `Effect` that we have to run instead
 //: of directly returning an action in the base monad.  This is because you can
 //: connect things other than `Producer`s and `Consumer`s, like `Pipe`s, which
 //: are effectful stream transformations.
@@ -532,7 +532,7 @@ public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
 }
 
 //: You can use `Pipe`s to transform `Producer`s, `Consumer`s, or even other
-//: `Pipe`s using the same (`>->`) operator:
+//: `Pipe`s using the same `>->` operator:
 //
 //     func >-> <A, B, R>(Producer<A, R>.T, Pipe<A, B, R>.T) -> Producer<B, R>.T
 //     func >-> <A, B, R>(Pipe<A, B, R>.T, Consumer<B, R>.T) -> Consumer<A, R>.T
@@ -556,7 +556,7 @@ func maxOutput(n : Int) -> Consumer<String, ()>.T {
 	
 runEffect <| stdinLn() >-> maxOutput(3)
 
-//: Those both gave the same behavior because (`>->`) is associative:
+//: Those both gave the same behavior because `>->` is associative:
 //
 // (p1 >-> p2) >-> p3 = p1 >-> (p2 >-> p3)
 //
@@ -568,24 +568,24 @@ runEffect <| stdinLn() >-> take(3) >-> stdoutLn()
 //: quirks.  In fact, we can continue the analogy to Unix by defining `cat`
 //: (named after the Unix `cat` utility), which reforwards elements endlessly:
 
-// > cat :: Monad m => Pipe a a m r
-// > cat = forever $ do
-// >     x <- await
-// >     yield x
-//
-// `cat` is the identity of `>->`, meaning that `cat` satisfies the
-// following two laws:
-//
-// > -- Useless use of `cat`
-// > cat >-> p = p
-// >
-// > -- Forwarding output to `cat` does nothing
-// > p >-> cat = p
-//
-// Therefore, `>->` and `cat` form a `Category`, specifically the category of
-// Unix pipes, and `Pipe`s are also composable.
-//
-// A lot of Unix tools have very simple definitions when written using `pipes`:
+func cat_<A, R>() -> Pipe<A, A, R>.T {
+	return await() >>- { x in yield(x) } >>- {  _ in cat_() }
+}
+
+
+//: `cat` is the identity of `>->`, meaning that `cat` satisfies the
+//: following two laws:
+//:
+//: Useless use of `cat`
+//:     cat >-> p = p
+//:
+//: Forwarding output to `cat` does nothing
+//:     p >-> cat = p
+//:
+//: Therefore, `>->` and `cat` form a `Category`, specifically the category of
+//: Unix pipes, and `Pipe`s are also composable.
+//:
+//: A lot of Unix tools have very simple definitions when written using `pipes`:
 
 func head<A>(n : Int) -> Pipe<A, A, ()>.T  {
 	return take(n)
@@ -595,7 +595,7 @@ func yes<R>() -> Producer<String, R>.T {
 	return yield("y") >>- { _ in yes() }
 }
 
-//: This prints out 3 ``y``s, just like the equivalent Unix pipeline:
+//: This prints out 3 `y`s, just like the equivalent Unix pipeline:
 //:     `yes | head -3`
 
 runEffect <| yes() >-> head(3) >-> stdoutLn()
@@ -615,12 +615,12 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: For example, you can loop over the output of a `Pipe` using `for`, which is
 //: how `map` is defined:
 
-// Read this as: For all values flowing downstream, apply `f`
+// Read this as: "For all values flowing downstream, apply `f`"
 public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 	return for_(cat()) { v in yield(f(v)) }
 }
 
-//: You can also feed a `Pipe` input using (`>~`).  This means we could have
+//: You can also feed a `Pipe` input using `>~`.  This means we could have
 //: instead defined the `yes`pipe like this:
 
 // Read this as: Keep feeding "y" downstream
@@ -634,7 +634,7 @@ func customerService() -> Producer<String, ()>.T {
 	return each("Hello, how can I help you?", "Hold for one second.") >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
 }
 
-//: Also, you can often use `each` in conjunction with (`~>`) to traverse nested
+//: Also, you can often use `each` in conjunction with `~>` to traverse nested
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
