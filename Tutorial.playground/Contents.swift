@@ -31,8 +31,7 @@
 //: programs.  If you are a library writer, `Aquifer` lets you package up
 //: streaming components into a reusable interface.  If you are an application
 //: writer, `Aquifer` lets you connect pre-made streaming components with minimal
-//: effort to produce a highly-efficient program that streams data in constant
-//: memory.
+//: effort to produce a highly declarative program.
 //:
 //: To enforce loose coupling, components can only communicate using two
 //: commands:
