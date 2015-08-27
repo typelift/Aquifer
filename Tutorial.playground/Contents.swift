@@ -642,10 +642,10 @@ func each<T>(seq: [T]) -> Producer<T, ()>.T {
 	return seq.reduce(Producer<T, ()>.T.pure(()), combine: { p,a in yield(a) >>- { _ in p } })
 }
 
-let ll : [[[Int]]] = [[[1], []], [[2], [3]]]
-let tt = (each ~> (each ~> (each ~> { x in
+let testArray : [[[Int]]] = [[[1], []], [[2], [3]]]
+let loopDeLoopDeLoop = (each ~> (each ~> (each ~> { x in
 	return Effect<()>.T.pure(print(x))
-})))(ll)
+})))(testArray)
 
 //: Conclusion
 
