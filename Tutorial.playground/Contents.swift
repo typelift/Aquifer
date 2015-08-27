@@ -279,7 +279,7 @@ runEffect <|
 //: equality, which always holds no matter what:
 //
 // let s :      Producer<A, ()>  // i.e. `stdinLn()`
-// let f : A -> Producer<B, ()>  // i.e. `duplicate`
+// let f : A -> Producer<B, ()>  // i.e. `duplicate()`
 // let g : B -> Producer<C, ()>  // i.e. `(Effect<()>.T • print)`
 //
 // for_(for_(s, f), g) == for_(s, { x in for_(f(x), g) })
@@ -609,8 +609,8 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: `Aquifer` is more powerful than meets the eye so this section presents some
 //: non-obvious tricks you may find useful.
 //:
-//: Many pipe combinators will work on unusual pipe types and the next few
-//: examples will use the `cat` pipe to demonstrate this.
+//: Many `Aquifer` combinators will work on unusual `Aquifer` types. and the 
+//: next few examples will use the `cat` pipe to demonstrate this.
 //:
 //: For example, you can loop over the output of a `Pipe` using `for`, which is
 //: how `map` is defined:
