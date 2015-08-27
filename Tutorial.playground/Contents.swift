@@ -43,6 +43,7 @@
 //: when you get an `Effect`, meaning that you have handled all inputs and
 //: outputs.  You run this final `Effect` to begin streaming.
 
+import func Swiftz.const
 import func Swiftz.curry
 import func Swiftz.<|
 import Aquifer
@@ -475,7 +476,9 @@ runEffect <| stdinLn() >-> stdoutLn()
 //: Let`s test this by modifying our `Producer` and `Consumer` to each return a
 //: diagnostic `String`:
 //:
-//: <EXAMPLE>
+
+let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken pipe!") <^> stdoutLn())
+
 //:
 //: You might wonder why (`>->`) returns an `Effect` that we have to run instead
 //: of directly returning an action in the base monad.  This is because you can
@@ -489,8 +492,8 @@ runEffect <| stdinLn() >-> stdoutLn()
 /// Returns a pipe that only allows a given number of values to pass through it.
 
 //                               +--------- A `Pipe` that
-//                               |    +---- `await`s `a`s and
-//                               |    |  +-- `yield`s `a`s
+//                               |    +---- `await`s `A`s and
+//                               |    |  +-- `yield`s `A`s
 //                               |    |  |
 //                               v    v  v
 public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
