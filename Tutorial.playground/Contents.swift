@@ -179,7 +179,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //     Specialize `B` to `X`
 //     func for_<A, R>(p : Producer<A, R>, f : (A -> Producer<X, ()>) -> Producer<X, R>
 //
-//     Producer<X, ?> == Effect
+//     Producer<X, Result> == Effect<Result>
 //     func for_<A, R>(p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
 //
 //: This is the same trick that all `Aquifer` functions use to work with various
