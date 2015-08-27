@@ -649,13 +649,10 @@ let tt = (each ~> (each ~> (each ~> { x in
 
 //: Conclusion
 
-// This tutorial covers the concepts of connecting, building, and reading
-// `Aquifer` code.  However, this library is only the core component in an
-// ecosystem of streaming components.
-//
-// The framework is still a work in progress that does not explore the full potential of
-// `pipes` functionality, which actually permits bidirectional communication.
-// Advanced `pipes` and `Aquifer` users can explore this library in greater detail by
-// studying the documentation in the "Core" module to learn about the
-// symmetry of the underlying `Proxy` type and operators.
+//: This tutorial covers the concepts of connecting, building, and reading
+//: `Aquifer` code.  The framework is still a work in progress that does not explore the
+//: full potential of `pipes` functionality, which actually permits bidirectional 
+//: communication.  Advanced `pipes` and `Aquifer` users can explore this library in 
+//: greater detail by studying the documentation in the "Core" module to learn about the
+//: symmetry of the underlying `Proxy` type and operators.
 
