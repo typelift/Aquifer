@@ -243,7 +243,7 @@ runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 //: test out this feature by defining a new loop body that `duplicate`s every
 //: value:
 
-func duplicate<A>.T(x : A) -> Producer<A, ()>.T {
+func duplicate<A>(x : A) -> Producer<A, ()>.T {
 	return yield(x) >>- { _ in  yield(x) }
 }
 
@@ -523,7 +523,7 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 //                               |    |  +-- `yield`s `A`s
 //                               |    |  |
 //                               v    v  v
-public func take_<A>.T(n : Int) -> Pipe<A, A, ()>.T {
+public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
 	if n <= 0 {
 		return pure(())
 	} else {
@@ -568,7 +568,7 @@ runEffect <| stdinLn() >-> take(3) >-> stdoutLn()
 //: quirks.  In fact, we can continue the analogy to Unix by defining `cat`
 //: (named after the Unix `cat` utility), which reforwards elements endlessly:
 
-func cat_<A, R>.T() -> Pipe<A, A, R>.T {
+func cat_<A, R>() -> Pipe<A, A, R>.T {
 	return await() >>- { x in yield(x) } >>- {  _ in cat_() }
 }
 
@@ -587,11 +587,11 @@ func cat_<A, R>.T() -> Pipe<A, A, R>.T {
 //:
 //: A lot of Unix tools have very simple definitions when written using `pipes`:
 
-func head<A>.T(n : Int) -> Pipe<A, A, ()>.T  {
+func head<A>(n : Int) -> Pipe<A, A, ()>.T  {
 	return take(n)
 }
 
-func yes<R>.T() -> Producer<String, R>.T {
+func yes<R>() -> Producer<String, R>.T {
 	return yield("y") >>- { _ in yes() }
 }
 
@@ -616,7 +616,7 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: how `map` is defined:
 
 // Read this as: "For all values flowing downstream, apply `f`"
-public func map_<A, B, R>.T(f : A -> B) -> Pipe<A, B, R>.T {
+public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 	return for_(cat()) { v in yield(f(v)) }
 }
 
@@ -624,7 +624,7 @@ public func map_<A, B, R>.T(f : A -> B) -> Pipe<A, B, R>.T {
 //: instead defined the `yes`pipe like this:
 
 // Read this as: Keep feeding "y" downstream
-func yesAgain<R>.T() -> Producer<String, R>.T {
+func yesAgain<R>() -> Producer<String, R>.T {
 	return Producer.T.pure("y") >~ cat()
 }
 
@@ -638,7 +638,7 @@ func customerService() -> Producer<String, ()>.T {
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
-func each<T>.T(seq: [T]) -> Producer<T, ()>.T {
+func each<T>(seq: [T]) -> Producer<T, ()>.T {
 	return seq.reduce(Producer<T, ()>.T.pure(()), combine: { p,a in yield(a) >>- { _ in p } })
 }
 
