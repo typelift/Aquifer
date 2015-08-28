@@ -124,7 +124,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: documentation for `yield` says that you can also use `yield` within a
 //: `Pipe`, too, because of this polymorphism:
 //:
-//     func yield<UO, UI, DO>(@autoclosure(escaping) value: () -> DO) -> Proxy<UO, UI, (), DO, ()>.T
+//     func yield<UO, UI, DO>(@autoclosure(escaping) value: () -> DO) -> Proxy<UO, UI, (), DO, ()>
 //:
 //: Use simpler types like these to guide you until you understand the fully
 //: general type.
@@ -161,7 +161,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: simpler types.  One of these says that if the body of the loop is a `Producer`, 
 //: then the result is a `Producer`, too:
 //:
-//     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>.T, _ f: DO -> Proxy<UO, UI, NI, NO, DI>.T) -> Proxy<UO, UI, NI, NO, FR>.T
+//     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
 //:
 //: The first type signature we showed for `for_` was a special case of this
 //: slightly more general signature because a `Producer` that never `yield`s is
