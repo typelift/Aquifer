@@ -12,13 +12,13 @@ import Foundation
 import Swiftz
 
 /// Returns a `Pipe` that reads input from `stdin` line-by-line and terminates on end-of-input.
-public func stdinLn<UO, UI>() -> Proxy<UO, UI, (), String, ()> {
+public func stdinLn() -> Producer<String, ()>.T {
     return fromHandle(NSFileHandle.fileHandleWithStandardInput())
 }
 
 /// Returns a `Pipe` that reads input from the given handle line-by-line and terminates on
 /// end-of-input.
-public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String, ()> {
+public func fromHandle(handle: NSFileHandle) -> Producer<String, ()>.T {
     if handle.isAtEndOfFile {
         return pure(())
     } else {
@@ -27,24 +27,28 @@ public func fromHandle<UO, UI>(handle: NSFileHandle) -> Proxy<UO, UI, (), String
 }
 
 /// Returns a `Pipe` that writes output to `stdout` line-by-line and terminates on end-of-input.
-public func stdoutLn<DI, DO, FR>() -> Proxy<(), String, DI, DO, FR> {
+public func stdoutLn() -> Consumer<String, ()>.T {
     return toHandle(NSFileHandle.fileHandleWithStandardOutput())
 }
 
 /// Returns a `Pipe` that writes output to the given handle line-by-line and terminates on
 /// end-of-input.
-public func toHandle<DI, DO, FR>(handle: NSFileHandle) -> Proxy<(), String, DI, DO, FR> {
+public func toHandle(handle: NSFileHandle) -> Consumer<String, ()>.T {
     return for_(cat()) { handle.writeLine($0); return pure(()) }
 }
 
 /// Returns a `Pipe` that prints the description of input values to `stdout`.
-public func describe<UI: CustomStringConvertible, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
-    return description() >-> stdoutLn()
+public func describe<UI: CustomStringConvertible, FR>() -> Consumer<UI, FR>.T {
+    return for_(cat()) { a in
+        return Consumer.T.pure(print(a.description))
+    }
 }
 
 /// Returns a `Pipe` that prints the debug description of input values to `stdout`.
-public func debugDescribe<UI: CustomDebugStringConvertible, DI, DO, FR>() -> Proxy<(), UI, DI, DO, FR> {
-    return debugDescription() >-> stdoutLn()
+public func debugDescribe<UI: CustomDebugStringConvertible, FR>() -> Consumer<UI, FR>.T {
+    return for_(cat()) { a in
+        return Consumer.T.pure(print(a.debugDescription))
+    }
 }
 
 /// Returns a `Pipe` that prints the streamable data of input values to the given output stream.
