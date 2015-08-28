@@ -507,9 +507,9 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 
 //:
 //: You might wonder why `>->` returns an `Effect` that we have to run instead
-//: of directly returning a value directly.  This is because you can
-//: connect things other than `Producer`s and `Consumer`s, like `Pipe`s, which
-//: are effectful stream transformations.
+//: of returning a value directly.  This is because you can connect things other
+//: than `Producer`s and `Consumer`s, like `Pipe`s, which are effectful stream 
+//: transformations.
 //:
 //: A `Pipe` is a wrapper type that is a mix between a `Producer` and
 //: `Consumer`, because a `Pipe` can both `await` and `yield`.  The following
