@@ -110,7 +110,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: consumed.  If nobody consumes the value (which is possible) then `yield`
 //: never returns.  You can think of `yield` as having the following type:
 //:
-//:     func yield<A>(value : A) -> Producer<A, ()>.T
+//:     func yield<A>.T(value : A) -> Producer<A, ()>.T
 //:
 //: The true type of `yield` is actually more general and powerful.  Throughout
 //: the tutorial we will present type signatures like this that are simplified at
@@ -124,7 +124,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: documentation for `yield` says that you can also use `yield` within a
 //: `Pipe`, too, because of this polymorphism:
 //:
-//     func yield<UO, UI, DO>(@autoclosure(escaping) value: () -> DO) -> Proxy<UO, UI, (), DO, ()>
+//     func yield<UO, UI, DO>.T(@autoclosure(escaping) value: () -> DO) -> Proxy<UO, UI, (), DO, ()>.T
 //:
 //: Use simpler types like these to guide you until you understand the fully
 //: general type.
@@ -136,7 +136,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //                        |   to loop            |   loop              |
 //                        v   over               v                     v
 //                        --------------         ---------------       ---------
-//     func for_<A, R>(p: Producer<A, R>.T, _ f: A -> Effect<()>.T) -> Effect<R>.T
+//     func for_<A, R>.T(p: Producer<A, R>.T, _ f: A -> Effect<()>.T) -> Effect<R>.T
 //
 //: `for_(producer, body)` loops over `producer`, substituting each `yield` in
 //: `producer` with `body`.
@@ -161,7 +161,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: simpler types.  One of these says that if the body of the loop is a `Producer`, 
 //: then the result is a `Producer`, too:
 //:
-//     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
+//     func for_<UO, UI, DI, DO, NI, NO, FR>.T(p: Proxy<UO, UI, DI, DO, FR>.T, _ f: DO -> Proxy<UO, UI, NI, NO, DI>.T) -> Proxy<UO, UI, NI, NO, FR>.T
 //:
 //: The first type signature we showed for `for_` was a special case of this
 //: slightly more general signature because a `Producer` that never `yield`s is
@@ -174,13 +174,13 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: This is why `for` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
-//     func for_<A, B, R>(p : Producer<A, R>, f : (A -> Producer<B, ()>) -> Producer<B, R> 
+//     func for_<A, B, R>.T(p : Producer<A, R>.T, f : (A -> Producer<B, ()>.T) -> Producer<B, R>.T 
 //
 //     Specialize `B` to `X`
-//     func for_<A, R>(p : Producer<A, R>, f : (A -> Producer<X, ()>) -> Producer<X, R>
+//     func for_<A, R>.T(p : Producer<A, R>.T, f : (A -> Producer<X, ()>.T) -> Producer<X, R>.T
 //
-//     Producer<X, Result> == Effect<Result>
-//     func for_<A, R>(p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
+//     Producer<X, Result>.T == Effect<Result>.T
+//     func for_<A, R>.T(p : Producer<A, R>.T, f : (A -> Effect<()>.T) -> Effect<R>.T
 //
 //: This is the same trick that all `Aquifer` functions use to work with various
 //: combinations of `Producer`s, `Consumer`s, `Pipe`s, and `Effect`s.  Each
@@ -207,7 +207,7 @@ let stdinLoop = for_(stdinByLine()) { str in
 //: actions. This means we can run these `Effect`s to remove the lifting and lower
 //: them back to the equivalent computation:
 //
-//     func runEffect<R>(eff : Effect<R>) -> R
+//     func runEffect<R>.T(eff : Effect<R>.T) -> R
 //
 //: This is the real type signature of `runEffect`, which refuses to accept
 //: anything other than an `Effect`. This ensures that we handle all
@@ -226,7 +226,7 @@ runEffect <| for_(stdinLn(), { Effect<()>.T.pure(print($0)) })
 //: to a `Producer` using `each`, which is exported by default from `Aquifer`:
 //:
 //
-//     public func each<T>(xs : [T]) -> Producer<T, ()>.T
+//     public func each<T>.T(xs : [T]) -> Producer<T, ()>.T
 //
 //: Combine `for` and `each` to iterate over lists using a "foreach" loop:
 
@@ -234,7 +234,7 @@ runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 
 //: `each` is actually more general and works for any `SequenceType`
 //
-//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()>.T {
+//  public func each<S : SequenceType>.T(xs : S) -> Producer<S.Generator.Element, ()>.T {
 //
 
 //: # Composability
@@ -243,7 +243,7 @@ runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 //: test out this feature by defining a new loop body that `duplicate`s every
 //: value:
 
-func duplicate<A>(x : A) -> Producer<A, ()>.T {
+func duplicate<A>.T(x : A) -> Producer<A, ()>.T {
 	return yield(x) >>- { _ in  yield(x) }
 }
 
@@ -278,9 +278,9 @@ runEffect <|
 //: Yes, we could have!  In fact, this is a special case of the following
 //: equality, which always holds no matter what:
 //
-// let s :      Producer<A, ()>  // i.e. `stdinLn()`
-// let f : A -> Producer<B, ()>  // i.e. `duplicate()`
-// let g : B -> Producer<C, ()>  // i.e. `(Effect<()>.T • print)`
+// let s :      Producer<A, ()>.T  // i.e. `stdinLn()`
+// let f : A -> Producer<B, ()>.T  // i.e. `duplicate()`
+// let g : B -> Producer<C, ()>.T  // i.e. `(Effect<()>.T • print)`
 //
 // for_(for_(s, f), g) == for_(s, { x in for_(f(x), g) })
 //
@@ -294,9 +294,9 @@ runEffect <|
 //: Using `~>` (pronounced "into"), we can transform our original equality
 //: into the following more symmetric equation:
 //
-// let f : A -> Producer<B, R>
-// let g : B -> Producer<C, R>
-// let h : C -> Producer<D, R>
+// let f : A -> Producer<B, R>.T
+// let g : B -> Producer<C, R>.T
+// let h : C -> Producer<D, R>.T
 //
 // (f ~> g) ~> h == f ~> (g ~> h)
 //
@@ -397,7 +397,7 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //: new value.  If nobody provides a value (which is possible) then `await`
 //: never returns.  You can think of `await` as having the following type:
 //
-//     await() -> Consumer<A, A>
+//     await() -> Consumer<A, A>.T
 //
 //: One way to feed a `Consumer` is to repeatedly feed the same input using
 //: using `>~` (pronounced "feed"):
@@ -406,7 +406,7 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //				            |  action             |  feed           |  Effect
 //				            v                     v                 v
 //				            ---------             --------------     ---------
-//     func >~ <B, C>(eff : Effect<B>, consumer : Consumer<B, C>) -> Effect<C>
+//     func >~ <B, C>(eff : Effect<B>.T, consumer : Consumer<B, C>.T) -> Effect<C>.T
 //
 //: `draw >~ consumer` loops over `consumer`, substituting each `await` in
 //: `consumer` with `draw`.
@@ -415,13 +415,13 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
 //:
 
-runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
+runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>.T)
 
 //: You might wonder why `>~` uses an `Effect` instead of a raw action in the
 //: base monad.  The reason why is that `>~` actually permits the following
 //: more general type:
 //
-//     func >~ <A, B, C>(eff : Consumer<A, B>, consumer : Consumer<B, C>) -> Consumer<A, C>
+//     func >~ <A, B, C>(eff : Consumer<A, B>.T, consumer : Consumer<B, C>.T) -> Consumer<A, C>.T
 //
 //: `>~` is the dual of `~>`, composing `Consumer`s instead of `Producer`s.
 //:
@@ -443,7 +443,7 @@ let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
 //: We can now insert this in between `Consumer<String, String>.T.pure(readLine()!)` and `stdoutByLine` and see
 //: what happens:
 
-runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
+runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Proxy<(), String, (), X, ()>.T)
 
 //
 // Associativity
@@ -523,7 +523,7 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 //                               |    |  +-- `yield`s `A`s
 //                               |    |  |
 //                               v    v  v
-public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
+public func take_<A>.T(n : Int) -> Pipe<A, A, ()>.T {
 	if n <= 0 {
 		return pure(())
 	} else {
@@ -568,7 +568,7 @@ runEffect <| stdinLn() >-> take(3) >-> stdoutLn()
 //: quirks.  In fact, we can continue the analogy to Unix by defining `cat`
 //: (named after the Unix `cat` utility), which reforwards elements endlessly:
 
-func cat_<A, R>() -> Pipe<A, A, R>.T {
+func cat_<A, R>.T() -> Pipe<A, A, R>.T {
 	return await() >>- { x in yield(x) } >>- {  _ in cat_() }
 }
 
@@ -587,11 +587,11 @@ func cat_<A, R>() -> Pipe<A, A, R>.T {
 //:
 //: A lot of Unix tools have very simple definitions when written using `pipes`:
 
-func head<A>(n : Int) -> Pipe<A, A, ()>.T  {
+func head<A>.T(n : Int) -> Pipe<A, A, ()>.T  {
 	return take(n)
 }
 
-func yes<R>() -> Producer<String, R>.T {
+func yes<R>.T() -> Producer<String, R>.T {
 	return yield("y") >>- { _ in yes() }
 }
 
@@ -616,7 +616,7 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: how `map` is defined:
 
 // Read this as: "For all values flowing downstream, apply `f`"
-public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
+public func map_<A, B, R>.T(f : A -> B) -> Pipe<A, B, R>.T {
 	return for_(cat()) { v in yield(f(v)) }
 }
 
@@ -624,7 +624,7 @@ public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 //: instead defined the `yes`pipe like this:
 
 // Read this as: Keep feeding "y" downstream
-func yesAgain<R>() -> Producer<String, R>.T {
+func yesAgain<R>.T() -> Producer<String, R>.T {
 	return Producer.T.pure("y") >~ cat()
 }
 
@@ -638,7 +638,7 @@ func customerService() -> Producer<String, ()>.T {
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
-func each<T>(seq: [T]) -> Producer<T, ()>.T {
+func each<T>.T(seq: [T]) -> Producer<T, ()>.T {
 	return seq.reduce(Producer<T, ()>.T.pure(()), combine: { p,a in yield(a) >>- { _ in p } })
 }
 
