@@ -63,8 +63,8 @@ public func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: 
 }
 
 infix operator ~~> {
-associativity right
-precedence 130
+    associativity right
+    precedence 130
 }
 
 /// Into | Composes two loops to yield one large loop.
@@ -75,8 +75,8 @@ public func ~~> <IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, 
 }
 
 infix operator <~~ {
-associativity left
-precedence 130
+    associativity left
+    precedence 130
 }
 
 /// Into | Composes two loops to yield one large loop.
@@ -87,8 +87,8 @@ public func <~~ <IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, 
 }
 
 infix operator ~~< {
-associativity left
-precedence 140
+    associativity left
+    precedence 140
 }
 
 /// Replaces each value `yielded` in the left pipe with the right pipe.
@@ -99,8 +99,8 @@ public func ~~< <UO, UI, DI, DO, FR, NR>(p: Proxy<(), FR, DI, DO, NR>, q: Proxy<
 }
 
 infix operator >~~ {
-associativity right
-precedence 140
+    associativity right
+    precedence 140
 }
 
 /// Replaces each value `yielded` in the right pipe with the left pipe.
@@ -111,8 +111,8 @@ public func >~~ <UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, q: Proxy<
 }
 
 infix operator >-> {
-associativity left
-precedence 160
+    associativity left
+    precedence 160
 }
 
 /// Compose | Composes two pipes by attaching the output of the first to the input of the second.
@@ -123,8 +123,8 @@ public func >-> <UO, UI, DI, DO, DDI, DDO, FR>(p: Proxy<UO, UI, DI, DO, FR>, q: 
 }
 
 infix operator <-< {
-associativity right
-precedence 160
+    associativity right
+    precedence 160
 }
 
 /// Compose Backwards | Composes two pipes by attaching the output of the second to the input of the
