@@ -658,3 +658,6 @@ let loopDeLoopDeLoop = (each ~> (each ~> (each ~> { x in
 //: greater detail by studying the documentation in the `Operators.swift` file to learn 
 //: about the symmetry of the underlying `Proxy` type and operators.
 
+//: Copyright
+
+//: This tutorial is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
