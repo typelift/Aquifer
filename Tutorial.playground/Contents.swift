@@ -415,7 +415,7 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
 //:
 
-runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>.T)
+runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
 //: You might wonder why `>~` uses an `Effect` instead of a raw value.  The reason why
 //: is that `>~` actually permits the following more general type:
@@ -442,7 +442,7 @@ let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
 //: We can now insert this in between `Consumer<String, String>.T.pure(readLine()!)` and `stdoutByLine` and see
 //: what happens:
 
-runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Proxy<(), String, (), X, ()>.T)
+runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
 //
 // Associativity
@@ -655,6 +655,6 @@ let loopDeLoopDeLoop = (each ~> (each ~> (each ~> { x in
 //: `Aquifer` code.  The framework is still a work in progress that does not explore the
 //: full potential of `pipes` functionality, which actually permits bidirectional 
 //: communication.  Advanced `pipes` and `Aquifer` users can explore this library in 
-//: greater detail by studying the documentation in the "Core" module to learn about the
-//: symmetry of the underlying `Proxy` type and operators.
+//: greater detail by studying the documentation in the `Operators.swift` file to learn 
+//: about the symmetry of the underlying `Proxy` type and operators.
 
