@@ -22,7 +22,7 @@ public func arr<A, B, R>(f: A -> B) -> Pipe<A, B, R>.T {
 /// pipe has operated on them.  Values appearing along the upstream input in a `.Right` will appear
 /// downstream in a `.Right` unchanged.
 public func left<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B, C>, R>.T {
-    return leftInner() >~ for_(p) { v in yield(Either.Left(v)) }
+    return leftInner() >~~ for_(p) { v in yield(Either.Left(v)) }
 }
 
 /// Returns a pipe that acts like `right` from Control.Arrow.
@@ -31,7 +31,7 @@ public func left<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B,
 /// the pipe has operated on them.  Values appearing along the upstream input in a `.Left` will
 /// appear downstream in a `.Left` unchanged.
 public func right<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<C, A>, Either<C, B>, R>.T {
-    return rightInner() >~ for_(p) { v in yield(Either.Right(v)) }
+    return rightInner() >~~ for_(p) { v in yield(Either.Right(v)) }
 }
 
 infix operator +++ {
