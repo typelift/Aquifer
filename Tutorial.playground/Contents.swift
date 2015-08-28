@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-// MARK: - Introduction
+//: # Introduction
 
 //: The `Aquifer` library decouples stream processing stages from each other so
 //: that you can mix and match diverse stages to produce useful streaming
@@ -73,7 +73,7 @@ import func Swiftz.curry
 import func Swiftz.<|
 import Aquifer
 
-// MARK: - Producers
+//: # Producers
 
 //: `Producer`s are effectful streams of input.  Specifically, a `Producer` is a
 //: Type that extends any other type with a new `yield` command. This `yield` 
@@ -237,7 +237,7 @@ runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 //  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()>.T {
 //
 
-// MARK: - Composability
+//: # Composability
 
 //: You might wonder why the body of a `for_` loop can be a `Producer`.  Let`s
 //: test out this feature by defining a new loop body that `duplicate`s every
@@ -360,7 +360,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
 //:
 //: * Think compositionally instead of sequentially
 
-// MARK: - Consumers
+//: # Consumers
 
 //: Sometimes you don`t want to use a `for` loop because you don`t want to consume
 //: every element of a `Producer` or because you don`t want to process every
