@@ -377,7 +377,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
 //:
 //: However, sometimes we can get away with something a little more simple and
 //: elegant, like a `Consumer`, which represents an effectful sink of values.  A
-//: `Consumer` is a monad transformer that extends the base monad with a new
+//: `Consumer` is a wrapper type that extends a base type with a new
 //: `await` command. This `await` command lets you receive input from an
 //: anonymous upstream source.
 //:
@@ -417,9 +417,8 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 
 runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>.T)
 
-//: You might wonder why `>~` uses an `Effect` instead of a raw action in the
-//: base monad.  The reason why is that `>~` actually permits the following
-//: more general type:
+//: You might wonder why `>~` uses an `Effect` instead of a raw value.  The reason why
+//: is that `>~` actually permits the following more general type:
 //
 //     func >~ <A, B, C>(eff : Consumer<A, B>.T, consumer : Consumer<B, C>.T) -> Consumer<A, C>.T
 //
@@ -508,11 +507,11 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 
 //:
 //: You might wonder why `>->` returns an `Effect` that we have to run instead
-//: of directly returning an action in the base monad.  This is because you can
+//: of directly returning a value directly.  This is because you can
 //: connect things other than `Producer`s and `Consumer`s, like `Pipe`s, which
 //: are effectful stream transformations.
 //:
-//: A `Pipe` is a monad transformer that is a mix between a `Producer` and
+//: A `Pipe` is a wrapper type that is a mix between a `Producer` and
 //: `Consumer`, because a `Pipe` can both `await` and `yield`.  The following
 //: example `Pipe` is analagous to the Prelude`s `take`, only allowing a fixed
 //: number of values to flow through:
