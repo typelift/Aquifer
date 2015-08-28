@@ -187,12 +187,12 @@ public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith init
 
 /// Returns a pipe that always produces the given value.
 public func repeat_<UO, UI, DO, FR>(v: () -> DO) -> Proxy<UO, UI, (), DO, FR> {
-    return once(v) >~ cat()
+    return once(v) >~~ cat()
 }
 
 /// Returns a pipe that produces the given value a set amount of times.
 public func replicate<UO, UI, DO>(v: () -> DO, n: Int) -> Proxy<UO, UI, (), DO, ()> {
-    return once(v) >~ take(n)
+    return once(v) >~~ take(n)
 }
 
 // MARK: Input Subsets

@@ -192,7 +192,7 @@
 
 /* Begin PBXFileReference section */
 		110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swiftz.xcodeproj; path = Carthage/Checkouts/swiftz/Swiftz.xcodeproj; sourceTree = "<group>"; };
-		11200E741A7723BD0032A136 /* Simple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Simple.swift; sourceTree = "<group>"; usesTabs = 0; };
+		11200E741A7723BD0032A136 /* Simple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Simple.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11200E821A784D230032A136 /* Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11200E861A7953120032A136 /* IO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IO.swift; sourceTree = "<group>"; usesTabs = 0; };
 		11200E891A7958580032A136 /* NSFileHandleExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFileHandleExt.h; sourceTree = "<group>"; };

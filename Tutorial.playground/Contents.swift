@@ -57,7 +57,7 @@
 //:
 //: * `for_` handles `yield`s
 //:
-//: * `>~` handles `await`s
+//: * `>~~` handles `await`s
 //:
 //: * `>->` handles both `yield`s and `await`s
 //:
@@ -287,38 +287,38 @@ runEffect <|
 //: We can understand the rationale behind this equality if we first define the
 //: following operator that is the point-free counterpart to `for_`:
 //
-//     func ~> <A, B, C, R>(f : A -> Producer<B, R>.T, g : B -> Producer<C, R>.T) -> (A -> Producer<C, R>.T) {
+//     func ~~> <A, B, C, R>(f : A -> Producer<B, R>.T, g : B -> Producer<C, R>.T) -> (A -> Producer<C, R>.T) {
 // 	       return { x in for_(f(x), g) }
 //     }
 //
-//: Using `~>` (pronounced "into"), we can transform our original equality
+//: Using `~~>` (pronounced "into"), we can transform our original equality
 //: into the following more symmetric equation:
 //
 // let f : A -> Producer<B, R>.T
 // let g : B -> Producer<C, R>.T
 // let h : C -> Producer<D, R>.T
 //
-// (f ~> g) ~> h == f ~> (g ~> h)
+// (f ~~> g) ~~> h == f ~~> (g ~~> h)
 //
-//: This looks just like an associativity law.  In fact, `~>` has another nice
+//: This looks just like an associativity law.  In fact, `~~>` has another nice
 //: property, which is that `yield` is its left and right identity:
 //
 // Left Identity
-//     yield ~> f == f
+//     yield ~~> f == f
 //
 // Right Identity
-//     f ~> yield == f
+//     f ~~> yield == f
 //
 
-//: In other words, `yield` and `~>` form a `Category`, specifically the
-//: generator category, where `~>` plays the role of the composition operator
+//: In other words, `yield` and `~~>` form a `Category`, specifically the
+//: generator category, where `~~>` plays the role of the composition operator
 //: and `yield` is the identity.  If you don`t know what a `Category` is, that`s
 //: okay, and category theory is not a prerequisite for using `Aquifer`.  All you
 //: really need to know is that `Aquifer` uses some simple category theory to keep
 //: the API intuitive and easy to use.
 //:
 //: Notice that if we translate the left identity law to use `for_` instead of
-//: `~>` we get:
+//: `~~>` we get:
 //
 //     for_(yield(x), f) == f(x)
 //
@@ -326,7 +326,7 @@ runEffect <|
 //: then you could instead cut out the middle man and directly apply the body of
 //: the loop to that single element.
 //:
-//: If we translate the right identity law to use `for_` instead of `~>` we
+//: If we translate the right identity law to use `for_` instead of `~~>` we
 //: get:
 //
 //     for_(s, yield) == s
@@ -339,17 +339,17 @@ runEffect <|
 //: that `Producer`s are composable in a rigorous sense of the word.
 //:
 //: In fact, we get more out of this than just a bunch of equations.  We also
-//: get a useful operator: `~>`.  We can use this operator to condense
+//: get a useful operator: `~~>`.  We can use this operator to condense
 //: our original code into the following more succinct form that composes two
 //: transformations:
 
-runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
+runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
 	return Effect<()>.T.pure(print(x))
 }))
 
 //: This means that we can also choose to program in a more functional style and
 //: think of stream processing in terms of composing transformations using
-//: `~>` instead of nesting a bunch of `for_` loops.
+//: `~~>` instead of nesting a bunch of `for_` loops.
 //:
 //: The above example is a microcosm of the design philosophy behind the `Aquifer`
 //: library:
@@ -400,29 +400,29 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //     await() -> Consumer<A, A>.T
 //
 //: One way to feed a `Consumer` is to repeatedly feed the same input using
-//: using `>~` (pronounced "feed"):
+//: using `>~~` (pronounced "feed"):
 //
 //                          +- Feed               +- Consumer to    +- Returns new
 //				            |  action             |  feed           |  Effect
 //				            v                     v                 v
 //				            ---------             --------------     ---------
-//     func >~ <B, C>(eff : Effect<B>.T, consumer : Consumer<B, C>.T) -> Effect<C>.T
+//     func >~~ <B, C>(eff : Effect<B>.T, consumer : Consumer<B, C>.T) -> Effect<C>.T
 //
-//: `draw >~ consumer` loops over `consumer`, substituting each `await` in
+//: `draw >~~ consumer` loops over `consumer`, substituting each `await` in
 //: `consumer` with `draw`.
 //:
 //: So the following code replaces every `await` in `stdoutLn` with
 //: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
 //:
 
-runEffect <| Effect.T.pure(readLine()!) >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
+runEffect <| Effect.T.pure(readLine()!) >~~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
-//: You might wonder why `>~` uses an `Effect` instead of a raw value.  The reason why
-//: is that `>~` actually permits the following more general type:
+//: You might wonder why `>~~` uses an `Effect` instead of a raw value.  The reason why
+//: is that `>~~` actually permits the following more general type:
 //
-//     func >~ <A, B, C>(eff : Consumer<A, B>.T, consumer : Consumer<B, C>.T) -> Consumer<A, C>.T
+//     func >~~ <A, B, C>(eff : Consumer<A, B>.T, consumer : Consumer<B, C>.T) -> Consumer<A, C>.T
 //
-//: `>~` is the dual of `~>`, composing `Consumer`s instead of `Producer`s.
+//: `>~~` is the dual of `~~>`, composing `Consumer`s instead of `Producer`s.
 //:
 //: This means that you can feed a `Consumer` with yet another `Consumer` so
 //: that you can `await` while you `await`.  For example, we could define the
@@ -442,25 +442,25 @@ let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
 //: We can now insert this in between `Consumer<String, String>.T.pure(readLine()!)` and `stdoutByLine` and see
 //: what happens:
 
-runEffect <| Effect<String>.T.pure(readLine()!) >~ doubleUp >~ (stdoutLn() as Proxy<(), String, (), X, ()>)
+runEffect <| Effect<String>.T.pure(readLine()!) >~~ doubleUp >~~ (stdoutLn() as Proxy<(), String, (), X, ()>)
 
 //
 // Associativity
-//    (f >~ g) >~ h = f >~ (g >~ h)
+//    (f >~~ g) >~~ h = f >~~ (g >~~ h)
 //
 //: ... so we can always omit the parentheses since the meaning is unambiguous:
 //
-//    f >~ g >~ h
+//    f >~~ g >~~ h
 //
-//: Also, `>~` has an identity, which is `await`!
+//: Also, `>~~` has an identity, which is `await`!
 //
 // Left identity
-//     await() >~ f == f
+//     await() >~~ f == f
 //
 // Right Identity
-//     f >~ await() == f
+//     f >~~ await() == f
 //
-//: In other words, `>~` and `await` form a `Category`, too, specifically the
+//: In other words, `>~~` and `await` form a `Category`, too, specifically the
 //: iteratee category, and `Consumer`s are also composable.
 
 //: Pipes
@@ -622,12 +622,12 @@ public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 	return for_(cat()) { v in yield(f(v)) }
 }
 
-//: You can also feed a `Pipe` input using `>~`.  This means we could have
+//: You can also feed a `Pipe` input using `>~~`.  This means we could have
 //: instead defined the `yes`pipe like this:
 
 // Read this as: Keep feeding "y" downstream
 func yesAgain<R>() -> Producer<String, R>.T {
-	return Producer.T.pure("y") >~ cat()
+	return Producer.T.pure("y") >~~ cat()
 }
 
 //: You can even compose pipes inside of another pipe:
@@ -636,7 +636,7 @@ func customerService() -> Producer<String, ()>.T {
 	return each("Hello, how can I help you?", "Hold for one second.") >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
 }
 
-//: Also, you can often use `each` in conjunction with `~>` to traverse nested
+//: Also, you can often use `each` in conjunction with `~~>` to traverse nested
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
@@ -645,9 +645,9 @@ func each<T>(seq: [T]) -> Producer<T, ()>.T {
 }
 
 let testArray : [[[Int]]] = [[[1], []], [[2], [3]]]
-let loopDeLoopDeLoop = (each ~> (each ~> (each ~> { x in
+let loopDeLoopDeLoop = (each ~~> each ~~> each ~~> { x in
 	return Effect<()>.T.pure(print(x))
-})))(testArray)
+})(testArray)
 
 //: Conclusion
 
