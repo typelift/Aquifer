@@ -171,7 +171,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //     construct an `X` will fail catastrophically.
 //     struct X { //... }
 //
-//: This is why `for` permits two different type signatures.  The first type
+//: This is why `for_` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
 //     func for_<A, B, R>.T(p : Producer<A, R>.T, f : (A -> Producer<B, ()>.T) -> Producer<B, R>.T 
@@ -187,7 +187,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: function really has just one general type, which you can then simplify
 //: down to multiple useful alternative types.
 //:
-//: Here`s an example use of a `for` `loop`, where the second
+//: Here`s an example use of a `for_` `loop`, where the second
 //: argument (the loop body) is an `Effect`:
 //:
 
@@ -196,10 +196,10 @@ let stdinLoop = for_(stdinByLine()) { str in
 	return Effect.T.pure(print(str))
 }
 
-//: In this example, `for` loops over `stdinByLine` and replaces every `yield` in
+//: In this example, `for_` loops over `stdinByLine` and replaces every `yield` in
 //: `stdinByLine` with the body of the loop, printing each line.
 
-//: You can think of `yield` as creating a hole and a `for` loop is one way
+//: You can think of `yield` as creating a hole and a `for_` loop is one way
 //: to fill that hole.
 //;
 //: Notice how the final `stdinLoop` only lifts actions and does nothing else.  This 
@@ -228,7 +228,7 @@ runEffect <| for_(stdinLn(), { Effect<()>.T.pure(print($0)) })
 //
 //     public func each<T>.T(xs : [T]) -> Producer<T, ()>.T
 //
-//: Combine `for` and `each` to iterate over lists using a "foreach" loop:
+//: Combine `for_` and `each` to iterate over lists using a "foreach" loop:
 
 runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 
@@ -258,7 +258,7 @@ let loop2 = for_(stdinLn()) { x in
 //: This time our `loop` is a `Producer` that outputs `String`s, specifically
 //: two copies of each line that we read from standard input.  Since `loop` is a
 //: `Producer` we cannot run it because there is still unhandled output.
-//: However, we can use yet another `for` to handle this new duplicated stream:
+//: However, we can use yet another `for_` to handle this new duplicated stream:
 
 runEffect <| for_(loop, { Effect<()>.T.pure(print($0)) })
 
@@ -285,7 +285,7 @@ runEffect <|
 // for_(for_(s, f), g) == for_(s, { x in for_(f(x), g) })
 //
 //: We can understand the rationale behind this equality if we first define the
-//: following operator that is the point-free counterpart to `for`:
+//: following operator that is the point-free counterpart to `for_`:
 //
 //     func ~> <A, B, C, R>(f : A -> Producer<B, R>.T, g : B -> Producer<C, R>.T) -> (A -> Producer<C, R>.T) {
 // 	       return { x in for_(f(x), g) }
@@ -317,7 +317,7 @@ runEffect <|
 //: really need to know is that `Aquifer` uses some simple category theory to keep
 //: the API intuitive and easy to use.
 //:
-//: Notice that if we translate the left identity law to use `for` instead of
+//: Notice that if we translate the left identity law to use `for_` instead of
 //: `~>` we get:
 //
 //     for_(yield(x), f) == f(x)
@@ -326,7 +326,7 @@ runEffect <|
 //: then you could instead cut out the middle man and directly apply the body of
 //: the loop to that single element.
 //:
-//: If we translate the right identity law to use `for` instead of `~>` we
+//: If we translate the right identity law to use `for_` instead of `~>` we
 //: get:
 //
 //     for_(s, yield) == s
@@ -334,7 +334,7 @@ runEffect <|
 //: This just says that if the only thing you do is re-`yield` every element of
 //: a stream, you get back your original stream.
 
-//: These three "for loop" laws summarize our intuition for how `for` loops
+//: These three "for loop" laws summarize our intuition for how `for_` loops
 //: should behave and because these are `Category` laws in disguise that means
 //: that `Producer`s are composable in a rigorous sense of the word.
 //:
@@ -349,7 +349,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
 
 //: This means that we can also choose to program in a more functional style and
 //: think of stream processing in terms of composing transformations using
-//: `~>` instead of nesting a bunch of `for` loops.
+//: `~>` instead of nesting a bunch of `for_` loops.
 //:
 //: The above example is a microcosm of the design philosophy behind the `Aquifer`
 //: library:
@@ -362,7 +362,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~> { x in
 
 //: # Consumers
 
-//: Sometimes you don`t want to use a `for` loop because you don`t want to consume
+//: Sometimes you don`t want to use a `for_` loop because you don`t want to consume
 //: every element of a `Producer` or because you don`t want to process every
 //: value of a `Producer` the exact same way.
 //:
@@ -612,7 +612,7 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: Many `Aquifer` combinators will work on unusual `Aquifer` types. and the 
 //: next few examples will use the `cat` pipe to demonstrate this.
 //:
-//: For example, you can loop over the output of a `Pipe` using `for`, which is
+//: For example, you can loop over the output of a `Pipe` using `for_`, which is
 //: how `map` is defined:
 
 // Read this as: "For all values flowing downstream, apply `f`"
