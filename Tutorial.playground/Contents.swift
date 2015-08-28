@@ -513,10 +513,13 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 //:
 //: A `Pipe` is a wrapper type that is a mix between a `Producer` and
 //: `Consumer`, because a `Pipe` can both `await` and `yield`.  The following
-//: example `Pipe` is analagous to the Prelude`s `take`, only allowing a fixed
-//: number of values to flow through:
-/// Returns a pipe that only allows a given number of values to pass through it.
+//: example `Pipe` is analagous to the STL's notion of a slice, in that where slices
+//: only allow a fixed number of values from the resulting collection, the pipe only
+//: allows a fixed number of values to flow through:
+//:
 
+/// Returns a pipe that only allows a given number of values to pass through it.
+//
 //                               +--------- A `Pipe` that
 //                               |    +---- `await`s `A`s and
 //                               |    |  +-- `yield`s `A`s
