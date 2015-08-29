@@ -131,8 +131,8 @@ static int create_socket() {
 			case '\r':
 				bytesReceived--;
 		}
-	}       
-	
+	}
+
 	buffer[bytesReceived - 1] = '\0';
 	NSString *retVal = [@(buffer) copy];
 	free(buffer);

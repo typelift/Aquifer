@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2014 Gabriel Gonzalez
 // All rights reserved.
-//	
+//
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
 // * Redistributions of source code must retain the above copyright notice,
@@ -76,16 +76,16 @@ import Aquifer
 //: # Producers
 
 //: `Producer`s are effectful streams of input.  Specifically, a `Producer` is a
-//: Type that extends any other type with a new `yield` command. This `yield` 
+//: Type that extends any other type with a new `yield` command. This `yield`
 //: command lets you send output downstream to an anonymous handler, decoupling
 //: how you generate values from how you consume them.
 
 //: As an aside: Swift does not *technically* allow for the definition of polymorphic
 //: typealiases like `Producer`.  Instead, `Aquifer` uses a number of polymorphic enums
-//: with typealiases inside (the `.T` in all of the types presented hereafter).  We 
+//: with typealiases inside (the `.T` in all of the types presented hereafter).  We
 //: specifically chose to use enums with no cases so there would be no option to instantiate
 //: them.  This way, they are markers and nothing more.
- 
+
 //: The following `stdinByLine` `Producer` shows how to incrementally read in
 //: `String`s from standard input and `yield` them downstream, terminating
 //: gracefully when reaching the end of the input:
@@ -157,8 +157,8 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: `Effect`, then the final result must be an `Effect`."
 //:
 //: Jump to the definition of (⌘+Click) `for_` to navigate to its documentation.
-//: There you will see the fully general type and underneath you will see equivalent 
-//: simpler types.  One of these says that if the body of the loop is a `Producer`, 
+//: There you will see the fully general type and underneath you will see equivalent
+//: simpler types.  One of these says that if the body of the loop is a `Producer`,
 //: then the result is a `Producer`, too:
 //:
 //     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
@@ -174,7 +174,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: This is why `for_` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
-//     func for_<A, B, R>(p : Producer<A, R>.T, f : (A -> Producer<B, ()>.T) -> Producer<B, R>.T 
+//     func for_<A, B, R>(p : Producer<A, R>.T, f : (A -> Producer<B, ()>.T) -> Producer<B, R>.T
 //
 //     Specialize `B` to `X`
 //     func for_<A, R>(p : Producer<A, R>.T, f : (A -> Producer<X, ()>.T) -> Producer<X, R>.T
@@ -202,8 +202,8 @@ let stdinLoop = for_(stdinByLine()) { str in
 //: You can think of `yield` as creating a hole and a `for_` loop is one way
 //: to fill that hole.
 //;
-//: Notice how the final `stdinLoop` only lifts actions and does nothing else.  This 
-//: property is true for all `Effect`s, which are just glorified wrappers around 
+//: Notice how the final `stdinLoop` only lifts actions and does nothing else.  This
+//: property is true for all `Effect`s, which are just glorified wrappers around
 //: actions. This means we can run these `Effect`s to remove the lifting and lower
 //: them back to the equivalent computation:
 //
@@ -216,7 +216,7 @@ let stdinLoop = for_(stdinByLine()) { str in
 runEffect(stdinLoop)
 
 //: ... or you could inline the entire `stdinLoop` into the following one-liner:
-    
+
 runEffect <| for_(stdinLn(), { Effect<()>.T.pure(print($0)) })
 
 //: Our final program loops over standard input and echoes every line to
@@ -267,7 +267,7 @@ runEffect <| for_(loop, { Effect<()>.T.pure(print($0)) })
 //:
 //: But is this really necessary?  Couldn`t we have instead written this using a
 //: nested for loop?
-	
+
 runEffect <|
 	for_(stdinLn()) { str1 in
 		return for_(duplicate(str1)) { str2 in
@@ -435,7 +435,7 @@ let doubleUp : Consumer<String, String>.T = await() >>- { str1 in
 	}
 }
 
-//: more concise: 
+//: more concise:
 
 let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
 
@@ -508,7 +508,7 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 //:
 //: You might wonder why `>->` returns an `Effect` that we have to run instead
 //: of returning a value directly.  This is because you can connect things other
-//: than `Producer`s and `Consumer`s, like `Pipe`s, which are effectful stream 
+//: than `Producer`s and `Consumer`s, like `Pipe`s, which are effectful stream
 //: transformations.
 //:
 //: A `Pipe` is a wrapper type that is a mix between a `Producer` and
@@ -555,7 +555,7 @@ runEffect <| maxInput(3) >-> stdoutLn()
 func maxOutput(n : Int) -> Consumer<String, ()>.T {
 	return take(n) >-> stdoutLn()
 }
-	
+
 runEffect <| stdinLn() >-> maxOutput(3)
 
 //: Those both gave the same behavior because `>->` is associative:
@@ -611,7 +611,7 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: `Aquifer` is more powerful than meets the eye so this section presents some
 //: non-obvious tricks you may find useful.
 //:
-//: Many `Aquifer` combinators will work on unusual `Aquifer` types. and the 
+//: Many `Aquifer` combinators will work on unusual `Aquifer` types. and the
 //: next few examples will use the `cat` pipe to demonstrate this.
 //:
 //: For example, you can loop over the output of a `Pipe` using `for_`, which is
@@ -653,9 +653,9 @@ let loopDeLoopDeLoop = (each ~~> each ~~> each ~~> { x in
 
 //: This tutorial covers the concepts of connecting, building, and reading
 //: `Aquifer` code.  The framework is still a work in progress that does not explore the
-//: full potential of `pipes` functionality, which actually permits bidirectional 
-//: communication.  Advanced `pipes` and `Aquifer` users can explore this library in 
-//: greater detail by studying the documentation in the `Operators.swift` file to learn 
+//: full potential of `pipes` functionality, which actually permits bidirectional
+//: communication.  Advanced `pipes` and `Aquifer` users can explore this library in
+//: greater detail by studying the documentation in the `Operators.swift` file to learn
 //: about the symmetry of the underlying `Proxy` type and operators.
 
 //: Copyright

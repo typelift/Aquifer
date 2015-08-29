@@ -27,7 +27,7 @@ public func left<A, B, C, R>(p : Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B
 
 /// Returns a pipe that acts like `right` from Control.Arrow.
 ///
-/// Values sent along the upstream input in a `.Right` will appear downstream in a `.Right` after 
+/// Values sent along the upstream input in a `.Right` will appear downstream in a `.Right` after
 /// the pipe has operated on them.  Values appearing along the upstream input in a `.Left` will
 /// appear downstream in a `.Left` unchanged.
 public func right<A, B, C, R>(p : Pipe<A, B, R>.T) -> Pipe<Either<C, A>, Either<C, B>, R>.T {
@@ -42,7 +42,7 @@ infix operator +++ {
 /// Returns a pipe that acts like `+++` from Control.Arrow.
 ///
 /// `.Left` values fed to the pipe's upstream input will appear downstream as `.Left`s that have
-/// been operated on by the first pipe.  `.Right` values fed to the pipe's upstream input will 
+/// been operated on by the first pipe.  `.Right` values fed to the pipe's upstream input will
 /// appear downstream as `.Right`s that have been operated on by the second pipe.
 public func +++ <A, B, C, D, R>(p : Pipe<A, B, R>.T, q : Pipe<C, D, R>.T) -> Pipe<Either<A, C>, Either<B, D>, R>.T {
 	return left(p) >-> right(q)
