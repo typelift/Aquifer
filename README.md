@@ -101,7 +101,16 @@ let pipe = stdinLn() >-> stdoutLn()
 
 The thing to notice about `pipe` is that Swift believes it has the type
 
-```
+```swift
+/// How do we know everything's been fused from this type signature alone?
+///
+///   +-- X indicates the output hole has been filled; fused.
+///   |  +-- This pipe only accepts () as input; fused.
+///   |  |   +-- This pipe only accepts () as input; fused.
+///   |  |   |   +-- X indicates the ouput hole has been filled; fused.
+///   |  |   |   |  +-- This pipe ultimately returns () i.e. performs an effect.
+///   |  |   |   |  |
+///   v  v   v   v  v
 Proxy<X, (), (), X, ()>
 ```
 
