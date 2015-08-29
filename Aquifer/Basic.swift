@@ -37,7 +37,7 @@ public func not<FR>() -> Pipe<Bool, Bool, FR>.T {
 // MARK: - Data.Monoid
 
 /// Folds the values inside the given pipe using the `Monoid` op.
-public func mconcat<V: Monoid>(p : Producer<V, ()>.T) -> V {
+public func mconcat<V : Monoid>(p : Producer<V, ()>.T) -> V {
     return fold(p, stepWith : { $0.op($1) }, initializeWith : V.mempty, extractWith : { $0 })
 }
 
@@ -93,12 +93,12 @@ public func mapMany<UI, S : SequenceType, FR>(f : UI -> S) -> Pipe<UI, S.Generat
 }
 
 /// Returns a pipe that yields the description of each value flowing downstream.
-public func description<UI: CustomStringConvertible, FR>() -> Pipe<UI, String, FR>.T {
+public func description<UI : CustomStringConvertible, FR>() -> Pipe<UI, String, FR>.T {
     return map { $0.description }
 }
 
 /// Returns a pipe that yields the debug description of each value flowing downstream.
-public func debugDescription<UI: CustomDebugStringConvertible, FR>() -> Pipe<UI, String, FR>.T {
+public func debugDescription<UI : CustomDebugStringConvertible, FR>() -> Pipe<UI, String, FR>.T {
     return map { $0.debugDescription }
 }
 
@@ -117,7 +117,7 @@ public func foldRet<A, V, FR, R>(p : Producer<V, FR>.T, stepWith step: (A, V) ->
 // MARK: Special Folds
 
 /// Returns a pipe that flattens the elements of any sequences flowing downstream.
-public func concat<S: SequenceType, FR>() -> Pipe<S, S.Generator.Element, FR>.T {
+public func concat<S : SequenceType, FR>() -> Pipe<S, S.Generator.Element, FR>.T {
     return for_(cat(), each)
 }
 
@@ -143,17 +143,17 @@ public func or(p : Producer<Bool, ()>.T) -> Bool {
 }
 
 /// Returns the sum of the values in the given pipe.
-public func sum<V: NumericType>(p : Producer<V, ()>.T) -> V {
+public func sum<V : NumericType>(p : Producer<V, ()>.T) -> V {
     return fold(p, stepWith : { $0.plus($1) }, initializeWith : V.zero, extractWith : { $0 })
 }
 
 /// Returns the product of the values in the given pipe.
-public func product<V: NumericType>(p : Producer<V, ()>.T) -> V {
+public func product<V : NumericType>(p : Producer<V, ()>.T) -> V {
     return fold(p, stepWith : { $0.times($1) }, initializeWith : V.one, extractWith : { $0 })
 }
 
 /// Finds the maximum value among all the elements of the given pipe.
-public func maximum<V: Comparable>(p : Producer<V, ()>.T) -> V? {
+public func maximum<V : Comparable>(p : Producer<V, ()>.T) -> V? {
     func step(x : V?, _ v : V) -> V? {
         if let w = x {
             return max(v, w)
@@ -165,7 +165,7 @@ public func maximum<V: Comparable>(p : Producer<V, ()>.T) -> V? {
 }
 
 /// Finds the minimum value among all the elements of the given pipe.
-public func minimum<V: Comparable>(p : Producer<V, ()>.T) -> V? {
+public func minimum<V : Comparable>(p : Producer<V, ()>.T) -> V? {
     func step(x : V?, _ v : V) -> V? {
         if let w = x {
             return min(v, w)
@@ -236,12 +236,12 @@ public func dropWhile<DT, FR>(predicate : DT -> Bool) -> Pipe<DT, DT, FR>.T {
 // MARK: Searching with Equality
 
 /// Returns whether a given value matches any of the values inside the given pipe.
-public func elem<V: Equatable>(p : Producer<V, ()>.T, _ x : V) -> Bool {
+public func elem<V : Equatable>(p : Producer<V, ()>.T, _ x : V) -> Bool {
     return any(p) { x == $0 }
 }
 
 /// Returns whether a given value does not match any of the values inside the given pipe.
-public func notElem<V: Equatable>(p : Producer<V, ()>.T, _ x : V) -> Bool {
+public func notElem<V : Equatable>(p : Producer<V, ()>.T, _ x : V) -> Bool {
     return all(p) { x != $0 }
 }
 
@@ -266,7 +266,7 @@ public func filter<DT, FR>(predicate : DT -> Bool) -> Pipe<DT, DT, FR>.T {
 // MARK: Indexing
 
 /// Returns a pipe that outputs the indices of all elements that match the given element
-public func elemIndices<UI: Equatable, FR>(@autoclosure(escaping) x : () -> UI) -> Pipe<UI, Int, FR>.T {
+public func elemIndices<UI : Equatable, FR>(@autoclosure(escaping) x : () -> UI) -> Pipe<UI, Int, FR>.T {
     return findIndices { x() == $0 }
 }
 

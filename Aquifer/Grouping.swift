@@ -66,7 +66,7 @@ public func groupsBy<V, R>(p : Producer<V, R>.T, _ equals : (V, V) -> Bool) -> G
 }
 
 /// Splits a 'Producer' into a `GroupedProducer`.
-public func groups<V: Equatable, R>(p : Producer<V, R>.T) -> GroupedProducer<V, R> {
+public func groups<V : Equatable, R>(p : Producer<V, R>.T) -> GroupedProducer<V, R> {
     return groupsBy(p) { v0, v1 in v0 == v1  }
 }
 

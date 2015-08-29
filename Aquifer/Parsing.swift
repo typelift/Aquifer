@@ -55,7 +55,7 @@ public func groupBy<V, R>(p : Producer<V, R>.T, _ equals : (V, V) -> Bool) -> Pr
 }
 
 /// Splits a `Producer` into two `Producer`s after the first group of elements that are equal.
-public func group<V: Equatable, R>(p : Producer<V, R>.T) -> Producer<V, Producer<V, R>.T>.T {
+public func group<V : Equatable, R>(p : Producer<V, R>.T) -> Producer<V, Producer<V, R>.T>.T {
     return groupBy(p) { v0, v1 in v0 == v1 }
 }
 
