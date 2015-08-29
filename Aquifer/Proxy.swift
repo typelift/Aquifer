@@ -62,7 +62,7 @@ import Swiftz
 public struct Proxy<UO, UI, DI, DO, FR> {
     private let _repr : () -> ProxyRepr<UO, UI, DI, DO, FR>
 
-    internal init(@autoclosure(escaping) _ r: () -> ProxyRepr<UO, UI, DI, DO, FR>) {
+    internal init(@autoclosure(escaping) _ r : () -> ProxyRepr<UO, UI, DI, DO, FR>) {
         _repr = r
     }
 
@@ -273,7 +273,7 @@ private func pushBindExt<UO, UI, DI, DO, NI, NO, FR>(p : ProxyRepr<UO, UI, DI, D
     return p.pushBind(f)
 }
 
-private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p : ProxyRepr<UO, UI, DI, DO, FR>, _ f: UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
+private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p : ProxyRepr<UO, UI, DI, DO, FR>, _ f : UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
     return p.pullBind(f)
 }
 

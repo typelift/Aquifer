@@ -19,7 +19,7 @@ import Swiftz
 public struct GroupedProducer<V, R> {
     private let _repr : () -> GroupedProducerRepr<V, R>
 
-    internal init(@autoclosure(escaping) _ r: () -> GroupedProducerRepr<V, R>) {
+    internal init(@autoclosure(escaping) _ r : () -> GroupedProducerRepr<V, R>) {
         _repr = r
     }
 

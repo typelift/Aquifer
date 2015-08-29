@@ -59,13 +59,13 @@ public func mapOutput<UO, UI, DI, DO, NO, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f
 }
 
 /// Yields a pipe that produces left-scanned values with the given step function.
-public func scan1i<DT, FR>(stepWith step: (DT, DT) -> DT) -> Pipe<DT, DT, FR>.T {
+public func scan1i<DT, FR>(stepWith step : (DT, DT) -> DT) -> Pipe<DT, DT, FR>.T {
 	return scan1(stepWith: step, initializeWith: identity, extractWith: identity)
 }
 
 /// Yields a pipe that produces left-scanned values with the given step function.  The pipe is not
 /// required to have an initial value, but one is expected to be produced by the `initial` function.
-public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial : UI -> A, extractWith extractor : A -> DO) -> Pipe<UI, DO, FR>.T {
+public func scan1<A, UI, DO, FR>(stepWith step : (A, UI) -> A, initializeWith initial : UI -> A, extractWith extractor : A -> DO) -> Pipe<UI, DO, FR>.T {
 	return await() >>- { scan(stepWith: step, initializeWith: initial($0), extractWith: extractor) }
 }
 
