@@ -6,6 +6,38 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+// MARK: - Combinators
+
+infix operator ~~> {
+	associativity right
+	precedence 130
+}
+
+infix operator <~~ {
+	associativity left
+	precedence 130
+}
+
+infix operator ~~< {
+	associativity left
+	precedence 140
+}
+
+infix operator >~~ {
+	associativity right
+	precedence 140
+}
+
+infix operator >-> {
+	associativity left
+	precedence 160
+}
+
+infix operator <-< {
+	associativity right
+	precedence 160
+}
+
 // MARK: - Request Category
 
 infix operator |>| {
