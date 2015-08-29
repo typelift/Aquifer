@@ -14,7 +14,7 @@ import Swiftz
 public struct X {
     private let rec : () -> X
 
-    private init(_ x: () -> X) {
+    private init(_ x : () -> X) {
         rec = x
     }
 
@@ -23,6 +23,6 @@ public struct X {
     }
 }
 
-public func closed<A>(x: X) -> A {
+public func closed<A>(x : X) -> A {
     return x.absurd()
 }

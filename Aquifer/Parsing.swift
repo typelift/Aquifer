@@ -13,7 +13,7 @@ import Focus
 
 /// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest 
 /// consecutive group of elements that satisfy the given predicate.
-public func span<V, R>(p: Producer<V, R>.T, _ predicate: V -> Bool) -> Producer<V, Producer<V, R>.T>.T {
+public func span<V, R>(p : Producer<V, R>.T, _ predicate : V -> Bool) -> Producer<V, Producer<V, R>.T>.T {
     switch next(p) {
     case let .Left(x): return pure(pure(x))
     case let .Right((dO, q)):
@@ -27,12 +27,12 @@ public func span<V, R>(p: Producer<V, R>.T, _ predicate: V -> Bool) -> Producer<
 
 /// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest 
 /// consecutive group of elements that do not satisfy the given predicate.
-public func extreme<V, R>(p: Producer<V, R>.T, _ predicate: V -> Bool) -> Producer<V, Producer<V, R>.T>.T {
+public func extreme<V, R>(p : Producer<V, R>.T, _ predicate : V -> Bool) -> Producer<V, Producer<V, R>.T>.T {
     return span(p, (!) • predicate)
 }
 
 /// Splits a `Producer` into two `Producer`s after a fixed number of elements
-public func splitAt<V, R>(p: Producer<V, R>.T, _ n: Int) -> Producer<V, Producer<V, R>.T>.T {
+public func splitAt<V, R>(p : Producer<V, R>.T, _ n : Int) -> Producer<V, Producer<V, R>.T>.T {
     if n <= 0 {
         return pure(p)
     } else {
@@ -46,7 +46,7 @@ public func splitAt<V, R>(p: Producer<V, R>.T, _ n: Int) -> Producer<V, Producer
 
 /// Splits a `Producer` into two `Producer`s after the first group of elements that are equal 
 /// according to the equality predicate.
-public func groupBy<V, R>(p: Producer<V, R>.T, _ equals: (V, V) -> Bool) -> Producer<V, Producer<V, R>.T>.T {
+public func groupBy<V, R>(p : Producer<V, R>.T, _ equals : (V, V) -> Bool) -> Producer<V, Producer<V, R>.T>.T {
     switch next(p) {
     case let .Left(x): return pure(pure(x))
     case let .Right((dO, q)):
@@ -55,7 +55,7 @@ public func groupBy<V, R>(p: Producer<V, R>.T, _ equals: (V, V) -> Bool) -> Prod
 }
 
 /// Splits a `Producer` into two `Producer`s after the first group of elements that are equal.
-public func group<V: Equatable, R>(p: Producer<V, R>.T) -> Producer<V, Producer<V, R>.T>.T {
+public func group<V: Equatable, R>(p : Producer<V, R>.T) -> Producer<V, Producer<V, R>.T>.T {
     return groupBy(p) { v0, v1 in v0 == v1 }
 }
 
@@ -87,7 +87,7 @@ public func skipAll<V, I>() -> IxState<Producer<V, I>.T, Producer<V, I>.T, ()> {
 }
 
 /// Push back an element onto the underlying `Producer`.
-public func unDraw<V, I>(x: V) -> IxState<Producer<V, I>.T, Producer<V, I>.T, ()> {
+public func unDraw<V, I>(x : V) -> IxState<Producer<V, I>.T, Producer<V, I>.T, ()> {
     return modify { p in yield(x) >>- { _ in p } }
 }
 
@@ -106,7 +106,7 @@ public func isEndOfInput<V, I>() -> IxState<Producer<V, I>.T, Producer<V, I>.T, 
 public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> IxState<Producer<V, I>.T, Producer<V, I>.T, R> {
     return draw() >>- {
         if let v = $0 {
-            return foldAll(stepWith: step, initializeWith: step(initial, v), extractWith: extractor)
+            return foldAll(stepWith : step, initializeWith : step(initial, v), extractWith : extractor)
         } else {
             return pure(extractor(initial))
         }
@@ -114,7 +114,7 @@ public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initi
 }
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
-/*public func toParser<V, I, R>(p: Proxy<(), V?, (), X, R>) -> IxState<Producer<V, I>.T, Producer<V, I>.T, R> {
+/*public func toParser<V, I, R>(p : Proxy<(), V?, (), X, R>) -> IxState<Producer<V, I>.T, Producer<V, I>.T, R> {
 }*/
 
 /// Convert a never-ending Consumer to a Parser
@@ -124,7 +124,7 @@ public func toParser<V, I>(endless p: Consumer<V, X>.T) -> IxState<Producer<V, I
 
 // MARK: - Implementation Details Follow
 
-private func drawAllInner<V, I>(diffAs: List<V> -> List<V>) -> IxState<Producer<V, I>.T, Producer<V, I>.T, List<V>> {
+private func drawAllInner<V, I>(diffAs : List<V> -> List<V>) -> IxState<Producer<V, I>.T, Producer<V, I>.T, List<V>> {
     return draw() >>- {
         if let v = $0 {
             return drawAllInner(diffAs • curry(List.cons)(v))

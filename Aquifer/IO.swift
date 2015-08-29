@@ -18,7 +18,7 @@ public func stdinLn() -> Producer<String, ()>.T {
 
 /// Returns a `Pipe` that reads input from the given handle line-by-line and terminates on
 /// end-of-input.
-public func fromHandle(handle: NSFileHandle) -> Producer<String, ()>.T {
+public func fromHandle(handle : NSFileHandle) -> Producer<String, ()>.T {
     if handle.isAtEndOfFile {
         return pure(())
     } else {
@@ -33,7 +33,7 @@ public func stdoutLn() -> Consumer<String, ()>.T {
 
 /// Returns a `Pipe` that writes output to the given handle line-by-line and terminates on
 /// end-of-input.
-public func toHandle(handle: NSFileHandle) -> Consumer<String, ()>.T {
+public func toHandle(handle : NSFileHandle) -> Consumer<String, ()>.T {
     return for_(cat()) { handle.writeLine($0); return pure(()) }
 }
 
@@ -52,6 +52,6 @@ public func debugDescribe<UI: CustomDebugStringConvertible, FR>() -> Consumer<UI
 }
 
 /// Returns a `Pipe` that prints the streamable data of input values to the given output stream.
-public func writeTo<DT: Streamable, OS: OutputStreamType, FR>(inout stream: OS) -> Pipe<DT, DT, FR>.T {
+public func writeTo<DT: Streamable, OS : OutputStreamType, FR>(inout stream: OS) -> Pipe<DT, DT, FR>.T {
     return chain { $0.writeTo(&stream) }
 }

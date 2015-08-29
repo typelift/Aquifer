@@ -12,7 +12,7 @@ import Swiftz
 
 /// Lifts an arrow into a pipe by connecting its inputs to the upstream input and its outputs to the
 /// downstream output of the pipe.
-public func arr<A, B, R>(f: A -> B) -> Pipe<A, B, R>.T {
+public func arr<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
     return map(f)
 }
 
@@ -21,7 +21,7 @@ public func arr<A, B, R>(f: A -> B) -> Pipe<A, B, R>.T {
 /// Values sent along the upstream input in a `.Left` will appear downstream in a `.Left` after the
 /// pipe has operated on them.  Values appearing along the upstream input in a `.Right` will appear
 /// downstream in a `.Right` unchanged.
-public func left<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B, C>, R>.T {
+public func left<A, B, C, R>(p : Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B, C>, R>.T {
     return leftInner() >~~ for_(p) { v in yield(Either.Left(v)) }
 }
 
@@ -30,13 +30,13 @@ public func left<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B,
 /// Values sent along the upstream input in a `.Right` will appear downstream in a `.Right` after 
 /// the pipe has operated on them.  Values appearing along the upstream input in a `.Left` will
 /// appear downstream in a `.Left` unchanged.
-public func right<A, B, C, R>(p: Pipe<A, B, R>.T) -> Pipe<Either<C, A>, Either<C, B>, R>.T {
+public func right<A, B, C, R>(p : Pipe<A, B, R>.T) -> Pipe<Either<C, A>, Either<C, B>, R>.T {
     return rightInner() >~~ for_(p) { v in yield(Either.Right(v)) }
 }
 
 infix operator +++ {
-associativity left
-precedence 180
+	associativity left
+	precedence 180
 }
 
 /// Returns a pipe that acts like `+++` from Control.Arrow.
@@ -44,17 +44,17 @@ precedence 180
 /// `.Left` values fed to the pipe's upstream input will appear downstream as `.Left`s that have
 /// been operated on by the first pipe.  `.Right` values fed to the pipe's upstream input will 
 /// appear downstream as `.Right`s that have been operated on by the second pipe.
-public func +++ <A, B, C, D, R>(p: Pipe<A, B, R>.T, q: Pipe<C, D, R>.T) -> Pipe<Either<A, C>, Either<B, D>, R>.T {
+public func +++ <A, B, C, D, R>(p : Pipe<A, B, R>.T, q : Pipe<C, D, R>.T) -> Pipe<Either<A, C>, Either<B, D>, R>.T {
     return left(p) >-> right(q)
 }
 
 /// Returns a pipe that applies the given function to its upstream input.
-public func mapInput<UO, UI, DI, DO, NI, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: NI -> UI) -> Proxy<UO, NI, DI, DO, FR> {
+public func mapInput<UO, UI, DI, DO, NI, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f : NI -> UI) -> Proxy<UO, NI, DI, DO, FR> {
     return { request($0).fmap(f) } >>| p
 }
 
 /// Returns a pipe that applies the given function to its downstream output.
-public func mapOutput<UO, UI, DI, DO, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> NO) -> Proxy<UO, UI, DI, NO, FR> {
+public func mapOutput<UO, UI, DI, DO, NO, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f : DO -> NO) -> Proxy<UO, UI, DI, NO, FR> {
     return p |>> { v in respond(f(v)) }
 }
 
@@ -65,7 +65,7 @@ public func scan1i<DT, FR>(stepWith step: (DT, DT) -> DT) -> Pipe<DT, DT, FR>.T 
 
 /// Yields a pipe that produces left-scanned values with the given step function.  The pipe is not
 /// required to have an initial value, but one is expected to be produced by the `initial` function.
-public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: UI -> A, extractWith extractor: A -> DO) -> Pipe<UI, DO, FR>.T {
+public func scan1<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial : UI -> A, extractWith extractor : A -> DO) -> Pipe<UI, DO, FR>.T {
     return await() >>- { scan(stepWith: step, initializeWith: initial($0), extractWith: extractor) }
 }
 
