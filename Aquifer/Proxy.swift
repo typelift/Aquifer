@@ -60,7 +60,7 @@ import Swiftz
 ///                        v
 ///                   Final Results
 public struct Proxy<UO, UI, DI, DO, FR> {
-    private let _repr: () -> ProxyRepr<UO, UI, DI, DO, FR>
+    private let _repr : () -> ProxyRepr<UO, UI, DI, DO, FR>
 
     internal init(@autoclosure(escaping) _ r: () -> ProxyRepr<UO, UI, DI, DO, FR>) {
         _repr = r

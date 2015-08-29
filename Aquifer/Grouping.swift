@@ -17,7 +17,7 @@ import Swiftz
 ///
 ///    typealias GroupedProducer<V, R> = Free<Producer<V, $0>, R>
 public struct GroupedProducer<V, R> {
-    private let _repr: () -> GroupedProducerRepr<V, R>
+    private let _repr : () -> GroupedProducerRepr<V, R>
 
     internal init(@autoclosure(escaping) _ r: () -> GroupedProducerRepr<V, R>) {
         _repr = r
