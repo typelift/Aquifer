@@ -88,7 +88,7 @@ func yield<A>(value : A) -> Producer<A, ()>.T
 
 `yield` is an operation that returns a value with a "hole" in it that we need to
 fill.  In fact, if we were simply to use `yield` by itself, our program would
-block indefinitely waiting for the fused hole to be filled!  A `yield` is
+block indefinitely waiting for the unfused hole to be filled!  A `yield` is
 usually connected to, naturally, a `Consumer` pipe, which itself has a hole of
 type `A`.  Here we'll hook up the function `stdinLn` (which returns
 a `Producer<String, ()>` that `yield`s values from stdin) to the function
