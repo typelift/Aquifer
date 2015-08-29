@@ -36,8 +36,8 @@ enumerated above.
 
 For the more advanced user, `Aquifer`'s semantics can be described by a number
 of Categories.  To that end, the library includes notes and diagrams to aid
-understanding, and to present a detailed graphical view of the most general
-parts of the library.  For example, this is the diagram outlining `Proxy`:
+understanding, and to present a detailed graphical view of its most general
+parts.  For example, this is the diagram outlining `Proxy`:
 
 ```
               Upstream | Downstream
