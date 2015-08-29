@@ -42,7 +42,7 @@ static int create_socket() {
 
 @implementation NSFileHandle (AQUFileHandleExt)
 
-+ (instancetype)fileHandleWithConnectionToHost:(NSString *)host toPort:(int)port {
++ (instancetype)aqu_fileHandleWithConnectionToHost:(NSString *)host toPort:(int)port {
 	in_addr_t remote_h_addr;
 	int result;
 
@@ -90,7 +90,7 @@ static int create_socket() {
 	return [[NSFileHandle alloc] initWithFileDescriptor: sockfd closeOnDealloc: YES];
 }
 
-- (NSString *)readLine {
+- (NSString *)aqu_readLine {
 	int fd = [self fileDescriptor];
 
 	// If the socket is closed, return an empty string
@@ -139,11 +139,11 @@ static int create_socket() {
 	return retVal;
 }
 
-- (void)writeLine:(NSString *)line {
+- (void)aqu_writeLine:(NSString *)line {
 	[self writeData:[[NSString stringWithFormat:@"%@\n", line] dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
-- (BOOL)isAtEndOfFile {
+- (BOOL)aqu_isAtEndOfFile {
 	UInt64 currentOffset = self.offsetInFile;
 	[self seekToEndOfFile];
 	UInt64 endOffset = self.offsetInFile;

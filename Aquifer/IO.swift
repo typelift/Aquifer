@@ -19,10 +19,10 @@ public func stdinLn() -> Producer<String, ()>.T {
 /// Returns a `Pipe` that reads input from the given handle line-by-line and terminates on
 /// end-of-input.
 public func fromHandle(handle : NSFileHandle) -> Producer<String, ()>.T {
-    if handle.isAtEndOfFile {
+    if handle.aqu_isAtEndOfFile {
         return pure(())
     } else {
-        return yield(handle.readLine()) >>- { _ in fromHandle(handle) }
+        return yield(handle.aqu_readLine()) >>- { _ in fromHandle(handle) }
     }
 }
 
@@ -34,7 +34,7 @@ public func stdoutLn() -> Consumer<String, ()>.T {
 /// Returns a `Pipe` that writes output to the given handle line-by-line and terminates on
 /// end-of-input.
 public func toHandle(handle : NSFileHandle) -> Consumer<String, ()>.T {
-    return for_(cat()) { handle.writeLine($0); return pure(()) }
+    return for_(cat()) { handle.aqu_writeLine($0); return pure(()) }
 }
 
 /// Returns a `Pipe` that prints the description of input values to `stdout`.

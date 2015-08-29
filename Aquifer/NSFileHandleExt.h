@@ -21,18 +21,18 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSFileHandle (AQUFileHandleExt)
 
 /// Creates and returns a file handle connected to the host address on the given port.
-+ (instancetype)fileHandleWithConnectionToHost:(NSString *)host toPort:(int)port;
++ (instancetype)aqu_fileHandleWithConnectionToHost:(NSString *)host toPort:(int)port;
 
 /// Appends a newline to the given string and prints it to the receiver's underlying file handle.
-- (void)writeLine:(NSString *)line;
+- (void)aqu_writeLine:(NSString *)line;
 
 /// Reads a line from the receiver's underlying file handle.
-- (NSString *)readLine;
+- (NSString *)aqu_readLine;
 
 /// Returns whether the receiver's underlying file descriptor no longer has any data to read.  Such
 /// as when the end of a file is reached at a read, or the EOF character is encountered in the
 /// stream.
-@property (NS_NONATOMIC_IOSONLY, readonly) BOOL isAtEndOfFile;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL aqu_isAtEndOfFile;
 
 @end
 
