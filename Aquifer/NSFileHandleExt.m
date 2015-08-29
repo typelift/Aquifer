@@ -44,6 +44,7 @@ static int create_socket() {
 
 + (instancetype)fileHandleWithConnectionToHost:(NSString *)host toPort:(int)port {
 	in_addr_t remote_h_addr;
+	int result;
 
 	remote_h_addr = getipaddr([host UTF8String]);
 
@@ -61,8 +62,7 @@ static int create_socket() {
 		NSCAssert(false, @"Could not set O_NONBLOCK for socket");
 	}
 
-	int result = connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
-
+	result = connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
 	if (result < 0 && errno != EINPROGRESS) {
 		NSCAssert(false, @"Error in connect()");
 	}
