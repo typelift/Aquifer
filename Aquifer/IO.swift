@@ -22,7 +22,7 @@ public func fromHandle(handle : NSFileHandle) -> Producer<String, ()>.T {
     if handle.isAtEndOfFile {
         return pure(())
     } else {
-        return yield(handle.readLine) >>- { _ in fromHandle(handle) }
+        return yield(handle.readLine()) >>- { _ in fromHandle(handle) }
     }
 }
 
