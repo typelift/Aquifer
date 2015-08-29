@@ -273,8 +273,7 @@ private func pushBindExt<UO, UI, DI, DO, NI, NO, FR>(p : ProxyRepr<UO, UI, DI, D
     return p.pushBind(f)
 }
 
-private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p : ProxyRepr<UO, UI, DI, DO, FR>, _
-    f: UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
-        return p.pullBind(f)
+private func pullBindExt<UO, UI, DI, DO, NI, NO, FR>(p : ProxyRepr<UO, UI, DI, DO, FR>, _ f: UO -> ProxyRepr<NO, NI, UO, UI, FR>) -> ProxyRepr<NO, NI, DI, DO, FR> {
+    return p.pullBind(f)
 }
 
