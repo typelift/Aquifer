@@ -14,26 +14,26 @@
 #define CONN_TIMEOUT 5
 #define BUFFER_SIZE 256
 
-in_addr_t getipaddr(const char *host) {
+static in_addr_t getipaddr(const char *host) {
 	/* let's look it up */
 	struct hostent *server = gethostbyname(host);
 	if (server == NULL) {
-		[[NSException exceptionWithName:@"Error resolving" reason:@"Error resolving the host" userInfo:nil] raise];
+		NSCAssert(false, @"Error resolving the host");
 	}
 
 	return *(in_addr_t *)server->h_addr;
 }
 
-int create_socket() {
+static int create_socket() {
 	int socketfd;
 	socketfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketfd == -1) {
-		[[NSException exceptionWithName:@"Allocating socket failed" reason:@"Could not allocate socket" userInfo:nil] raise];
+		NSCAssert(false, @"Could not allocate socket");
 	}
 
 	int loop = 1;
 	if (setsockopt(socketfd, SOL_SOCKET, SO_KEEPALIVE, &loop, sizeof (loop)) < 0) {
-		[[NSException exceptionWithName:@"Error setting options" reason:@"Could not set SO_REUSEADDR" userInfo:nil] raise];
+		NSCAssert(false, @"Could not set SO_REUSEADDR");
 	}
 
 	return socketfd;
@@ -58,17 +58,17 @@ int create_socket() {
 	/* Set NONBLOCK to realize a timeout */
 	int oldFlags = fcntl(sockfd, F_GETFL, 0);
 	if (fcntl(sockfd, F_SETFL, oldFlags | O_NONBLOCK) < 0) {
-		[[NSException exceptionWithName:@"Could not set O_NONBLOCK" reason:@"Could not set O_NONBLOCK for socket" userInfo:nil] raise];
+		NSCAssert(false, @"Could not set O_NONBLOCK for socket");
 	}
 
 	int result = connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
 
 	if (result < 0 && errno != EINPROGRESS) {
-		[[NSException exceptionWithName:@"Error connecting" reason:@"Error in connect()" userInfo:nil] raise];
+		NSCAssert(false, @"Error in connect()");
 	}
 
 	if (fcntl(sockfd, F_SETFL, oldFlags) < 0) {
-		[[NSException exceptionWithName:@"Could not set restore old flags" reason:@"Could not restore old flags for socket" userInfo:nil] raise];
+		NSCAssert(false, @"Could not restore old flags for socket");
 	}
 
 	/* Test if connected but with timeout */
@@ -82,9 +82,9 @@ int create_socket() {
 
 	result = select(sockfd + 1, &fds, &fds, NULL, &timeout);
 	if (result < 0) {
-		[[NSException exceptionWithName:@"Error selecting" reason:@"Error in select()" userInfo:nil] raise];
+		NSCAssert(false, @"Error in select()");
 	} else if (result == 0) {
-		[[NSException exceptionWithName:@"Error connecting" reason:@"Timeout while connecting" userInfo:nil] raise];
+		NSCAssert(false, @"Timeout while connecting");
 	}
 
 	return [[NSFileHandle alloc] initWithFileDescriptor: sockfd closeOnDealloc: YES];
@@ -102,7 +102,7 @@ int create_socket() {
 	int bufferSize = BUFFER_SIZE;
 	char *buffer = (char *)malloc(bufferSize + 1);
 	if (buffer == NULL) {
-		[[NSException exceptionWithName:@"No memory left" reason:@"No more memory for allocating buffer" userInfo:nil] raise];
+		NSCAssert(false, @"No more memory for allocating buffer");
 	}
 
 	int bytesReceived = 0;
@@ -112,7 +112,7 @@ int create_socket() {
 		n = read(fd, buffer + bytesReceived++, 1);
 
 		if (n < 0) {
-			[[NSException exceptionWithName:@"Socket error" reason:@"Remote host closed connection" userInfo:nil] raise];
+			NSCAssert(false, @"Remote host closed connection");
 		}
 
 		if (bytesReceived >= bufferSize) {
@@ -120,7 +120,7 @@ int create_socket() {
 			bufferSize += BUFFER_SIZE;
 			buffer = (char *)realloc(buffer, bufferSize + 1);
 			if (buffer == NULL) {
-				[[NSException exceptionWithName:@"No memory left" reason:@"No more memory for allocating buffer" userInfo:nil] raise];
+				NSCAssert(false, @"No more memory for allocating buffer");
 			}
 		}
 
