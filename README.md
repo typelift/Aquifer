@@ -6,7 +6,7 @@ immediate associated ecosystem) to Swift, using
 [Focus](https://github.com/typelift/Focus).
 
 For those already familiar with the Haskell library, check out the source.  For
-everybody else, see the [Tutorial Playground][Tutorial.playground] for a
+everybody else, see the [Tutorial Playground](Tutorial.playground) for a
 beginner-level introduction to the major concepts and use-cases of this library.
 
 # Introduction
@@ -105,10 +105,11 @@ The thing to notice about `pipe` is that Swift believes it has the type
 Proxy<X, (), (), X, ()>
 ```
 
-By consulting the handy table of `typealias`es in `Proxy`.swift it's easy to see
-that this corresponds to the `Effect` alias.  An `Effect` is *only* produced
-when every input and output from all parts of the pipe have been fused away,
-leaving only a program that can be run with the `runEffect` combinator.
+By consulting the handy table of `typealias`es in [`Proxy`](Aquifer/Proxy.swift)'s
+definition file it's easy to see that this corresponds to the `Effect` alias.  An 
+`Effect` is *only* produced when every input and output from all parts of the pipe
+have been fused away, leaving only a program that can be run with the `runEffect` 
+combinator.
 
 Putting it all together yields
 
