@@ -55,8 +55,6 @@ parts of the library.  For example, this is the diagram outlining `Proxy`:
 And another from the `Request` Category:
 
 ```
-
-```
             IS                   /===>DO                     IS
              |                  /      |                      |
         +----|----+            /  +----|----+            +----|----+
