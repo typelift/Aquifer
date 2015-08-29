@@ -16,7 +16,7 @@ enum ClientStep : Int, CustomStringConvertible {
 	case ClientRequest
 	case ClientLog
 	case ClientInc
-	
+
 	var description : String {
 		switch self {
 		case .ClientInc:
@@ -45,7 +45,7 @@ enum ServerStep : Int, CustomStringConvertible {
 	case ServerRespond
 	case ServerLog
 	case ServerInc
-	
+
 	var description : String {
 		switch self {
 		case .ServerInc:
@@ -75,7 +75,7 @@ enum ProxyStep : Int, CustomStringConvertible {
 	case ProxyRespond
 	case ProxyLog
 	case ProxyInc
-	
+
 	var description : String {
 		switch self {
 		case .ProxyRequest:
@@ -122,7 +122,7 @@ func correct(str : String) -> String {
 
 struct AClient : CustomStringConvertible {
 	let unAClient : [ClientStep]
-	
+
 	var description : String {
 		return correct(self.unAClient.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
@@ -132,7 +132,7 @@ extension AClient : Arbitrary {
 	static var arbitrary : Gen<AClient> {
 		return [ClientStep].arbitrary.fmap(AClient.init)
 	}
-	
+
 	static func shrink(c : AClient) -> [AClient] {
 		return [ClientStep].shrink(c.unAClient).map(AClient.init)
 	}
@@ -154,7 +154,7 @@ func aClient(client : AClient) -> (Int -> Client<Int, Int, Int>.T) {
 
 struct AServer : CustomStringConvertible {
 	let unAServer : [ServerStep]
-	
+
 	var description : String {
 		return correct(self.unAServer.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
@@ -164,7 +164,7 @@ extension AServer : Arbitrary {
 	static var arbitrary : Gen<AServer> {
 		return [ServerStep].arbitrary.fmap(AServer.init)
 	}
-	
+
 	static func shrink(c : AServer) -> [AServer] {
 		return [ServerStep].shrink(c.unAServer).map(AServer.init)
 	}
@@ -185,11 +185,11 @@ func aServer(server : AServer) -> (Int -> Server<Int, Int, Int>.T) {
 
 struct AProxy : Hashable, CustomStringConvertible {
 	let unAProxy : [ProxyStep]
-	
+
 	var description : String {
 		return correct(self.unAProxy.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
 	}
-	
+
 	var hashValue : Int {
 		return Set(self.unAProxy).hashValue
 	}
@@ -203,7 +203,7 @@ extension AProxy : Arbitrary {
 	static var arbitrary : Gen<AProxy> {
 		return [ProxyStep].arbitrary.fmap(AProxy.init)
 	}
-	
+
 	static func shrink(c : AProxy) -> [AProxy] {
 		return [ProxyStep].shrink(c.unAProxy).map(AProxy.init)
 	}
@@ -238,7 +238,7 @@ struct Operation {
 	typealias T = (ProxyK.T, ProxyK.T) -> ProxyK.T
 }
 
-func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -> Bool {	
+func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -> Bool {
 	let sv  = aServer(p0)
 	let cl  = aClient(p1)
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)
@@ -246,8 +246,8 @@ func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -
 
 /// Kleisli Composition.
 infix operator >>->> {
-associativity left
-precedence 110
+	associativity left
+	precedence 110
 }
 
 func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
