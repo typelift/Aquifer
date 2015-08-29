@@ -121,7 +121,8 @@ have been fused away, leaving only a program that can be run with the `runEffect
 combinator.  The practical effect of all of this is that `Aquifer` uses Swift's
 type system to aid in the production of fully-formed pipes.  Failure to fuse any one
 of the input or ouput holes with a concrete type results in a type error at compile
-time.
+time.  Thus, the goal of any `Aquifer` user is always to arrive at an `Effect`, 
+because only `Effect`s can be run to produce meaningful output.
 
 Putting it all together yields
 
