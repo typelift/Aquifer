@@ -5,7 +5,7 @@ immediate associated ecosystem) to Swift, using
 [Swiftz](https://github.com/typelift/Swiftz) and 
 [Focus](https://github.com/typelift/Focus).
 
-For those already familiar with the Haskell library, check out the source.  For
+For those already familiar with the Haskell libraries, check out the source.  For
 everybody else, see the [Tutorial Playground](Tutorial.playground) for a
 beginner-level introduction to the major concepts and use-cases of this library.
 
