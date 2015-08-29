@@ -134,5 +134,3 @@ runEffect <| stdinLn() >-> stdoutLn()
 
 Aquifer supports OS X 10.9+ and iOS 7.0+.
 
-# Further Reading
-
