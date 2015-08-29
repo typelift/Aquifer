@@ -99,10 +99,10 @@ import class Foundation.NSFileHandle
 //                                   v        v
 public func stdinByLine() -> Producer<String, ()>.T {
 	let handle = NSFileHandle.fileHandleWithStandardInput() // Grab the handle
-	if handle.isAtEndOfFile { // If we`re at the end of the line, stop.
+	if handle.aqu_isAtEndOfFile { // If we`re at the end of the line, stop.
 		return pure(())
 	} else {
-		return yield(handle.readLine) >>- { _ in fromHandle(handle) } // Otherwise `yield` the line and loop.
+		return yield(handle.aqu_readLine()) >>- { _ in fromHandle(handle) } // Otherwise `yield` the line and loop.
 	}
 }
 
@@ -124,7 +124,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: documentation for `yield` says that you can also use `yield` within a
 //: `Pipe`, too, because of this polymorphism:
 //:
-//     func yield<UO, UI, DO>(@autoclosure(escaping) value: () -> DO) -> Proxy<UO, UI, (), DO, ()>
+//     func yield<UO, UI, DO>(@autoclosure(escaping) value : () -> DO) -> Proxy<UO, UI, (), DO, ()>
 //:
 //: Use simpler types like these to guide you until you understand the fully
 //: general type.
@@ -136,7 +136,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //                        |   to loop            |   loop              |
 //                        v   over               v                     v
 //                        --------------         ---------------       ---------
-//     func for_<A, R>(p: Producer<A, R>.T, _ f: A -> Effect<()>.T) -> Effect<R>.T
+//     func for_<A, R>(p : Producer<A, R>.T, _ f : A -> Effect<()>.T) -> Effect<R>.T
 //
 //: `for_(producer, body)` loops over `producer`, substituting each `yield` in
 //: `producer` with `body`.
@@ -161,7 +161,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: simpler types.  One of these says that if the body of the loop is a `Producer`,
 //: then the result is a `Producer`, too:
 //:
-//     func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, _ f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
+//     func for_<UO, UI, DI, DO, NI, NO, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f : DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
 //:
 //: The first type signature we showed for `for_` was a special case of this
 //: slightly more general signature because a `Producer` that never `yield`s is
@@ -390,7 +390,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
 //                     v        v
 func stdoutByLine() -> Consumer<String, ()>.T {
 	let handle = NSFileHandle.fileHandleWithStandardOutput()
-	return for_(cat()) { handle.writeLine($0); return pure(()) }
+	return for_(cat()) { handle.aqu_writeLine($0); return pure(()) }
 }
 
 //: `await` is the dual of `yield`: we suspend our `Consumer` until we receive a
