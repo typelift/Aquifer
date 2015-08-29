@@ -12,17 +12,17 @@ import Swiftz
 
 /// The (nominally) empty type, implemented as a semi-strictly self-recursive struct.
 public struct X {
-    private let rec : () -> X
+	private let rec : () -> X
 
-    private init(_ x : () -> X) {
-        rec = x
-    }
+	private init(_ x : () -> X) {
+		rec = x
+	}
 
-    public func absurd<A>() -> A {
-        return rec().absurd()
-    }
+	public func absurd<A>() -> A {
+		return rec().absurd()
+	}
 }
 
 public func closed<A>(x : X) -> A {
-    return x.absurd()
+	return x.absurd()
 }

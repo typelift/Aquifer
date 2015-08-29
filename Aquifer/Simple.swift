@@ -56,7 +56,7 @@ public func cat<DT, FR>() -> Pipe<DT, DT, FR>.T {
 	return pull(())
 }
 
-/// Iterates over each value in the given pipe and replaces it with the result of applying the 
+/// Iterates over each value in the given pipe and replaces it with the result of applying the
 /// given function.
 public func for_<UO, UI, DI, DO, NI, NO, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f : DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
 	return p |>> f
