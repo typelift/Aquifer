@@ -70,7 +70,7 @@ And another from the `Request` Category:
 
 If that all seems complicated, don't worry!  The diagrams are always accompanied
 by proper explanations of the semantics of their respective methods in *plain
-english*.  If the documentation is ever unclear, feel free to ask a question,
+English*.  If the documentation is ever unclear, feel free to ask a question,
 file an issue, or put it in your own words in a pull request.  
 
 # Programming With Pipes
