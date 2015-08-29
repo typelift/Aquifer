@@ -118,7 +118,10 @@ By consulting the handy table of `typealias`es in [`Proxy`](Aquifer/Proxy.swift)
 definition file it's easy to see that this corresponds to the `Effect` alias.  An 
 `Effect` is *only* produced when every input and output from all parts of the pipe
 have been fused away, leaving only a program that can be run with the `runEffect` 
-combinator.
+combinator.  The practical effect of all of this is that `Aquifer` uses Swift's
+type system to only produce fully-formed pipes.  Failure to fuse any one of the
+input or ouput holes with a concrete type results in a type error at compile
+time.
 
 Putting it all together yields
 
