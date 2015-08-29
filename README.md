@@ -93,7 +93,7 @@ usually connected to, naturally, a `Consumer` pipe, which itself has a hole of
 type `A`.  Here we'll hook up the function `stdinLn` (which returns
 a `Producer<String, ()>` that `yield`s values from stdin) to the function
 `stdoutLn` (which returns a `Consumer<String, ()>` that `await`s values from
-some `Producer`) with one of many fusing operators `>->`
+some `Producer` and prints them to stdout) with one of many fusing operators `>->`
 
 ```swift
 let pipe = stdinLn() >-> stdoutLn()
