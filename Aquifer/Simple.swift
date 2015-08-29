@@ -40,7 +40,7 @@ public func each<UO, UI, V>(seq : V...) -> Proxy<UO, UI, (), V, ()> {
 }
 
 /// Produce a value.
-public func yield<UO, UI, DO>(@autoclosure(escaping) dO: () -> DO) -> Proxy<UO, UI, (), DO, ()> {
+public func yield<UO, UI, DO>(@autoclosure(escaping) dO : () -> DO) -> Proxy<UO, UI, (), DO, ()> {
     return respond(dO)
 }
 
@@ -138,7 +138,7 @@ public func <-< <UO, UI, DI, DO, DDI, DDO, FR>(p : Proxy<DI, DO, DDI, DDO, FR>, 
 
 // MARK: - Implementation Details Follow
 
-private func eachRepr<UO, UI, G : GeneratorType>(var gen: G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
+private func eachRepr<UO, UI, G : GeneratorType>(var gen : G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
     if let v = gen.next() {
         return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }
     } else {

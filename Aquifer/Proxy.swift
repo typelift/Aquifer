@@ -119,7 +119,7 @@ public enum Server<ReceiveT, RespondT, Result> {
 }
 
 /// Forces a pipe to evaluate its contents lazily.
-public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p: () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
+public func delay<UO, UI, DI, DO, FR>(@autoclosure(escaping) p : () -> Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(p().repr)
 }
 
@@ -144,7 +144,7 @@ extension Proxy/*: Pointed*/ {
 }
 
 /// Yields a pipe that responds to all requests with the given value.
-public func pure<UO, UI, DI, DO, FR>(@autoclosure(escaping) x: () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
+public func pure<UO, UI, DI, DO, FR>(@autoclosure(escaping) x : () -> FR) -> Proxy<UO, UI, DI, DO, FR> {
     return Proxy(ProxyRepr.Pure(x))
 }
 

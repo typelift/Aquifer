@@ -266,7 +266,7 @@ public func filter<DT, FR>(predicate : DT -> Bool) -> Pipe<DT, DT, FR>.T {
 // MARK: Indexing
 
 /// Returns a pipe that outputs the indices of all elements that match the given element
-public func elemIndices<UI: Equatable, FR>(@autoclosure(escaping) x: () -> UI) -> Pipe<UI, Int, FR>.T {
+public func elemIndices<UI: Equatable, FR>(@autoclosure(escaping) x : () -> UI) -> Pipe<UI, Int, FR>.T {
     return findIndices { x() == $0 }
 }
 

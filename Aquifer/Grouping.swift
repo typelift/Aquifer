@@ -29,17 +29,17 @@ public struct GroupedProducer<V, R> {
 }
 
 /// Wraps a `Producer<V, GroupedProducer<V, R>>` in a `GroupedProducer`.
-public func wrap<V, R>(@autoclosure(escaping) p: () -> Producer<V, GroupedProducer<V, R>>.T) -> GroupedProducer<V, R> {
+public func wrap<V, R>(@autoclosure(escaping) p : () -> Producer<V, GroupedProducer<V, R>>.T) -> GroupedProducer<V, R> {
     return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
 }
 
 /// Wraps a `Producer<V, R>` in a `GroupedProducer`.
-public func wrap<V, R>(@autoclosure(escaping) p: () -> Producer<V, R>.T) -> GroupedProducer<V, R> {
+public func wrap<V, R>(@autoclosure(escaping) p : () -> Producer<V, R>.T) -> GroupedProducer<V, R> {
     return wrap(p().fmap { pure($0) })
 }
 
 /// Forces a `GroupedProducer` to evaluate lazily.
-public func delay<V, R>(@autoclosure(escaping) p: () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
+public func delay<V, R>(@autoclosure(escaping) p : () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
     return GroupedProducer(p().repr)
 }
 
@@ -122,7 +122,7 @@ extension GroupedProducer/*: Pointed*/ {
     }
 }
 
-public func pure<V, R>(@autoclosure(escaping) x: () -> R) -> GroupedProducer<V, R> {
+public func pure<V, R>(@autoclosure(escaping) x : () -> R) -> GroupedProducer<V, R> {
     return GroupedProducer(GroupedProducerRepr.End(x))
 }
 
