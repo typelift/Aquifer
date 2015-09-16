@@ -243,15 +243,3 @@ func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -
 	let cl  = aClient(p1)
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)
 }
-
-/// Kleisli Composition.
-infix operator >>->> {
-	associativity left
-	precedence 110
-}
-
-func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
-	return { r in
-		return m1(r) >>- m2
-	}
-}
