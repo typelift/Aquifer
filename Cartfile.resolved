@@ -1,3 +1,3 @@
-github "typelift/Focus" "2521efc57ba950fa5a0706f6072e215e66bb0d77"
-github "typelift/SwiftCheck" "a65c91c76b3115b618c8d3fe8728ab1b35860e83"
-github "typelift/Swiftz" "d529515f503e0b7346fdaffad48a3f90ba71c8c4"
+github "typelift/Focus" "66342fe3192a4e58fe46d91727f08e9c48ea7e8c"
+github "typelift/SwiftCheck" "v0.3.1"
+github "typelift/Swiftz" "v0.3.0"
