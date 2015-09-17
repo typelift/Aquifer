@@ -8,175 +8,110 @@
 
 // roughly `Pipes`
 
-import Foundation
 import Swiftz
 
-public func next<DO, FR>(p: Proxy<X, (), (), DO, FR>) -> Either<FR, (DO, Proxy<X, (), (), DO, FR>)> {
-    switch p.repr {
-    case let .Request(uO, _): return closed(uO())
-    case let .Respond(dO, fDI): return .Right(Box((dO(), Proxy(fDI(())))))
-    case let .Pure(x): return .Left(Box(x()))
-    }
+/// Pull the first value out of the given `Pipe`.
+///
+/// If the subsequent state of the `Pipe` is a single value or termination, the result is `.Left`
+/// containing the value.  Otherwise the result is `.Right` containing the value and the next state
+/// of the pipe.
+public func next<DO, FR>(p : Producer<DO, FR>.T) -> Either<FR, (DO, Producer<DO, FR>.T)> {
+	switch p.repr {
+	case let .Request(uO, _): return closed(uO())
+	case let .Respond(dO, fDI): return .Right((dO(), Proxy(fDI(()))))
+	case let .Pure(x): return .Left(x())
+	}
 }
 
-public func discard<UO, UI, DI, DO>(_: Any) -> Proxy<UO, UI, DI, DO, ()> {
-    return Proxy(ProxyRepr.Pure { _ in () })
+/// Discards the given value and returns a pipe that responds to requests with `()`.
+public func discard<UO, UI, DI, DO>(_ : Any) -> Proxy<UO, UI, DI, DO, ()> {
+	return Proxy(ProxyRepr.Pure { _ in () })
 }
 
-private func eachRepr<UO, UI, G: GeneratorType>(var gen: G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
-    if let v = gen.next() {
-        return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }
-    } else {
-        return ProxyRepr.Pure(const(()))
-    }
+/// Converts a given sequence into a pipe that produces elements of the same.
+public func each<UO, UI, S : SequenceType>(seq : S) -> Proxy<UO, UI, (), S.Generator.Element, ()> {
+	return Proxy(eachRepr(seq.generate()))
 }
 
-public func each<UO, UI, S: SequenceType>(seq: S) -> Proxy<UO, UI, (), S.Generator.Element, ()> {
-    return Proxy(eachRepr(seq.generate()))
+/// Converts the argument list into a sequence and yields a pipe that produces elements of said
+/// sequence.
+public func each<UO, UI, V>(seq : V...) -> Proxy<UO, UI, (), V, ()> {
+	return each(seq)
 }
 
-public func each<UO, UI, V>(seq: V...) -> Proxy<UO, UI, (), V, ()> {
-    return each(seq)
+/// Produce a value.
+public func yield<UO, UI, DO>(@autoclosure(escaping) dO : () -> DO) -> Proxy<UO, UI, (), DO, ()> {
+	return respond(dO)
 }
 
-public func yield<UO, UI, DO>(@autoclosure(escaping) dO: () -> DO) -> Proxy<UO, UI, (), DO, ()> {
-    return respond(dO)
-}
-
+/// Consume a value.
 public func await<UI, DI, DO>() -> Proxy<(), UI, DI, DO, UI> {
-    return request(())
+	return request(())
 }
 
-public func cat<DT, FR>() -> Proxy<(), DT, (), DT, FR> {
-    return pull(())
+/// The identity `Pipe`.
+///
+/// Like the Unix `cat` program, pushes any given input as output without modification.
+public func cat<DT, FR>() -> Pipe<DT, DT, FR>.T {
+	return pull(())
 }
 
-public func for_<UO, UI, DI, DO, NI, NO, FR>(p: Proxy<UO, UI, DI, DO, FR>, f: DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
-    return p |>> f
+/// Iterates over each value in the given pipe and replaces it with the result of applying the
+/// given function.
+public func for_<UO, UI, DI, DO, NI, NO, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f : DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR> {
+	return p |>> f
 }
 
-infix operator <~ {
-associativity left
-precedence 130
+/// Into | Composes two loops to yield one large loop.
+///
+/// The corresponding operator in `pipes` is `~>`.
+public func ~~> <IS, UO, UI, DI, DO, NI, NO, FR>(f : IS -> Proxy<UO, UI, DI, DO, FR>, g : DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+	return f |>| g
 }
 
-public func <~<IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>, g: DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return f |>| g
+/// Into | Composes two loops to yield one large loop.
+///
+/// The corresponding operator in `pipes` is `<~`.
+public func <~~ <IS, UO, UI, DI, DO, NI, NO, FR>(f : DO -> Proxy<UO, UI, NI, NO, DI>, g : IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
+	return g |>| f
 }
 
-prefix operator <~ {}
-
-public prefix func <~<IS, UO, UI, DI, DO, NI, NO, FR>(g: DO -> Proxy<UO, UI, NI, NO, DI>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return { f in f |>| g }
+/// Replaces each value `yielded` in the left pipe with the right pipe.
+///
+/// The corresponding operator in `pipes` is `~<`.
+public func ~~< <UO, UI, DI, DO, FR, NR>(p : Proxy<(), FR, DI, DO, NR>, q : Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
+	return q >~~ p
 }
 
-postfix operator <~ {}
-
-public postfix func <~<IS, UO, UI, DI, DO, NI, NO, FR>(f: IS -> Proxy<UO, UI, DI, DO, FR>) -> (DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return { g in f |>| g }
+/// Replaces each value `yielded` in the right pipe with the left pipe.
+///
+/// The corresponding operator in `pipes` is `>~`.
+public func >~~ <UO, UI, DI, DO, FR, NR>(p : Proxy<UO, UI, DI, DO, FR>, q : Proxy<(), FR, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
+	return { _ in p } >>| q
 }
 
-infix operator ~> {
-associativity right
-precedence 130
+/// Compose | Composes two pipes by attaching the output of the first to the input of the second.
+///
+/// This operation is analogous to the Unix `|` operator.
+public func >-> <UO, UI, DI, DO, DDI, DDO, FR>(p : Proxy<UO, UI, DI, DO, FR>, q : Proxy<DI, DO, DDI, DDO, FR>) -> Proxy<UO, UI, DDI, DDO, FR> {
+	return { _ in p } +>> q
 }
 
-public func ~><IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>, g: IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return g |>| f
+/// Compose Backwards | Composes two pipes by attaching the output of the second to the input of the
+/// first.
+///
+/// The operator is the flipped form of `>->`.
+public func <-< <UO, UI, DI, DO, DDI, DDO, FR>(p : Proxy<DI, DO, DDI, DDO, FR>, q : Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DDI, DDO, FR> {
+	return q >-> p
 }
 
-prefix operator ~> {}
 
-public prefix func ~><IS, UO, UI, DI, DO, NI, NO, FR>(g: IS -> Proxy<UO, UI, DI, DO, FR>) -> (DO -> Proxy<UO, UI, NI, NO, DI>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return { f in g |>| f }
-}
+// MARK: - Implementation Details Follow
 
-postfix operator ~> {}
-
-public postfix func ~><IS, UO, UI, DI, DO, NI, NO, FR>(f: DO -> Proxy<UO, UI, NI, NO, DI>) -> (IS -> Proxy<UO, UI, DI, DO, FR>) -> IS -> Proxy<UO, UI, NI, NO, FR> {
-    return { g in g |>| f }
-}
-
-infix operator ~< {
-associativity left
-precedence 140
-}
-
-public func ~<<UO, UI, DI, DO, FR, NR>(p: Proxy<(), FR, DI, DO, NR>, q: Proxy<UO, UI, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, NR> {
-    return q >~ p
-}
-
-prefix operator ~< {}
-
-public prefix func ~<<UO, UI, DI, DO, FR, NR>(q: Proxy<UO, UI, DI, DO, FR>) -> Proxy<(), FR, DI, DO, NR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { p in q >~ p }
-}
-
-postfix operator ~< {}
-
-public postfix func ~<<UO, UI, DI, DO, FR, NR>(p: Proxy<(), FR, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { q in q >~ p }
-}
-
-infix operator >~ {
-associativity right
-precedence 140
-}
-
-public func >~<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>, q: Proxy<(), FR, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, NR> {
-    return { _ in p } >>| q
-}
-
-prefix operator >~ {}
-
-public prefix func >~<UO, UI, DI, DO, FR, NR>(q: Proxy<(), FR, DI, DO, NR>) -> Proxy<UO, UI, DI, DO, FR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { p in p >~ q }
-}
-
-postfix operator >~ {}
-
-public postfix func >~<UO, UI, DI, DO, FR, NR>(p: Proxy<UO, UI, DI, DO, FR>) -> Proxy<(), FR, DI, DO, NR> -> Proxy<UO, UI, DI, DO, NR> {
-    return { q in p >~ q }
-}
-
-infix operator >-> {
-associativity left
-precedence 160
-}
-
-public func >-><UO, UI, DT, DI, DO, FR>(p: Proxy<UO, UI, (), DT, FR>, q: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, DI, DO, FR> {
-    return { _ in p } +>> q
-}
-
-prefix operator >-> {}
-
-public prefix func >-><UO, UI, DT, DI, DO, FR>(q: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, (), DT, FR> -> Proxy<UO, UI, DI, DO, FR> {
-    return { p in p >-> q }
-}
-
-postfix operator >-> {}
-
-public postfix func >-><UO, UI, DT, DI, DO, FR>(p: Proxy<UO, UI, (), DT, FR>) -> Proxy<(), DT, DI, DO, FR> -> Proxy<UO, UI, DI, DO, FR> {
-    return { q in p >-> q }
-}
-
-infix operator <-< {
-associativity right
-precedence 160
-}
-
-public func <-<<UO, UI, DT, DI, DO, FR>(p: Proxy<(), DT, DI, DO, FR>, q: Proxy<UO, UI, (), DT, FR>) -> Proxy<UO, UI, DI, DO, FR> {
-    return q >-> p
-}
-
-prefix operator <-< {}
-
-public prefix func <-<<UO, UI, DT, DI, DO, FR>(q: Proxy<UO, UI, (), DT, FR>) -> Proxy<(), DT, DI, DO, FR> -> Proxy<UO, UI, DI, DO, FR> {
-    return { p in q >-> p }
-}
-
-postfix operator <-< {}
-
-public postfix func <-<<UO, UI, DT, DI, DO, FR>(p: Proxy<(), DT, DI, DO, FR>) -> Proxy<UO, UI, (), DT, FR> -> Proxy<UO, UI, DI, DO, FR> {
-    return { q in q >-> p }
+private func eachRepr<UO, UI, G : GeneratorType>(var gen : G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
+	if let v = gen.next() {
+		return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }
+	} else {
+		return ProxyRepr.Pure(const(()))
+	}
 }

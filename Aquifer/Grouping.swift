@@ -8,248 +8,251 @@
 
 // roughly `Pipes.Group`
 
-import Foundation
 import Swiftz
 
-internal enum GroupedProducerRepr<V, R> {
-    case End(() -> R)
-    case More(() -> Proxy<X, (), (), V, GroupedProducerRepr<V, R>>)
-
-    internal func fmap<N>(f: R -> N) -> GroupedProducerRepr<V, N> {
-        switch self {
-        case let .End(x): return GroupedProducerRepr<V, N>.End { _ in f(x()) }
-        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in { q in q.fmap(f) } <^> p() }
-        }
-    }
-
-    internal func ap<N>(f: GroupedProducerRepr<V, R -> N>) -> GroupedProducerRepr<V, N> {
-        switch (self, f) {
-        case let (.End(x), .End(g)): return GroupedProducerRepr<V, N>.End { _ in g()(x()) }
-        case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmap(g()) } }
-        case let (_, .More(g)): return GroupedProducerRepr<V, N>.More { _ in g().fmap { h in self.ap(h) } }
-        }
-    }
-
-    internal func bind<N>(f: R -> GroupedProducerRepr<V, N>) -> GroupedProducerRepr<V, N> {
-        switch self {
-        case let .End(x): return f(x())
-        case let .More(p): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.bind(f) } }
-        }
-    }
-}
-
+/// A producer that uses the Free Monad Transformer (unrepresentable in Swift) to delimit groupings
+/// of produced values.
+///
+/// Ideally:
+///
+///    typealias GroupedProducer<V, R> = Free<Producer<V, $0>, R>
 public struct GroupedProducer<V, R> {
-    private let _repr: () -> GroupedProducerRepr<V, R>
+	private let _repr : () -> GroupedProducerRepr<V, R>
 
-    internal init(@autoclosure(escaping) _ r: () -> GroupedProducerRepr<V, R>) {
-        _repr = r
-    }
+	internal init(@autoclosure(escaping) _ r : () -> GroupedProducerRepr<V, R>) {
+		_repr = r
+	}
 
-    internal var repr: GroupedProducerRepr<V, R> {
-        return _repr()
-    }
+	internal var repr: GroupedProducerRepr<V, R> {
+		return _repr()
+	}
 }
 
-public func wrap<V, R>(@autoclosure(escaping) p: () -> Proxy<X, (), (), V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
-    return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
+/// Wraps a `Producer<V, GroupedProducer<V, R>>` in a `GroupedProducer`.
+public func wrap<V, R>(@autoclosure(escaping) p : () -> Producer<V, GroupedProducer<V, R>>.T) -> GroupedProducer<V, R> {
+	return GroupedProducer(GroupedProducerRepr.More { _ in p().fmap { q in q.repr } })
 }
 
-public func wrap<V, R>(@autoclosure(escaping) p: () -> Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
-    return wrap(p().fmap { pure($0) })
+/// Wraps a `Producer<V, R>` in a `GroupedProducer`.
+public func wrap<V, R>(@autoclosure(escaping) p : () -> Producer<V, R>.T) -> GroupedProducer<V, R> {
+	return wrap(p().fmap { pure($0) })
 }
 
-public func delay<V, R>(@autoclosure(escaping) p: () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
-    return GroupedProducer(p().repr)
+/// Forces a `GroupedProducer` to evaluate lazily.
+public func delay<V, R>(@autoclosure(escaping) p : () -> GroupedProducer<V, R>) -> GroupedProducer<V, R> {
+	return GroupedProducer(p().repr)
 }
 
-public func next<V, R>(p: GroupedProducer<V, R>) -> Either<R, Proxy<X, (), (), V, GroupedProducer<V, R>>> {
-    switch p.repr {
-    case let .End(x): return .Left(Box(x()))
-    case let .More(q): return .Right(Box({ GroupedProducer($0) } <^> q()))
-    }
+/// Pull the first value out of the given `GroupedProducer`.
+///
+/// If the subsequent state of the `Producer` is a single value or termination, the result is
+/// `.Left` containing the value.  Otherwise the result is `.Right` containing the value and the
+/// next state of the `Producer`.
+public func next<V, R>(p : GroupedProducer<V, R>) -> Either<R, Producer<V, GroupedProducer<V, R>>.T> {
+	switch p.repr {
+	case let .End(x): return .Left(x())
+	case let .More(q): return .Right({ GroupedProducer($0) } <^> q())
+	}
 }
 
-public func discard<V>(_: Any) -> GroupedProducer<V, ()> {
-    return GroupedProducer(GroupedProducerRepr.End { _ in () })
+/// Returns a `GroupedProducer` that discards all incoming values.
+public func discard<V>(_ : Any) -> GroupedProducer<V, ()> {
+	return GroupedProducer(GroupedProducerRepr.End { _ in () })
 }
 
-extension GroupedProducer: Functor {
-    public typealias B = Any
-
-    public func fmap<N>(f: R -> N) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(self.repr.fmap(f))
-    }
+/// Splits a 'Producer' into a `GroupedProducer` using the given equality predicate.
+public func groupsBy<V, R>(p : Producer<V, R>.T, _ equals : (V, V) -> Bool) -> GroupedProducer<V, R> {
+	return GroupedProducer(groupsByRepr(p, equals))
 }
 
-public func <^><V, R, N>(f: R -> N, p: GroupedProducer<V, R>) -> GroupedProducer<V, N> {
-    return p.fmap(f)
+/// Splits a 'Producer' into a `GroupedProducer`.
+public func groups<V : Equatable, R>(p : Producer<V, R>.T) -> GroupedProducer<V, R> {
+	return groupsBy(p) { v0, v1 in v0 == v1  }
 }
 
-public prefix func <^><V, R, N>(p: GroupedProducer<V, R>) -> (R -> N) -> GroupedProducer<V, N> {
-    return { f in f <^> p }
+/// Splits a 'Producer' into a `GroupedProducer` of runs of a given length.
+public func chunksOf<V, R>(p : Producer<V, R>.T, _ n : Int) -> GroupedProducer<V, R> {
+	return GroupedProducer(chunksOfRepr(p, n))
 }
 
-public postfix func <^><V, R, N>(f: R -> N) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
-    return { p in f <^> p }
+/// Joins a `GroupedProducer` into a single 'Producer'.
+public func concats<V, R>(p : GroupedProducer<V, R>) -> Producer<V, R>.T {
+	return concatsRepr(p.repr)
 }
 
-extension GroupedProducer: Pointed {
-    public static func pure(x: R) -> GroupedProducer<V, R> {
-        return Aquifer.pure(x)
-    }
+/// Joins a `GroupedProducer` into a single 'Producer' by intercalating a 'Producer' in between them.
+public func intercalates<V, R>(sep : Producer<V, ()>.T, _ p : GroupedProducer<V, R>) -> Producer<V, R>.T {
+	return intercalatesRepr(sep, p.repr)
 }
 
-public func pure<V, R>(@autoclosure(escaping) x: () -> R) -> GroupedProducer<V, R> {
-    return GroupedProducer(GroupedProducerRepr.End(x))
+/// Returns a `GroupedProducer` that only takes the first `n` elements of the given
+/// `GroupedProducer`.
+public func takes<V>(p : GroupedProducer<V, ()>, _ n : Int) -> GroupedProducer<V, ()> {
+	return GroupedProducer(takesRepr(p.repr, n))
 }
 
-extension GroupedProducer: Applicative {
-    public func ap<N>(f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(self.repr.ap(f.repr))
-    }
+/// Returns a `GroupedProducer` that only takes the first `n` elements of the given
+/// `GroupedProducer`.
+///
+/// Like `takes` but preserves the return value of the `GroupedProducer`.
+public func takesRet<V, R>(p : GroupedProducer<V, R>, _ n : Int) -> GroupedProducer<V, R> {
+	return GroupedProducer(takesRetRepr(p.repr, n))
 }
 
-public func <*><V, R, N>(f: GroupedProducer<V, R -> N>, p: GroupedProducer<V, R>) -> GroupedProducer<V, N> {
-    return p.ap(f)
+/// Returns a `GroupedProducer` that removes the first `n` elements of the given `GroupedProducer`.
+public func drops<V, R>(p : GroupedProducer<V, R>, _ n : Int) -> GroupedProducer<V, R> {
+	return GroupedProducer(dropsRepr(p.repr, n))
 }
 
-public prefix func <*><V, R, N>(p: GroupedProducer<V, R>) -> GroupedProducer<V, R -> N> -> GroupedProducer<V, N> {
-    return { f in f <*> p }
+extension GroupedProducer/*: Functor*/ {
+	/*public typealias B = Any*/
+
+	public func fmap<N>(f : R -> N) -> GroupedProducer<V, N> {
+		return GroupedProducer<V, N>(self.repr.fmap(f))
+	}
 }
 
-public postfix func <*><V, R, N>(f: GroupedProducer<V, R -> N>) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
-    return { p in f <*> p }
+public func <^> <V, R, N>(f : R -> N, p : GroupedProducer<V, R>) -> GroupedProducer<V, N> {
+	return p.fmap(f)
 }
 
-extension GroupedProducer: Monad {
-    public func bind<N>(f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
-        return GroupedProducer<V, N>(self.repr.bind { f($0).repr })
-    }
+extension GroupedProducer/*: Pointed*/ {
+	public static func pure(x : R) -> GroupedProducer<V, R> {
+		return Aquifer.pure(x)
+	}
 }
 
-public func >>-<V, R, N>(p: GroupedProducer<V, R>, f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
-    return p.bind(f)
+public func pure<V, R>(@autoclosure(escaping) x : () -> R) -> GroupedProducer<V, R> {
+	return GroupedProducer(GroupedProducerRepr.End(x))
 }
 
-public prefix func >>-<V, R, N>(f: R -> GroupedProducer<V, N>) -> GroupedProducer<V, R> -> GroupedProducer<V, N> {
-    return { p in p >>- f }
+extension GroupedProducer/*: Applicative*/ {
+	public func ap<N>(f : GroupedProducer<V, R -> N>) -> GroupedProducer<V, N> {
+		return GroupedProducer<V, N>(self.repr.ap(f.repr))
+	}
 }
 
-public postfix func >>-<V, R, N>(p: GroupedProducer<V, R>) -> (R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
-    return { f in p >>- f }
+public func <*> <V, R, N>(f : GroupedProducer<V, R -> N>, p : GroupedProducer<V, R>) -> GroupedProducer<V, N> {
+	return p.ap(f)
 }
 
-public func flatten<V, R>(p: GroupedProducer<V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
-    return p.bind { q in q }
+extension GroupedProducer/*: Monad*/ {
+	public func bind<N>(f : R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
+		return GroupedProducer<V, N>(self.repr.bind { f($0).repr })
+	}
 }
 
-private func groupsByRepr<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
-    switch next(p) {
-    case let .Left(x): return GroupedProducerRepr.End { _ in x.value }
-    case let .Right(k):
-        let (dO, q) = k.value
-        return GroupedProducerRepr.More { _ in { r in groupsByRepr(r, equals) } <^> (span(yield(dO) >>- { _ in q }) { v in equals(dO, v) }) }
-    }
+public func >>- <V, R, N>(p : GroupedProducer<V, R>, f : R -> GroupedProducer<V, N>) -> GroupedProducer<V, N> {
+	return p.bind(f)
 }
 
-public func groupsBy<V, R>(p: Proxy<X, (), (), V, R>, equals: (V, V) -> Bool) -> GroupedProducer<V, R> {
-    return GroupedProducer(groupsByRepr(p, equals))
+/// Flattens a `GroupedProducer` of `GroupedProducers` by one level.
+public func flatten<V, R>(p : GroupedProducer<V, GroupedProducer<V, R>>) -> GroupedProducer<V, R> {
+	return p.bind { q in q }
 }
 
-public func groups<V: Equatable, R>(p: Proxy<X, (), (), V, R>) -> GroupedProducer<V, R> {
-    return groupsBy(p) { v0, v1 in v0 == v1  }
+// MARK: - Implementation Details Follow
+
+internal enum GroupedProducerRepr<V, R> {
+	case End(() -> R)
+	case More(() -> Producer<V, GroupedProducerRepr<V, R>>.T)
+
+	internal func fmap<N>(f : R -> N) -> GroupedProducerRepr<V, N> {
+		switch self {
+		case let .End(x): return GroupedProducerRepr<V, N>.End { _ in f(x()) }
+		case let .More(p): return GroupedProducerRepr<V, N>.More { _ in { q in q.fmap(f) } <^> p() }
+		}
+	}
+
+	internal func ap<N>(f : GroupedProducerRepr<V, R -> N>) -> GroupedProducerRepr<V, N> {
+		switch (self, f) {
+		case let (.End(x), .End(g)): return GroupedProducerRepr<V, N>.End { _ in g()(x()) }
+		case let (.More(p), .End(g)): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.fmap(g()) } }
+		case let (_, .More(g)): return GroupedProducerRepr<V, N>.More { _ in g().fmap { h in self.ap(h) } }
+		}
+	}
+
+	internal func bind<N>(f : R -> GroupedProducerRepr<V, N>) -> GroupedProducerRepr<V, N> {
+		switch self {
+		case let .End(x): return f(x())
+		case let .More(p): return GroupedProducerRepr<V, N>.More { _ in p().fmap { q in q.bind(f) } }
+		}
+	}
 }
 
-private func chunksOfRepr<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducerRepr<V, R> {
-    switch next(p) {
-    case let .Left(x): return GroupedProducerRepr.End { _ in x.value }
-    case let .Right(k):
-        let (dO, q) = k.value
-        return GroupedProducerRepr.More { _ in { r in chunksOfRepr(q, n) } <^> splitAt(yield(dO) >>- { _ in q }, n) }
-    }
+private func groupsByRepr<V, R>(p : Producer<V, R>.T, _ equals : (V, V) -> Bool) -> GroupedProducerRepr<V, R> {
+	switch next(p) {
+	case let .Left(x): return GroupedProducerRepr.End { _ in x }
+	case let .Right((dO, q)):
+		return GroupedProducerRepr.More { _ in { r in groupsByRepr(r, equals) } <^> (span(yield(dO) >>- { _ in q }) { v in equals(dO, v) }) }
+	}
 }
 
-public func chunksOf<V, R>(p: Proxy<X, (), (), V, R>, n: Int) -> GroupedProducer<V, R> {
-    return GroupedProducer(chunksOfRepr(p, n))
+private func chunksOfRepr<V, R>(p : Producer<V, R>.T, _ n : Int) -> GroupedProducerRepr<V, R> {
+	switch next(p) {
+	case let .Left(x): return GroupedProducerRepr.End { _ in x }
+	case let .Right((dO, q)):
+		return GroupedProducerRepr.More { _ in { r in chunksOfRepr(q, n) } <^> splitAt(yield(dO) >>- { _ in q }, n) }
+	}
 }
 
-private func concatsRepr<V, R>(p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (), V, R> {
-    switch p {
-    case let .End(x): return pure(x())
-    case let .More(q): return q() >>- concatsRepr
-    }
+private func concatsRepr<V, R>(p : GroupedProducerRepr<V, R>) -> Producer<V, R>.T {
+	switch p {
+	case let .End(x): return pure(x())
+	case let .More(q): return q() >>- concatsRepr
+	}
 }
 
-public func concats<V, R>(p: GroupedProducer<V, R>) -> Proxy<X, (), (), V, R> {
-    return concatsRepr(p.repr)
+private func intercalatesRepr<V, R>(sep : Producer<V, ()>.T, _ p : GroupedProducerRepr<V, R>) -> Producer<V, R>.T {
+	switch p {
+	case let .End(x): return pure(x())
+	case let .More(q): return q() >>- { intercalatesReprInner(sep, $0) }
+	}
 }
 
-private func intercalatesRepr<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (), V, R> {
-    switch p {
-    case let .End(x): return pure(x())
-    case let .More(q): return q() >>- { intercalatesReprInner(sep, $0) }
-    }
+private func intercalatesReprInner<V, R>(sep : Producer<V, ()>.T, _ p : GroupedProducerRepr<V, R>) -> Producer<V, R>.T {
+	switch p {
+	case let .End(x): return pure(x())
+	case let .More(q): return sep >>- { _ in q() >>- { intercalatesReprInner(sep, $0) } }
+	}
 }
 
-private func intercalatesReprInner<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducerRepr<V, R>) -> Proxy<X, (), (), V, R> {
-    switch p {
-    case let .End(x): return pure(x())
-    case let .More(q): return sep >>- { _ in q() >>- { intercalatesReprInner(sep, $0) } }
-    }
+private func takesRepr<V>(p : GroupedProducerRepr<V, ()>, _ n : Int) -> GroupedProducerRepr<V, ()> {
+	if n > 0 {
+		switch p {
+		case let .End(x): return GroupedProducerRepr.End(x)
+		case let .More(q): return GroupedProducerRepr.More { _ in q().fmap { takesRepr($0, n - 1) } }
+		}
+	} else {
+		return GroupedProducerRepr.End { _ in () }
+	}
 }
 
-public func intercalates<V, R>(sep: Proxy<X, (), (), V, ()>, p: GroupedProducer<V, R>) -> Proxy<X, (), (), V, R> {
-    return intercalatesRepr(sep, p.repr)
+private func takesRetRepr<V, R>(p : GroupedProducerRepr<V, R>, _ n : Int) -> GroupedProducerRepr<V, R> {
+	if n > 0 {
+		switch p {
+		case let .End(x): return GroupedProducerRepr.End(x)
+		case let .More(q): return GroupedProducerRepr.More { _ in q().fmap { takesRetRepr($0, n - 1) } }
+		}
+	} else {
+		return takesRetReprInner(p)
+	}
 }
 
-private func takesRepr<V>(p: GroupedProducerRepr<V, ()>, n: Int) -> GroupedProducerRepr<V, ()> {
-    if n > 0 {
-        switch p {
-        case let .End(x): return GroupedProducerRepr.End(x)
-        case let .More(q): return GroupedProducerRepr.More { _ in q().fmap { takesRepr($0, n - 1) } }
-        }
-    } else {
-        return GroupedProducerRepr.End { _ in () }
-    }
+private func takesRetReprInner<V, R>(p : GroupedProducerRepr<V, R>) -> GroupedProducerRepr<V, R> {
+	switch p {
+	case let .End(x): return GroupedProducerRepr.End(x)
+	case let .More(q): return takesRetReprInner(runEffect(for_(q()) { discard($0) }))
+	}
 }
 
-public func takes<V>(p: GroupedProducer<V, ()>, n: Int) -> GroupedProducer<V, ()> {
-    return GroupedProducer(takesRepr(p.repr, n))
-}
-
-private func takesRetRepr<V, R>(p: GroupedProducerRepr<V, R>, n: Int) -> GroupedProducerRepr<V, R> {
-    if n > 0 {
-        switch p {
-        case let .End(x): return GroupedProducerRepr.End(x)
-        case let .More(q): return GroupedProducerRepr.More { _ in q().fmap { takesRetRepr($0, n - 1) } }
-        }
-    } else {
-        return takesRetReprInner(p)
-    }
-}
-
-private func takesRetReprInner<V, R>(p: GroupedProducerRepr<V, R>) -> GroupedProducerRepr<V, R> {
-    switch p {
-    case let .End(x): return GroupedProducerRepr.End(x)
-    case let .More(q): return takesRetReprInner(runEffect(for_(q()) { discard($0) }))
-    }
-}
-
-public func takesRet<V, R>(p: GroupedProducer<V, R>, n: Int) -> GroupedProducer<V, R> {
-    return GroupedProducer(takesRetRepr(p.repr, n))
-}
-
-private func dropsRepr<V, R>(p: GroupedProducerRepr<V, R>, n: Int) -> GroupedProducerRepr<V, R> {
-    if n <= 0 {
-        return p
-    } else {
-        switch p {
-        case let .End(x): return .End(x)
-        case let .More(q): return dropsRepr(runEffect(for_(q()) { discard($0) }), n - 1)
-        }
-    }
-}
-
-public func drops<V, R>(p: GroupedProducer<V, R>, n: Int) -> GroupedProducer<V, R> {
-    return GroupedProducer(dropsRepr(p.repr, n))
+private func dropsRepr<V, R>(p : GroupedProducerRepr<V, R>, _ n : Int) -> GroupedProducerRepr<V, R> {
+	if n <= 0 {
+		return p
+	} else {
+		switch p {
+		case let .End(x): return .End(x)
+		case let .More(q): return dropsRepr(runEffect(for_(q()) { discard($0) }), n - 1)
+		}
+	}
 }
