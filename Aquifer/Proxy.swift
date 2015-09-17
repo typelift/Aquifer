@@ -172,6 +172,18 @@ public func >>- <UO, UI, DI, DO, FR, NR>(p : Proxy<UO, UI, DI, DO, FR>, f : FR -
 	return p.bind(f)
 }
 
+public func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
+	return { r in
+		return m1(r) >>- m2
+	}
+}
+
+public func <<-<< <A, B, C, UI, UO, DI, DO>(m2 : B -> Proxy<UI, UO, DI, DO, C>, m1 : A -> Proxy<UI, UO, DI, DO, B>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
+	return { r in
+		return m1(r) >>- m2
+	}
+}
+
 /// Flattens a Pipe that yields pipes by one level.
 public func flatten<UO, UI, DI, DO, FR>(p : Proxy<UO, UI, DI, DO, Proxy<UO, UI, DI, DO, FR>>) -> Proxy<UO, UI, DI, DO, FR> {
 	return p.bind { q in q }
