@@ -83,7 +83,10 @@ class ProxySpec : XCTestCase {
 			let p = aProxy(p2)
 			return formulate({ $0.reflect() } • { $0.reflect() } • p, p)(s, c)
 		}
+
+		// MARK: - Arrow Laws
 	}
+
 
 	func testCategoricalProperties() {
 		property("Kleisli Category") <- self.testCategory(>>->>)(Proxy<Int, Int, Int, Int, Int>.pure)

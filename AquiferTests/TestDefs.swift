@@ -32,7 +32,7 @@ enum ClientStep : Int, CustomStringConvertible {
 extension ClientStep : Arbitrary {
 	static var arbitrary : Gen<ClientStep> {
 		return Gen.sized { _ in
-			return Gen.fromElementsOf([
+			return Gen<ClientStep>.fromElementsOf([
 				.ClientInc,
 				.ClientLog,
 				.ClientRequest,
@@ -61,7 +61,7 @@ enum ServerStep : Int, CustomStringConvertible {
 extension ServerStep : Arbitrary {
 	static var arbitrary : Gen<ServerStep> {
 		return Gen.sized { _ in
-			return Gen.fromElementsOf([
+			return Gen<ServerStep>.fromElementsOf([
 				.ServerInc,
 				.ServerLog,
 				.ServerRespond,
@@ -93,7 +93,7 @@ enum ProxyStep : Int, CustomStringConvertible {
 extension ProxyStep : Arbitrary {
 	static var arbitrary : Gen<ProxyStep> {
 		return Gen.sized { _ in
-			return Gen.fromElementsOf([
+			return Gen<ProxyStep>.fromElementsOf([
 				.ProxyRequest,
 				.ProxyRespond,
 				.ProxyLog,
@@ -242,16 +242,4 @@ func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -
 	let sv  = aServer(p0)
 	let cl  = aClient(p1)
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)
-}
-
-/// Kleisli Composition.
-infix operator >>->> {
-	associativity left
-	precedence 110
-}
-
-func >>->> <A, B, C, UI, UO, DI, DO>(m1 : A -> Proxy<UI, UO, DI, DO, B>, m2 : B -> Proxy<UI, UO, DI, DO, C>) -> (A -> Proxy<UI, UO, DI, DO, C>) {
-	return { r in
-		return m1(r) >>- m2
-	}
 }
