@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11862CD01A65FF66008F5696"
+               BlueprintIdentifier = "11F0320A1B0BFF82004C6D59"
                BuildableName = "Aquifer.framework"
-               BlueprintName = "Aquifer"
-               ReferencedContainer = "container:Aquifer.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11862CDB1A65FF66008F5696"
-               BuildableName = "AquiferTests.xctest"
-               BlueprintName = "AquiferTests"
+               BlueprintName = "Aquifer-iOS"
                ReferencedContainer = "container:Aquifer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11862CDB1A65FF66008F5696"
+               BlueprintIdentifier = "11F032141B0BFF82004C6D59"
                BuildableName = "AquiferTests.xctest"
-               BlueprintName = "AquiferTests"
+               BlueprintName = "Aquifer-iOSTests"
                ReferencedContainer = "container:Aquifer.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -56,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11862CD01A65FF66008F5696"
+            BlueprintIdentifier = "11F0320A1B0BFF82004C6D59"
             BuildableName = "Aquifer.framework"
-            BlueprintName = "Aquifer"
+            BlueprintName = "Aquifer-iOS"
             ReferencedContainer = "container:Aquifer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -78,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11862CD01A65FF66008F5696"
+            BlueprintIdentifier = "11F0320A1B0BFF82004C6D59"
             BuildableName = "Aquifer.framework"
-            BlueprintName = "Aquifer"
+            BlueprintName = "Aquifer-iOS"
             ReferencedContainer = "container:Aquifer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,9 +82,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11862CD01A65FF66008F5696"
+            BlueprintIdentifier = "11F0320A1B0BFF82004C6D59"
             BuildableName = "Aquifer.framework"
-            BlueprintName = "Aquifer"
+            BlueprintName = "Aquifer-iOS"
             ReferencedContainer = "container:Aquifer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
