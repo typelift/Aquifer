@@ -8,8 +8,7 @@
 
 // part of `Pipes.Prelude`
 
-import Foundation
-import Swiftz
+import class Foundation.NSFileHandle
 
 /// Returns a `Pipe` that reads input from `stdin` line-by-line and terminates on end-of-input.
 public func stdinLn() -> Producer<String, ()>.T {
