@@ -303,8 +303,29 @@ public func zipWith<V0, V1, V2, R>(p : Producer<V0, R>.T, _ q : Producer<V1, R>.
 }
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
-/*public func tee<V, R>(p : Pipe<V, X, R>.T) -> Pipe<V, V, R>.T {
-}*/
+//public func tee<A, R>(p : Consumer<A, R>.T) -> Pipe<A, A, R>.T {
+//	let up : State<X, Optional<A>> = (tt >>- { ma in
+//		switch ma {
+//		case .None:
+//			return pure(())
+//		case .Some(let x):
+//			return yield(x)
+//		}
+//	} >> await() >>- { a in
+//		return put(.Some(a)) >> pure(a)
+//	})
+//	return up >>| (p |>> closed) >>- { r in
+//		return get() >>- { ma in
+//			switch ma {
+//			case .None:
+//				return pure(())
+//			case .Some(let x):
+//				return yield(x)
+//			}
+//		}
+//		return pure(r)
+//	}
+//}
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
 /*public func generalize<UT, UI, DO, FR>(p : Pipe<UI, DO, FR>.T) -> Proxy<UT, UI, UT, DO, FR> {
