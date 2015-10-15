@@ -7,8 +7,7 @@
 //
 
 // roughly `Pipes.Group`
-
-import Swiftz
+import Focus
 
 /// A producer that uses the Free Monad Transformer (unrepresentable in Swift) to delimit groupings
 /// of produced values.

@@ -8,8 +8,6 @@
 
 // roughly `Pipes.Extras`
 
-import Swiftz
-
 /// Lifts an arrow into a pipe by connecting its inputs to the upstream input and its outputs to the
 /// downstream output of the pipe.
 public func arr<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
@@ -32,11 +30,6 @@ public func left<A, B, C, R>(p : Pipe<A, B, R>.T) -> Pipe<Either<A, C>, Either<B
 /// appear downstream in a `.Left` unchanged.
 public func right<A, B, C, R>(p : Pipe<A, B, R>.T) -> Pipe<Either<C, A>, Either<C, B>, R>.T {
 	return rightInner() >~~ for_(p) { v in yield(Either.Right(v)) }
-}
-
-infix operator +++ {
-	associativity left
-	precedence 180
 }
 
 /// Returns a pipe that acts like `+++` from Control.Arrow.

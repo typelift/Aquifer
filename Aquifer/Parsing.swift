@@ -8,7 +8,6 @@
 
 // roughly `Pipes.Parse`
 
-import Swiftz
 import Focus
 
 /// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest

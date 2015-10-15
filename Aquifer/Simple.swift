@@ -8,8 +8,6 @@
 
 // roughly `Pipes`
 
-import Swiftz
-
 /// Pull the first value out of the given `Pipe`.
 ///
 /// If the subsequent state of the `Pipe` is a single value or termination, the result is `.Left`
