@@ -8,8 +8,6 @@
 
 // roughly `Pipes.Core`
 
-import Swiftz
-
 /// Send a value upstream and block waiting for a reply.
 ///
 ///            UO
