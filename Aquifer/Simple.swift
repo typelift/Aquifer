@@ -108,8 +108,8 @@ public func <-< <UO, UI, DI, DO, DDI, DDO, FR>(p : Proxy<DI, DO, DDI, DDO, FR>, 
 
 private func eachRepr<UO, UI, G : GeneratorType>(var gen : G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
 	if let v = gen.next() {
-		return ProxyRepr.Respond({ v }) { _ in eachRepr(gen) }
+		return ProxyRepr.Respond({ _ in v }) { _ in eachRepr(gen) }
 	} else {
-		return ProxyRepr.Pure({ () })
+		return ProxyRepr.Pure({ _ in () })
 	}
 }
