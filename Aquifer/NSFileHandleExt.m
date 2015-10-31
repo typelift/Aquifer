@@ -1,13 +1,11 @@
-/*
- *  Extension for NSFileHandle to make it capable of easy network programming
- *
- *  Version 1.0, get the newest from http://michael.stapelberg.de/NSFileHandleExt.php [EDIT:  now defunct]
- *
- *  Copyright 2007 Michael Stapelberg, modified 2015 by Alexander Altman
- *
- *  Distributed under BSD-License, see http://michael.stapelberg.de/BSD.php
- *
- */
+//  Extension for NSFileHandle to make it capable of easy network programming
+//
+//  Version 1.0, get the newest from
+//  http://michael.stapelberg.de/NSFileHandleExt.php [EDIT:  now defunct]
+//
+//  Copyright 2007 Michael Stapelberg, modified 2015 by Alexander Altman
+//
+//  Distributed under BSD-License, see http://michael.stapelberg.de/BSD.php
 
 #import "NSFileHandleExt.h"
 
@@ -17,9 +15,7 @@
 static in_addr_t getipaddr(const char *host) {
 	/* let's look it up */
 	struct hostent *server = gethostbyname(host);
-	if (server == NULL) {
-		NSCAssert(false, @"Error resolving the host");
-	}
+	if (server == NULL) { NSCAssert(false, @"Error resolving the host"); }
 
 	return *(in_addr_t *)server->h_addr;
 }
@@ -27,22 +23,21 @@ static in_addr_t getipaddr(const char *host) {
 static int create_socket() {
 	int socketfd;
 	socketfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (socketfd == -1) {
-		NSCAssert(false, @"Could not allocate socket");
-	}
+	if (socketfd == -1) { NSCAssert(false, @"Could not allocate socket"); }
 
 	int loop = 1;
-	if (setsockopt(socketfd, SOL_SOCKET, SO_KEEPALIVE, &loop, sizeof (loop)) < 0) {
+	if (setsockopt(socketfd, SOL_SOCKET, SO_KEEPALIVE, &loop, sizeof(loop)) <
+		0) {
 		NSCAssert(false, @"Could not set SO_REUSEADDR");
 	}
 
 	return socketfd;
 }
 
-
 @implementation NSFileHandle (AQUFileHandleExt)
 
-+ (instancetype)aqu_fileHandleWithConnectionToHost:(NSString *)host toPort:(int)port {
++ (instancetype)aqu_fileHandleWithConnectionToHost:(NSString *)host
+											toPort:(int)port {
 	in_addr_t remote_h_addr;
 	int result;
 
@@ -50,9 +45,9 @@ static int create_socket() {
 
 	struct sockaddr_in remoteaddr;
 	bzero((char *)&remoteaddr, sizeof(remoteaddr));
-	remoteaddr.sin_family = AF_INET;
+	remoteaddr.sin_family		= AF_INET;
 	remoteaddr.sin_addr.s_addr = remote_h_addr;
-	remoteaddr.sin_port = htons(port);
+	remoteaddr.sin_port		  = htons(port);
 
 	int sockfd = create_socket();
 
@@ -62,7 +57,8 @@ static int create_socket() {
 		NSCAssert(false, @"Could not set O_NONBLOCK for socket");
 	}
 
-	result = connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
+	result =
+		connect(sockfd, (struct sockaddr *)&remoteaddr, sizeof(remoteaddr));
 	if (result < 0 && errno != EINPROGRESS) {
 		NSCAssert(false, @"Error in connect()");
 	}
@@ -75,7 +71,7 @@ static int create_socket() {
 	fd_set fds;
 	struct timeval timeout;
 	timeout.tv_usec = 0;
-	timeout.tv_sec = CONN_TIMEOUT;
+	timeout.tv_sec  = CONN_TIMEOUT;
 
 	FD_ZERO(&fds);
 	FD_SET(sockfd, &fds);
@@ -87,16 +83,15 @@ static int create_socket() {
 		NSCAssert(false, @"Timeout while connecting");
 	}
 
-	return [[NSFileHandle alloc] initWithFileDescriptor: sockfd closeOnDealloc: YES];
+	return
+		[[NSFileHandle alloc] initWithFileDescriptor:sockfd closeOnDealloc:YES];
 }
 
 - (NSString *)aqu_readLine {
 	int fd = [self fileDescriptor];
 
 	// If the socket is closed, return an empty string
-	if (fd <= 0) {
-		return @"";
-	}
+	if (fd <= 0) { return @""; }
 
 	// Allocate BUFFER_SIZE bytes to store the line
 	int bufferSize = BUFFER_SIZE;
@@ -106,14 +101,12 @@ static int create_socket() {
 	}
 
 	int bytesReceived = 0;
-	ssize_t n = 1;
+	ssize_t n		  = 1;
 
 	while (n > 0) {
 		n = read(fd, buffer + bytesReceived++, 1);
 
-		if (n < 0) {
-			NSCAssert(false, @"Remote host closed connection");
-		}
+		if (n < 0) { NSCAssert(false, @"Remote host closed connection"); }
 
 		if (bytesReceived >= bufferSize) {
 			// Make buffer bigger
@@ -128,8 +121,7 @@ static int create_socket() {
 			case '\n':
 				buffer[bytesReceived - 1] = '\0';
 				return [@(buffer) copy];
-			case '\r':
-				bytesReceived--;
+			case '\r': bytesReceived--;
 		}
 	}
 
@@ -140,7 +132,8 @@ static int create_socket() {
 }
 
 - (void)aqu_writeLine:(NSString *)line {
-	[self writeData:[[NSString stringWithFormat:@"%@\n", line] dataUsingEncoding:NSUTF8StringEncoding]];
+	[self writeData:[[NSString stringWithFormat:@"%@\n", line]
+						dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (BOOL)aqu_isAtEndOfFile {
