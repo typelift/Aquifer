@@ -8,8 +8,6 @@
 
 // roughly `Pipes.Prelude`
 
-import Swiftz
-
 // MARK: - Data.Pipes
 
 /// Returns a `Pipe` that produces the given value then terminates.
@@ -37,14 +35,14 @@ public func not<FR>() -> Pipe<Bool, Bool, FR>.T {
 // MARK: - Data.Monoid
 
 /// Folds the values inside the given pipe using the `Monoid` op.
-public func mconcat<V : Monoid>(p : Producer<V, ()>.T) -> V {
-	return fold(p, stepWith : { $0.op($1) }, initializeWith : V.mempty, extractWith : { $0 })
-}
+//public func mconcat<V : Monoid>(p : Producer<V, ()>.T) -> V {
+//	return fold(p, stepWith : { $0.op($1) }, initializeWith : V.mempty, extractWith : { $0 })
+//}
 
 /// Mark: - Data.Foldable
 
 /// Returns a representation of the given pipe as a list.
-public func toList<V>(p : Producer<V, ()>.T) -> List<V> {
+public func toList<V>(p : Producer<V, ()>.T) -> [V] {
 	return toListRepr(p.repr)
 }
 
@@ -143,13 +141,13 @@ public func or(p : Producer<Bool, ()>.T) -> Bool {
 }
 
 /// Returns the sum of the values in the given pipe.
-public func sum<V : NumericType>(p : Producer<V, ()>.T) -> V {
-	return fold(p, stepWith : { $0.plus($1) }, initializeWith : V.zero, extractWith : { $0 })
+public func sum<V : IntegerType>(p : Producer<V, ()>.T) -> V {
+	return fold(p, stepWith : { $0 + $1 }, initializeWith :0, extractWith : { $0 })
 }
 
 /// Returns the product of the values in the given pipe.
-public func product<V : NumericType>(p : Producer<V, ()>.T) -> V {
-	return fold(p, stepWith : { $0.times($1) }, initializeWith : V.one, extractWith : { $0 })
+public func product<V : IntegerType>(p : Producer<V, ()>.T) -> V {
+	return fold(p, stepWith : { $0 * $1 }, initializeWith : 1, extractWith : { $0 })
 }
 
 /// Finds the maximum value among all the elements of the given pipe.
@@ -303,8 +301,29 @@ public func zipWith<V0, V1, V2, R>(p : Producer<V0, R>.T, _ q : Producer<V1, R>.
 }
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
-/*public func tee<V, R>(p : Pipe<V, X, R>.T) -> Pipe<V, V, R>.T {
-}*/
+//public func tee<A, R>(p : Consumer<A, R>.T) -> Pipe<A, A, R>.T {
+//	let up : State<X, Optional<A>> = (tt >>- { ma in
+//		switch ma {
+//		case .None:
+//			return pure(())
+//		case .Some(let x):
+//			return yield(x)
+//		}
+//	} >> await() >>- { a in
+//		return put(.Some(a)) >> pure(a)
+//	})
+//	return up >>| (p |>> closed) >>- { r in
+//		return get() >>- { ma in
+//			switch ma {
+//			case .None:
+//				return pure(())
+//			case .Some(let x):
+//				return yield(x)
+//			}
+//		}
+//		return pure(r)
+//	}
+//}
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
 /*public func generalize<UT, UI, DO, FR>(p : Pipe<UI, DO, FR>.T) -> Proxy<UT, UI, UT, DO, FR> {
@@ -354,10 +373,10 @@ private func lastInner<V>(x : V, _ p : Producer<V, ()>.T) -> V? {
 	}
 }
 
-private func toListRepr<V>(p : ProxyRepr<X, (), (), V, ()>) -> List<V> {
+private func toListRepr<V>(p : ProxyRepr<X, (), (), V, ()>) -> [V] {
 	switch p {
 	case let .Request(uO, _): return closed(uO())
-	case let .Respond(dO, fDI): return List(dO(), toListRepr(fDI(())))
+	case let .Respond(dO, fDI): return [dO()] + toListRepr(fDI(()))
 	case .Pure(_): return []
 	}
 }

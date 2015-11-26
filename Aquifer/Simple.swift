@@ -8,8 +8,6 @@
 
 // roughly `Pipes`
 
-import Swiftz
-
 /// Pull the first value out of the given `Pipe`.
 ///
 /// If the subsequent state of the `Pipe` is a single value or termination, the result is `.Left`
@@ -110,8 +108,8 @@ public func <-< <UO, UI, DI, DO, DDI, DDO, FR>(p : Proxy<DI, DO, DDI, DDO, FR>, 
 
 private func eachRepr<UO, UI, G : GeneratorType>(var gen : G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
 	if let v = gen.next() {
-		return ProxyRepr.Respond(const(v)) { _ in eachRepr(gen) }
+		return ProxyRepr.Respond({ _ in v }) { _ in eachRepr(gen) }
 	} else {
-		return ProxyRepr.Pure(const(()))
+		return ProxyRepr.Pure({ _ in () })
 	}
 }

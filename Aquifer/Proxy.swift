@@ -8,8 +8,6 @@
 
 // roughly `Pipes.Internal`
 
-import Swiftz
-
 /// A bidirectional channel for information.
 ///
 /// A `Proxy` is so named because it can represent many different kinds of information flows.  There
@@ -75,6 +73,8 @@ public struct Proxy<UO, UI, DI, DO, FR> {
 		return Proxy<DO, DI, UI, UO, FR>(self.repr.reflect())
 	}
 }
+
+// MARK: Aliases
 
 /// An effectful computation.
 ///

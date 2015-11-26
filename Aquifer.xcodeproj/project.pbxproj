@@ -13,13 +13,11 @@
 		11200E8B1A7958580032A136 /* NSFileHandleExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11200E891A7958580032A136 /* NSFileHandleExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11200E8C1A7958580032A136 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
 		11200E911A796D9F0032A136 /* Basic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E901A796D9F0032A136 /* Basic.swift */; };
-		114E39471B7FC75B00EF9CB1 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
 		114E39481B7FC76100EF9CB1 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
-		114E394B1B7FC77400EF9CB1 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
 		114E394E1B7FC78000EF9CB1 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
 		11862D271A66392B008F5696 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
-		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		11862D2C1A670B0A008F5696 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Core.swift */; };
 		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		1186B05F1B7FCC9C00ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */; };
 		1186B0641B7FCD0300ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
@@ -31,7 +29,7 @@
 		11F032291B0C00EB004C6D59 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
 		11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11F0322B1B0C00EF004C6D59 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
-		11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		11F0322C1B0C00EF004C6D59 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Core.swift */; };
 		11F0322D1B0C00EF004C6D59 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 		11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
@@ -41,6 +39,8 @@
 		11F032341B0C00FC004C6D59 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		11F032381B0C0179004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11F032391B0C017B004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		82327A541BBF8C1E006BE4DD /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82327A531BBF8C1E006BE4DD /* Operators.swift */; settings = {ASSET_TAGS = (); }; };
+		82327A551BBF8C1E006BE4DD /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82327A531BBF8C1E006BE4DD /* Operators.swift */; settings = {ASSET_TAGS = (); }; };
 		82F317461B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F317471B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
@@ -48,34 +48,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		110A96D51B7D9449005667D4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84A88F981A71DF7F003D53CF;
-			remoteInfo = Swiftz;
-		};
-		110A96D71B7D9449005667D4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84A88FA31A71DF7F003D53CF;
-			remoteInfo = SwiftzTests;
-		};
-		110A96D91B7D9449005667D4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84DF751E1B0BD17700C912B0;
-			remoteInfo = "Swiftz-iOS";
-		};
-		110A96DB1B7D9449005667D4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84DF75281B0BD17700C912B0;
-			remoteInfo = "Swiftz-iOSTests";
-		};
 		114E393B1B7FC6F800EF9CB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
@@ -104,26 +76,12 @@
 			remoteGlobalIDString = 84DF76021B0BD54600C912B0;
 			remoteInfo = "SwiftCheck-iOSTests";
 		};
-		114E39431B7FC71300EF9CB1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 84A88F971A71DF7F003D53CF;
-			remoteInfo = Swiftz;
-		};
 		114E39451B7FC71600EF9CB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 824B45F41B460AC1009AAF49;
 			remoteInfo = Focus;
-		};
-		114E39491B7FC76B00EF9CB1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 84DF751D1B0BD17700C912B0;
-			remoteInfo = "Swiftz-iOS";
 		};
 		114E394C1B7FC77A00EF9CB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -191,7 +149,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Swiftz.xcodeproj; path = Carthage/Checkouts/swiftz/Swiftz.xcodeproj; sourceTree = "<group>"; };
 		11200E741A7723BD0032A136 /* Simple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Simple.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11200E821A784D230032A136 /* Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11200E861A7953120032A136 /* IO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IO.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -209,13 +166,14 @@
 		11862CF01A660E37008F5696 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; usesTabs = 1; };
 		11862D261A66392B008F5696 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11862D281A66E8EB008F5696 /* X.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X.swift; sourceTree = "<group>"; usesTabs = 1; };
-		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; usesTabs = 1; };
+		11862D2B1A670B0A008F5696 /* Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		11A916DC1A6C7EFC007B4BBA /* Grouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grouping.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11D195731A7B42260072F514 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11F0320B1B0BFF82004C6D59 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F032151B0BFF82004C6D59 /* AquiferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AquiferTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		82327A531BBF8C1E006BE4DD /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
 		82F317451B80335E007B80E2 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDefs.swift; sourceTree = "<group>"; usesTabs = 1; };
 		82F3176C1B81220C007B80E2 /* PipesOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipesOperators.swift; sourceTree = "<group>"; usesTabs = 1; };
 /* End PBXFileReference section */
@@ -225,7 +183,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				114E39471B7FC75B00EF9CB1 /* Swiftz.framework in Frameworks */,
 				114E39481B7FC76100EF9CB1 /* Focus.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,7 +200,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				114E394B1B7FC77400EF9CB1 /* Swiftz.framework in Frameworks */,
 				114E394E1B7FC78000EF9CB1 /* Focus.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,17 +216,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		110A96CE1B7D9447005667D4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				110A96D61B7D9449005667D4 /* Swiftz.framework */,
-				110A96D81B7D9449005667D4 /* SwiftzTests.xctest */,
-				110A96DA1B7D9449005667D4 /* Swiftz.framework */,
-				110A96DC1B7D9449005667D4 /* Swiftz-iOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		11200E881A7958480032A136 /* LineReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,7 +311,6 @@
 			children = (
 				11862CF01A660E37008F5696 /* Cartfile */,
 				114E39171B7FA6C500EF9CB1 /* Cartfile.private */,
-				110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */,
 				116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */,
 				114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */,
 			);
@@ -377,8 +321,9 @@
 			isa = PBXGroup;
 			children = (
 				11862D261A66392B008F5696 /* Proxy.swift */,
+				11862D2B1A670B0A008F5696 /* Core.swift */,
 				11200E741A7723BD0032A136 /* Simple.swift */,
-				11862D2B1A670B0A008F5696 /* Operators.swift */,
+				82327A531BBF8C1E006BE4DD /* Operators.swift */,
 				82F3176C1B81220C007B80E2 /* PipesOperators.swift */,
 				11862D281A66E8EB008F5696 /* X.swift */,
 			);
@@ -457,7 +402,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				114E39441B7FC71300EF9CB1 /* PBXTargetDependency */,
 				114E39461B7FC71600EF9CB1 /* PBXTargetDependency */,
 			);
 			name = Aquifer;
@@ -497,7 +441,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				114E394A1B7FC76B00EF9CB1 /* PBXTargetDependency */,
 				114E394D1B7FC77A00EF9CB1 /* PBXTargetDependency */,
 			);
 			name = "Aquifer-iOS";
@@ -568,10 +511,6 @@
 					ProductGroup = 114E39351B7FC6F700EF9CB1 /* Products */;
 					ProjectRef = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
 				},
-				{
-					ProductGroup = 110A96CE1B7D9447005667D4 /* Products */;
-					ProjectRef = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -584,34 +523,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		110A96D61B7D9449005667D4 /* Swiftz.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Swiftz.framework;
-			remoteRef = 110A96D51B7D9449005667D4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		110A96D81B7D9449005667D4 /* SwiftzTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SwiftzTests.xctest;
-			remoteRef = 110A96D71B7D9449005667D4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		110A96DA1B7D9449005667D4 /* Swiftz.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Swiftz.framework;
-			remoteRef = 110A96D91B7D9449005667D4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		110A96DC1B7D9449005667D4 /* Swiftz-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Swiftz-iOSTests.xctest";
-			remoteRef = 110A96DB1B7D9449005667D4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		114E393C1B7FC6F800EF9CB1 /* SwiftCheck.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -711,9 +622,10 @@
 				11200E751A7723BD0032A136 /* Simple.swift in Sources */,
 				82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */,
 				11200E871A7953120032A136 /* IO.swift in Sources */,
+				82327A541BBF8C1E006BE4DD /* Operators.swift in Sources */,
 				11862D271A66392B008F5696 /* Proxy.swift in Sources */,
 				11200E831A784D230032A136 /* Parsing.swift in Sources */,
-				11862D2C1A670B0A008F5696 /* Operators.swift in Sources */,
+				11862D2C1A670B0A008F5696 /* Core.swift in Sources */,
 				11D195741A7B42260072F514 /* Auxiliary.swift in Sources */,
 				11200E911A796D9F0032A136 /* Basic.swift in Sources */,
 				11200E8C1A7958580032A136 /* NSFileHandleExt.m in Sources */,
@@ -735,9 +647,10 @@
 			files = (
 				11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */,
 				11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */,
-				11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */,
+				11F0322C1B0C00EF004C6D59 /* Core.swift in Sources */,
 				82F3176E1B81220C007B80E2 /* PipesOperators.swift in Sources */,
 				11F032321B0C00F8004C6D59 /* IO.swift in Sources */,
+				82327A551BBF8C1E006BE4DD /* Operators.swift in Sources */,
 				11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */,
 				11F032301B0C00F8004C6D59 /* Parsing.swift in Sources */,
 				11F032291B0C00EB004C6D59 /* NSFileHandleExt.m in Sources */,
@@ -759,20 +672,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		114E39441B7FC71300EF9CB1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Swiftz;
-			targetProxy = 114E39431B7FC71300EF9CB1 /* PBXContainerItemProxy */;
-		};
 		114E39461B7FC71600EF9CB1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Focus;
 			targetProxy = 114E39451B7FC71600EF9CB1 /* PBXContainerItemProxy */;
-		};
-		114E394A1B7FC76B00EF9CB1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Swiftz-iOS";
-			targetProxy = 114E39491B7FC76B00EF9CB1 /* PBXContainerItemProxy */;
 		};
 		114E394D1B7FC77A00EF9CB1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

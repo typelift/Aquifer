@@ -8,8 +8,6 @@
 
 // part of `Pipes.Internal`
 
-import Swiftz
-
 /// The (nominally) empty type, implemented as a semi-strictly self-recursive struct.
 public struct X {
 	private let rec : () -> X
