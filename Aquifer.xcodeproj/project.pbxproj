@@ -41,6 +41,39 @@
 		11F032341B0C00FC004C6D59 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		11F032381B0C0179004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11F032391B0C017B004C6D59 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8240CEBE1C3A4C4700EF4D29 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8240CEBF1C3A4C4B00EF4D29 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8240CEC01C3A4C5300EF4D29 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
+		8240CEC11C3A4C5300EF4D29 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
+		8240CEC21C3A4C5300EF4D29 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		8240CEC31C3A4C5300EF4D29 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
+		8240CEC41C3A4C5300EF4D29 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
+		8240CEC51C3A4C5300EF4D29 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
+		8240CEC61C3A4C5300EF4D29 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
+		8240CEC71C3A4C5300EF4D29 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
+		8240CEC81C3A4C5300EF4D29 /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E861A7953120032A136 /* IO.swift */; };
+		8240CEC91C3A4C5300EF4D29 /* Basic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E901A796D9F0032A136 /* Basic.swift */; };
+		8240CECB1C3A4C5B00EF4D29 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
+		8240CECC1C3A4C5B00EF4D29 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
+		8240CECD1C3A4C5B00EF4D29 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
+		8240CECE1C3A4C5B00EF4D29 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		8240CECF1C3A4C5B00EF4D29 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
+		8240CED01C3A4C5B00EF4D29 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
+		8240CED11C3A4C5B00EF4D29 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
+		8240CED21C3A4C5B00EF4D29 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
+		8240CED31C3A4C5B00EF4D29 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
+		8240CED41C3A4C5B00EF4D29 /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E861A7953120032A136 /* IO.swift */; };
+		8240CED51C3A4C5B00EF4D29 /* Basic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E901A796D9F0032A136 /* Basic.swift */; };
+		8240CED61C3A4C6500EF4D29 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
+		8240CED71C3A4C6E00EF4D29 /* NSFileHandleExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11200E891A7958580032A136 /* NSFileHandleExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8240CED81C3A4C7100EF4D29 /* NSFileHandleExt.h in Headers */ = {isa = PBXBuildFile; fileRef = 11200E891A7958580032A136 /* NSFileHandleExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8240CED91C3A4C8B00EF4D29 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
+		8240CEDA1C3A4C8B00EF4D29 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
+		8240CEDD1C3A4CA400EF4D29 /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */; };
+		8240CEE21C3A4D1100EF4D29 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
+		8240CEE31C3A4D1100EF4D29 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
+		8240CEE91C3A4D2300EF4D29 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
+		8240CEEA1C3A4D3700EF4D29 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
 		82F317461B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F317471B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
@@ -188,6 +221,104 @@
 			remoteGlobalIDString = 84DF75F71B0BD54600C912B0;
 			remoteInfo = "SwiftCheck-iOS";
 		};
+		8240CE871C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 11862CC81A65FF66008F5696 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8240CE7B1C3A4C2D00EF4D29;
+			remoteInfo = "Aquifer-tvOS";
+		};
+		8240CE961C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CE391C3A47AC00EF4D29;
+			remoteInfo = "Focus-tvOS";
+		};
+		8240CE981C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CE421C3A47AC00EF4D29;
+			remoteInfo = "Focus-tvOSTests";
+		};
+		8240CE9A1C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CE241C3A47A500EF4D29;
+			remoteInfo = "Focus-watchOS";
+		};
+		8240CEA01C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CCB11C3A123600EF4D29;
+			remoteInfo = "SwiftCheck-tvOS";
+		};
+		8240CEA21C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CCBA1C3A123700EF4D29;
+			remoteInfo = "SwiftCheck-tvOSTests";
+		};
+		8240CEA91C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CD1C1C3A395F00EF4D29;
+			remoteInfo = "Swiftz-tvOS";
+		};
+		8240CEAB1C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CD251C3A396000EF4D29;
+			remoteInfo = "Swiftz-tvOSTests";
+		};
+		8240CEAD1C3A4C2D00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8240CDD81C3A41F000EF4D29;
+			remoteInfo = "Swiftz-watchOS";
+		};
+		8240CEDB1C3A4C9B00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 114E39341B7FC6F700EF9CB1 /* SwiftCheck.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8240CCB01C3A123600EF4D29;
+			remoteInfo = "SwiftCheck-tvOS";
+		};
+		8240CEDE1C3A4D0300EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8240CD1B1C3A395F00EF4D29;
+			remoteInfo = "Swiftz-tvOS";
+		};
+		8240CEE01C3A4D0300EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8240CE381C3A47AC00EF4D29;
+			remoteInfo = "Focus-tvOS";
+		};
+		8240CEE41C3A4D1A00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 110A96CD1B7D9447005667D4 /* Swiftz.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8240CDD71C3A41F000EF4D29;
+			remoteInfo = "Swiftz-watchOS";
+		};
+		8240CEE61C3A4D1A00EF4D29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 116C60AB1B7EC55300DE8B29 /* Focus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8240CE231C3A47A500EF4D29;
+			remoteInfo = "Focus-watchOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -216,6 +347,9 @@
 		11D195731A7B42260072F514 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11F0320B1B0BFF82004C6D59 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11F032151B0BFF82004C6D59 /* AquiferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AquiferTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8240CE7C1C3A4C2D00EF4D29 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8240CE851C3A4C2D00EF4D29 /* Aquifer-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Aquifer-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8240CEB61C3A4C3600EF4D29 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82F317451B80335E007B80E2 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDefs.swift; sourceTree = "<group>"; usesTabs = 1; };
 		82F3176C1B81220C007B80E2 /* PipesOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipesOperators.swift; sourceTree = "<group>"; usesTabs = 1; };
 /* End PBXFileReference section */
@@ -257,6 +391,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8240CE781C3A4C2D00EF4D29 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CEE21C3A4D1100EF4D29 /* Focus.framework in Frameworks */,
+				8240CEE31C3A4D1100EF4D29 /* Swiftz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CE821C3A4C2D00EF4D29 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CEDD1C3A4CA400EF4D29 /* Aquifer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CEB21C3A4C3600EF4D29 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CEEA1C3A4D3700EF4D29 /* Swiftz.framework in Frameworks */,
+				8240CEE91C3A4D2300EF4D29 /* Focus.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -267,6 +427,9 @@
 				110A96D81B7D9449005667D4 /* SwiftzTests.xctest */,
 				110A96DA1B7D9449005667D4 /* Swiftz.framework */,
 				110A96DC1B7D9449005667D4 /* Swiftz-iOSTests.xctest */,
+				8240CEAA1C3A4C2D00EF4D29 /* Swiftz.framework */,
+				8240CEAC1C3A4C2D00EF4D29 /* Swiftz-tvOSTests.xctest */,
+				8240CEAE1C3A4C2D00EF4D29 /* Swiftz.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -287,6 +450,8 @@
 				114E393E1B7FC6F800EF9CB1 /* SwiftCheckTests.xctest */,
 				114E39401B7FC6F800EF9CB1 /* SwiftCheck.framework */,
 				114E39421B7FC6F800EF9CB1 /* SwiftCheck-iOSTests.xctest */,
+				8240CEA11C3A4C2D00EF4D29 /* SwiftCheck.framework */,
+				8240CEA31C3A4C2D00EF4D29 /* SwiftCheck-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -298,6 +463,9 @@
 				116C60C51B7EC56C00DE8B29 /* FocusTests.xctest */,
 				116C60C71B7EC56C00DE8B29 /* Focus.framework */,
 				116C60C91B7EC56C00DE8B29 /* Focus-iOSTests.xctest */,
+				8240CE971C3A4C2D00EF4D29 /* Focus.framework */,
+				8240CE991C3A4C2D00EF4D29 /* Focus-tvOSTests.xctest */,
+				8240CE9B1C3A4C2D00EF4D29 /* Focus.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,6 +488,9 @@
 				11862CDC1A65FF66008F5696 /* AquiferTests.xctest */,
 				11F0320B1B0BFF82004C6D59 /* Aquifer.framework */,
 				11F032151B0BFF82004C6D59 /* AquiferTests.xctest */,
+				8240CE7C1C3A4C2D00EF4D29 /* Aquifer.framework */,
+				8240CE851C3A4C2D00EF4D29 /* Aquifer-tvOSTests.xctest */,
+				8240CEB61C3A4C3600EF4D29 /* Aquifer.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -442,6 +613,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8240CE791C3A4C2D00EF4D29 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CEBF1C3A4C4B00EF4D29 /* Aquifer.h in Headers */,
+				8240CED71C3A4C6E00EF4D29 /* NSFileHandleExt.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CEB31C3A4C3600EF4D29 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CEBE1C3A4C4700EF4D29 /* Aquifer.h in Headers */,
+				8240CED81C3A4C7100EF4D29 /* NSFileHandleExt.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -524,6 +713,65 @@
 			productReference = 11F032151B0BFF82004C6D59 /* AquiferTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		8240CE7B1C3A4C2D00EF4D29 /* Aquifer-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8240CEAF1C3A4C2D00EF4D29 /* Build configuration list for PBXNativeTarget "Aquifer-tvOS" */;
+			buildPhases = (
+				8240CE771C3A4C2D00EF4D29 /* Sources */,
+				8240CE781C3A4C2D00EF4D29 /* Frameworks */,
+				8240CE791C3A4C2D00EF4D29 /* Headers */,
+				8240CE7A1C3A4C2D00EF4D29 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8240CEDF1C3A4D0300EF4D29 /* PBXTargetDependency */,
+				8240CEE11C3A4D0300EF4D29 /* PBXTargetDependency */,
+			);
+			name = "Aquifer-tvOS";
+			productName = "Aquifer-tvOS";
+			productReference = 8240CE7C1C3A4C2D00EF4D29 /* Aquifer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8240CE841C3A4C2D00EF4D29 /* Aquifer-tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8240CEB01C3A4C2D00EF4D29 /* Build configuration list for PBXNativeTarget "Aquifer-tvOSTests" */;
+			buildPhases = (
+				8240CE811C3A4C2D00EF4D29 /* Sources */,
+				8240CE821C3A4C2D00EF4D29 /* Frameworks */,
+				8240CE831C3A4C2D00EF4D29 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8240CEDC1C3A4C9B00EF4D29 /* PBXTargetDependency */,
+				8240CE881C3A4C2D00EF4D29 /* PBXTargetDependency */,
+			);
+			name = "Aquifer-tvOSTests";
+			productName = "Aquifer-tvOSTests";
+			productReference = 8240CE851C3A4C2D00EF4D29 /* Aquifer-tvOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8240CEB51C3A4C3600EF4D29 /* Aquifer-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8240CEBB1C3A4C3600EF4D29 /* Build configuration list for PBXNativeTarget "Aquifer-watchOS" */;
+			buildPhases = (
+				8240CEB11C3A4C3600EF4D29 /* Sources */,
+				8240CEB21C3A4C3600EF4D29 /* Frameworks */,
+				8240CEB31C3A4C3600EF4D29 /* Headers */,
+				8240CEB41C3A4C3600EF4D29 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8240CEE51C3A4D1A00EF4D29 /* PBXTargetDependency */,
+				8240CEE71C3A4D1A00EF4D29 /* PBXTargetDependency */,
+			);
+			name = "Aquifer-watchOS";
+			productName = "Aquifer-watchOS";
+			productReference = 8240CEB61C3A4C3600EF4D29 /* Aquifer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -531,7 +779,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = TypeLift;
 				TargetAttributes = {
@@ -546,6 +794,15 @@
 					};
 					11F032141B0BFF82004C6D59 = {
 						CreatedOnToolsVersion = 6.4;
+					};
+					8240CE7B1C3A4C2D00EF4D29 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					8240CE841C3A4C2D00EF4D29 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					8240CEB51C3A4C3600EF4D29 = {
+						CreatedOnToolsVersion = 7.2;
 					};
 				};
 			};
@@ -579,6 +836,9 @@
 				11862CDB1A65FF66008F5696 /* AquiferTests */,
 				11F0320A1B0BFF82004C6D59 /* Aquifer-iOS */,
 				11F032141B0BFF82004C6D59 /* Aquifer-iOSTests */,
+				8240CE7B1C3A4C2D00EF4D29 /* Aquifer-tvOS */,
+				8240CE841C3A4C2D00EF4D29 /* Aquifer-tvOSTests */,
+				8240CEB51C3A4C3600EF4D29 /* Aquifer-watchOS */,
 			);
 		};
 /* End PBXProject section */
@@ -668,6 +928,62 @@
 			remoteRef = 116C60C81B7EC56C00DE8B29 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8240CE971C3A4C2D00EF4D29 /* Focus.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Focus.framework;
+			remoteRef = 8240CE961C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CE991C3A4C2D00EF4D29 /* Focus-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Focus-tvOSTests.xctest";
+			remoteRef = 8240CE981C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CE9B1C3A4C2D00EF4D29 /* Focus.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Focus.framework;
+			remoteRef = 8240CE9A1C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CEA11C3A4C2D00EF4D29 /* SwiftCheck.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftCheck.framework;
+			remoteRef = 8240CEA01C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CEA31C3A4C2D00EF4D29 /* SwiftCheck-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SwiftCheck-tvOSTests.xctest";
+			remoteRef = 8240CEA21C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CEAA1C3A4C2D00EF4D29 /* Swiftz.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Swiftz.framework;
+			remoteRef = 8240CEA91C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CEAC1C3A4C2D00EF4D29 /* Swiftz-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Swiftz-tvOSTests.xctest";
+			remoteRef = 8240CEAB1C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8240CEAE1C3A4C2D00EF4D29 /* Swiftz.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Swiftz.framework;
+			remoteRef = 8240CEAD1C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -693,6 +1009,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		11F032131B0BFF82004C6D59 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CE7A1C3A4C2D00EF4D29 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CE831C3A4C2D00EF4D29 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CEB41C3A4C3600EF4D29 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -756,6 +1093,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8240CE771C3A4C2D00EF4D29 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CED61C3A4C6500EF4D29 /* NSFileHandleExt.m in Sources */,
+				8240CEC01C3A4C5300EF4D29 /* Proxy.swift in Sources */,
+				8240CEC11C3A4C5300EF4D29 /* Simple.swift in Sources */,
+				8240CEC21C3A4C5300EF4D29 /* Operators.swift in Sources */,
+				8240CEC31C3A4C5300EF4D29 /* PipesOperators.swift in Sources */,
+				8240CEC41C3A4C5300EF4D29 /* X.swift in Sources */,
+				8240CEC51C3A4C5300EF4D29 /* Auxiliary.swift in Sources */,
+				8240CEC61C3A4C5300EF4D29 /* Grouping.swift in Sources */,
+				8240CEC71C3A4C5300EF4D29 /* Parsing.swift in Sources */,
+				8240CEC81C3A4C5300EF4D29 /* IO.swift in Sources */,
+				8240CEC91C3A4C5300EF4D29 /* Basic.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CE811C3A4C2D00EF4D29 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CED91C3A4C8B00EF4D29 /* ProxyTests.swift in Sources */,
+				8240CEDA1C3A4C8B00EF4D29 /* TestDefs.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8240CEB11C3A4C3600EF4D29 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8240CECB1C3A4C5B00EF4D29 /* NSFileHandleExt.m in Sources */,
+				8240CECC1C3A4C5B00EF4D29 /* Proxy.swift in Sources */,
+				8240CECD1C3A4C5B00EF4D29 /* Simple.swift in Sources */,
+				8240CECE1C3A4C5B00EF4D29 /* Operators.swift in Sources */,
+				8240CECF1C3A4C5B00EF4D29 /* PipesOperators.swift in Sources */,
+				8240CED01C3A4C5B00EF4D29 /* X.swift in Sources */,
+				8240CED11C3A4C5B00EF4D29 /* Auxiliary.swift in Sources */,
+				8240CED21C3A4C5B00EF4D29 /* Grouping.swift in Sources */,
+				8240CED31C3A4C5B00EF4D29 /* Parsing.swift in Sources */,
+				8240CED41C3A4C5B00EF4D29 /* IO.swift in Sources */,
+				8240CED51C3A4C5B00EF4D29 /* Basic.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -798,6 +1180,36 @@
 			isa = PBXTargetDependency;
 			name = "SwiftCheck-iOS";
 			targetProxy = 1186B05C1B7FCC8200ADADAD /* PBXContainerItemProxy */;
+		};
+		8240CE881C3A4C2D00EF4D29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8240CE7B1C3A4C2D00EF4D29 /* Aquifer-tvOS */;
+			targetProxy = 8240CE871C3A4C2D00EF4D29 /* PBXContainerItemProxy */;
+		};
+		8240CEDC1C3A4C9B00EF4D29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwiftCheck-tvOS";
+			targetProxy = 8240CEDB1C3A4C9B00EF4D29 /* PBXContainerItemProxy */;
+		};
+		8240CEDF1C3A4D0300EF4D29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Swiftz-tvOS";
+			targetProxy = 8240CEDE1C3A4D0300EF4D29 /* PBXContainerItemProxy */;
+		};
+		8240CEE11C3A4D0300EF4D29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Focus-tvOS";
+			targetProxy = 8240CEE01C3A4D0300EF4D29 /* PBXContainerItemProxy */;
+		};
+		8240CEE51C3A4D1A00EF4D29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Swiftz-watchOS";
+			targetProxy = 8240CEE41C3A4D1A00EF4D29 /* PBXContainerItemProxy */;
+		};
+		8240CEE71C3A4D1A00EF4D29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Focus-watchOS";
+			targetProxy = 8240CEE61C3A4D1A00EF4D29 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1060,6 +1472,120 @@
 			};
 			name = Release;
 		};
+		8240CE8D1C3A4C2D00EF4D29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Aquifer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-tvOS";
+				PRODUCT_NAME = Aquifer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		8240CE8E1C3A4C2D00EF4D29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Aquifer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-tvOS";
+				PRODUCT_NAME = Aquifer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8240CE8F1C3A4C2D00EF4D29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = AquiferTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		8240CE901C3A4C2D00EF4D29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = AquiferTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8240CEBC1C3A4C3600EF4D29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Aquifer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-watchOS";
+				PRODUCT_NAME = Aquifer;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		8240CEBD1C3A4C3600EF4D29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Aquifer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-watchOS";
+				PRODUCT_NAME = Aquifer;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1104,6 +1630,33 @@
 			buildConfigurations = (
 				11F032221B0BFF83004C6D59 /* Debug */,
 				11F032231B0BFF83004C6D59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8240CEAF1C3A4C2D00EF4D29 /* Build configuration list for PBXNativeTarget "Aquifer-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8240CE8D1C3A4C2D00EF4D29 /* Debug */,
+				8240CE8E1C3A4C2D00EF4D29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8240CEB01C3A4C2D00EF4D29 /* Build configuration list for PBXNativeTarget "Aquifer-tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8240CE8F1C3A4C2D00EF4D29 /* Debug */,
+				8240CE901C3A4C2D00EF4D29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8240CEBB1C3A4C3600EF4D29 /* Build configuration list for PBXNativeTarget "Aquifer-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8240CEBC1C3A4C3600EF4D29 /* Debug */,
+				8240CEBD1C3A4C3600EF4D29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -23,7 +23,7 @@ public struct GroupedProducer<V, R> {
 		_repr = r
 	}
 
-	internal var repr: GroupedProducerRepr<V, R> {
+	internal var repr : GroupedProducerRepr<V, R> {
 		return _repr()
 	}
 }

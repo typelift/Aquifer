@@ -179,7 +179,7 @@ public func minimum<V : Comparable>(p : Producer<V, ()>.T) -> V? {
 // MARK: Scans
 
 /// Returns a pipe that uses the given function as a left-scan on all values flowing downstream.
-public func scan<A, UI, DO, FR>(stepWith step: (A, UI) -> A, initializeWith initial: A, extractWith extractor: A -> DO) -> Pipe<UI, DO, FR>.T {
+public func scan<A, UI, DO, FR>(stepWith step : (A, UI) -> A, initializeWith initial : A, extractWith extractor : A -> DO) -> Pipe<UI, DO, FR>.T {
 	return yield(extractor(initial)) >>- { _ in await() >>- { scan(stepWith : step, initializeWith : step(initial, $0), extractWith : extractor) } }
 }
 
@@ -330,7 +330,7 @@ private func findIndicesInner<UI, FR>(predicate : UI -> Bool, _ n : Int) -> Pipe
 	}
 }
 
-private func foldRepr<A, V, R>(p : ProxyRepr<X, (), (), V, ()>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> R {
+private func foldRepr<A, V, R>(p : ProxyRepr<X, (), (), V, ()>, stepWith step : (A, V) -> A, initializeWith initial : A, extractWith extractor : A -> R) -> R {
 	switch p {
 	case let .Request(uO, _): return closed(uO())
 	case let .Respond(dO, fDI): return foldRepr(fDI(()), stepWith : step, initializeWith : step(initial, dO()), extractWith : extractor)
@@ -338,7 +338,7 @@ private func foldRepr<A, V, R>(p : ProxyRepr<X, (), (), V, ()>, stepWith step: (
 	}
 }
 
-private func foldRetRepr<A, V, FR, R>(p : ProxyRepr<X, (), (), V, FR>, stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> (R, FR) {
+private func foldRetRepr<A, V, FR, R>(p : ProxyRepr<X, (), (), V, FR>, stepWith step : (A, V) -> A, initializeWith initial : A, extractWith extractor : A -> R) -> (R, FR) {
 	switch p {
 	case let .Request(uO, _): return closed(uO())
 	case let .Respond(dO, fDI): return foldRetRepr(fDI(()), stepWith : step, initializeWith : step(initial, dO()), extractWith : extractor)
