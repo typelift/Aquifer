@@ -103,7 +103,7 @@ public func isEndOfInput<V, I>() -> IxState<Producer<V, I>.T, Producer<V, I>.T, 
 }
 
 /// Fold all input values.
-public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initial: A, extractWith extractor: A -> R) -> IxState<Producer<V, I>.T, Producer<V, I>.T, R> {
+public func foldAll<A, V, I, R>(stepWith step : (A, V) -> A, initializeWith initial : A, extractWith extractor : A -> R) -> IxState<Producer<V, I>.T, Producer<V, I>.T, R> {
 	return draw() >>- {
 		if let v = $0 {
 			return foldAll(stepWith : step, initializeWith : step(initial, v), extractWith : extractor)
@@ -118,7 +118,7 @@ public func foldAll<A, V, I, R>(stepWith step: (A, V) -> A, initializeWith initi
 }*/
 
 /// Convert a never-ending Consumer to a Parser
-public func toParser<V, I>(endless p: Consumer<V, X>.T) -> IxState<Producer<V, I>.T, Producer<V, I>.T, ()> {
+public func toParser<V, I>(endless p : Consumer<V, X>.T) -> IxState<Producer<V, I>.T, Producer<V, I>.T, ()> {
 	return IxState { q in ((), pure(runEffect(q >-> ({ closed($0) } <^> p)))) }
 }
 

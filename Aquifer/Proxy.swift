@@ -66,7 +66,7 @@ public struct Proxy<UO, UI, DI, DO, FR> {
 		_repr = r
 	}
 
-	internal var repr: ProxyRepr<UO, UI, DI, DO, FR> {
+	internal var repr : ProxyRepr<UO, UI, DI, DO, FR> {
 		return _repr()
 	}
 
