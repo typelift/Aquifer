@@ -129,11 +129,11 @@ public func stdinByLine() -> Producer<String, ()> {
 //: `for_` loops are the simplest way to consume a `Producer` like `stdinByLine`.
 //: `for_` has the following type:
 //:
-//                        +-- Producer           +-- The body of the   +-- Result
-//                        |   to loop            |   loop              |
-//                        v   over               v                     v
-//                        --------------         ---------------       ---------
-//     func for_<A, R>(p : Producer<A, >, _ f : A -> Effect<()>) -> Effect<>
+//                        +-- Producer           +-- The body of     +-- Result
+//                        |   to loop            |   the loop        |
+//                        v   over               v                   v
+//                        --------------         ---------------     ---------
+//     func for_<A, R>(p : Producer<A, R>, _ f : A -> Effect<()>) -> Effect<R>
 //
 //: `for_(producer, body)` loops over `producer`, substituting each `yield` in
 //: `producer` with `body`.
@@ -171,13 +171,13 @@ public func stdinByLine() -> Producer<String, ()> {
 //: This is why `for_` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
-//     func for_<A, B, R>(p : Producer<A, >, f : (A -> Producer<B, ()>) -> Producer<B, >
+//     func for_<A, B, R>(p : Producer<A, R>, f : (A -> Producer<B, ()>) -> Producer<B, R>
 //
 //     Specialize `B` to `X`
-//     func for_<A, R>(p : Producer<A, >, f : (A -> Producer<Never, ()>) -> Producer<Never, >
+//     func for_<A, R>(p : Producer<A, R>, f : (A -> Producer<Never, ()>) -> Producer<Never, R>
 //
-//     Producer<Never, > == Effect<>
-//     func for_<A, R>(p : Producer<A, >, f : (A -> Effect<()>) -> Effect<>
+//     Producer<Never, R> == Effect<R>
+//     func for_<A, R>(p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
 //
 //: This is the same trick that all `Aquifer` functions use to work with various
 //: combinations of `Producer`s, `Consumer`s, `Pipe`s, and `Effect`s.  Each
@@ -204,7 +204,7 @@ let stdinLoop = for_(stdinByLine()) { str in
 //: actions. This means we can run these `Effect`s to remove the lifting and lower
 //: them back to the equivalent computation:
 //
-//     func runEffect<R>(eff : Effect<>) -> R
+//     func runEffect<R>(_ eff : Effect<R>) -> R
 //
 //: This is the real type signature of `runEffect`, which refuses to accept
 //: anything other than an `Effect`. This ensures that we handle all
@@ -284,16 +284,16 @@ runEffect <|
 //: We can understand the rationale behind this equality if we first define the
 //: following operator that is the point-free counterpart to `for_`:
 //
-//     func ~~> <A, B, C, R>(f : A -> Producer<B, >, g : B -> Producer<C, >) -> (A -> Producer<C, >) {
+//     func ~~> <A, B, C, R>(f : A -> Producer<B, R>, g : B -> Producer<C, R>) -> (A -> Producer<C, R>) {
 // 	       return { x in for_(f(x), g) }
 //     }
 //
 //: Using `~~>` (pronounced "into"), we can transform our original equality
 //: into the following more symmetric equation:
 //
-// let f : A -> Producer<B, >
-// let g : B -> Producer<C, >
-// let h : C -> Producer<D, >
+// let f : A -> Producer<B, R>
+// let g : B -> Producer<C, R>
+// let h : C -> Producer<D, R>
 //
 // (f ~~> g) ~~> h == f ~~> (g ~~> h)
 //
@@ -366,7 +366,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
 //: The most general solution is to externally iterate over the `Producer` using
 //: the `next` command:
 //
-//     func next(p : Producer<A, >) -> Either<R, (A, Producer<A, >)>
+//     func next(p : Producer<A, R>) -> Either<R, (A, Producer<A, R>)>
 //
 //: Think of `next` as pattern matching on the head of the `Producer`.  This
 //: `Either` returns a `Left` if the `Producer` is done or it returns a `Right`
@@ -403,7 +403,7 @@ func stdoutByLine() -> Consumer<String, ()> {
 //				            |  action             |  feed           |  Effect
 //				            v                     v                 v
 //				            ---------             --------------     ---------
-//     func >~~ <B, C>(eff : Effect<>, consumer : Consumer<B, C>) -> Effect<>
+//     func >~~ <B, C>(eff : Effect<R>, consumer : Consumer<B, C>) -> Effect<R>
 //
 //: `draw >~~ consumer` loops over `consumer`, substituting each `await` in
 //: `consumer` with `draw`.
@@ -472,7 +472,7 @@ runEffect <| Effect<String>.pure(readLine()!) >~~ doubleUp >~~ (stdoutLn() as Aq
 //: exclusively or `Consumer`s exclusively.  We can connect `Producer`s and
 //: `Consumer`s directly together using `>->` (pronounced "pipe"):
 //
-//     func >-> (p : Producer<A, >, c : Consumer<A, R>) -> Effect<>
+//     func >-> (p : Producer<A, R>, c : Consumer<A, R>) -> Effect<R>
 //
 //: This returns an `Effect` which we can run:
 
@@ -533,9 +533,9 @@ public func take_<A>(_ n : Int) -> Pipe<A, A, ()> {
 //: You can use `Pipe`s to transform `Producer`s, `Consumer`s, or even other
 //: `Pipe`s using the same `>->` operator:
 //
-//     func >-> <A, B, R>(Producer<A, >, Pipe<A, B, >) -> Producer<B, >
-//     func >-> <A, B, R>(Pipe<A, B, >, Consumer<B, R>) -> Consumer<A, R>
-//     func >-> <A, B, C, R>(Pipe<A, B, >, Pipe<B, C, >) -> Pipe<A, C, >
+//     func >-> <A, B, R>(Producer<A, R>, Pipe<A, B, R>) -> Producer<B, R>
+//     func >-> <A, B, R>(Pipe<A, B, R>, Consumer<B, R>) -> Consumer<A, R>
+//     func >-> <A, B, C, R>(Pipe<A, B, R>, Pipe<B, C, R>) -> Pipe<A, C, R>
 //
 //: For example, you can compose `take` after `stdinLn` to limit the number
 //: of lines drawn from standard input:

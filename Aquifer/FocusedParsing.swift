@@ -63,7 +63,7 @@ public func foldAll<A, V, I, R>(stepWith step : @escaping (A, V) -> A, initializ
 }
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
-/*public func toParser<V, I, R>(p : Proxy<(), V?, (), Never, R>) -> IxState<Producer<V, >, Producer<V, >, R> {
+/*public func toParser<V, I, R>(p : Proxy<(), V?, (), Never, R>) -> IxState<Producer<V, I>, Producer<V, I>, R> {
 }*/
 
 /// Convert a never-ending Consumer to a Parser

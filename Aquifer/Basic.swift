@@ -303,11 +303,11 @@ public func zipWith<V0, V1, V2, R>(_ p : Producer<V0, R>, _ q : Producer<V1, R>,
 }
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
-/*public func tee<V, R>(p : Pipe<V, Never, >) -> Pipe<V, V, > {
+/*public func tee<V, R>(p : Pipe<V, Never, R>) -> Pipe<V, V, R> {
 }*/
 
 // this seems to required higher-kinded types to implement, even though none appear in its signature
-/*public func generalize<UT, UI, DO, FR>(p : Pipe<UI, DO, >) -> Proxy<UT, UI, UT, DO, FR> {
+/*public func generalize<UT, UI, DO, FR>(p : Pipe<UI, DO, R>) -> Proxy<UT, UI, UT, DO, FR> {
 }*/
 
 // MARK: - Implementation Details Follow
