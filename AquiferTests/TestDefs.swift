@@ -7,23 +7,22 @@
 //
 
 import func Swiftz.on
-import func Swiftz.•
 import func Swiftz.const
 import Aquifer
 import SwiftCheck
 
 enum ClientStep : Int, CustomStringConvertible {
-	case ClientRequest
-	case ClientLog
-	case ClientInc
+	case clientRequest
+	case clientLog
+	case clientInc
 
 	var description : String {
 		switch self {
-		case .ClientInc:
+		case .clientInc:
 			return "inc"
-		case .ClientLog:
+		case .clientLog:
 			return "log"
-		case .ClientRequest:
+		case .clientRequest:
 			return "request"
 		}
 	}
@@ -33,26 +32,26 @@ extension ClientStep : Arbitrary {
 	static var arbitrary : Gen<ClientStep> {
 		return Gen.sized { _ in
 			return Gen<ClientStep>.fromElementsOf([
-				.ClientInc,
-				.ClientLog,
-				.ClientRequest,
+				.clientInc,
+				.clientLog,
+				.clientRequest,
 			])
 		}
 	}
 }
 
 enum ServerStep : Int, CustomStringConvertible {
-	case ServerRespond
-	case ServerLog
-	case ServerInc
+	case serverRespond
+	case serverLog
+	case serverInc
 
 	var description : String {
 		switch self {
-		case .ServerInc:
+		case .serverInc:
 			return "inc"
-		case .ServerLog:
+		case .serverLog:
 			return "log"
-		case .ServerRespond:
+		case .serverRespond:
 			return "respond"
 		}
 	}
@@ -62,29 +61,29 @@ extension ServerStep : Arbitrary {
 	static var arbitrary : Gen<ServerStep> {
 		return Gen.sized { _ in
 			return Gen<ServerStep>.fromElementsOf([
-				.ServerInc,
-				.ServerLog,
-				.ServerRespond,
+				.serverInc,
+				.serverLog,
+				.serverRespond,
 			])
 		}
 	}
 }
 
 enum ProxyStep : Int, CustomStringConvertible {
-	case ProxyRequest
-	case ProxyRespond
-	case ProxyLog
-	case ProxyInc
+	case proxyRequest
+	case proxyRespond
+	case proxyLog
+	case proxyInc
 
 	var description : String {
 		switch self {
-		case .ProxyRequest:
+		case .proxyRequest:
 			return "request"
-		case .ProxyRespond:
+		case .proxyRespond:
 			return "respond"
-		case .ProxyLog:
+		case .proxyLog:
 			return "log"
-		case .ProxyInc:
+		case .proxyInc:
 			return "inc"
 		}
 	}
@@ -94,26 +93,26 @@ extension ProxyStep : Arbitrary {
 	static var arbitrary : Gen<ProxyStep> {
 		return Gen.sized { _ in
 			return Gen<ProxyStep>.fromElementsOf([
-				.ProxyRequest,
-				.ProxyRespond,
-				.ProxyLog,
-				.ProxyInc,
+				.proxyRequest,
+				.proxyRespond,
+				.proxyLog,
+				.proxyInc,
 			])
 		}
 	}
 }
 
 
-func log<UO, UI, DI, DO>(n : Int) -> Proxy<UO, UI, DI, DO, Int> {
+func log<UO, UI, DI, DO>(_ n : Int) -> Proxy<UO, UI, DI, DO, Int> {
 	/// lift (tell [n]) >>
 	return Proxy.pure(n)
 }
 
-func inc<UO, UI, DI, DO>(n : Int) -> Proxy<UO, UI, DI, DO, Int> {
+func inc<UO, UI, DI, DO>(_ n : Int) -> Proxy<UO, UI, DI, DO, Int> {
 	return Proxy.pure(n + 1)
 }
 
-func correct(str : String) -> String {
+func correct(_ str : String) -> String {
 	if str.isEmpty {
 		return "pure"
 	}
@@ -124,70 +123,70 @@ struct AClient : CustomStringConvertible {
 	let unAClient : [ClientStep]
 
 	var description : String {
-		return correct(self.unAClient.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
+		return correct(self.unAClient.map({ $0.description }).intersperse(" >>->> ").reduce("", +))
 	}
 }
 
 extension AClient : Arbitrary {
 	static var arbitrary : Gen<AClient> {
-		return [ClientStep].arbitrary.fmap(AClient.init)
+		return [ClientStep].arbitrary.map(AClient.init)
 	}
 
-	static func shrink(c : AClient) -> [AClient] {
+	static func shrink(_ c : AClient) -> [AClient] {
 		return [ClientStep].shrink(c.unAClient).map(AClient.init)
 	}
 }
 
-func aClient(client : AClient) -> (Int -> Client<Int, Int, Int>.T) {
-	let p = client.unAClient.map({ (x : ClientStep) -> (Int -> Proxy<Int, Int, (), X, Int>) in
+func aClient(_ client : AClient) -> ((Int) -> Client<Int, Int, Int>) {
+	let p = client.unAClient.map({ (x : ClientStep) -> ((Int) -> Proxy<Int, Int, (), Never, Int>) in
 		switch x {
-		case .ClientRequest:
+		case .clientRequest:
 			return { request($0) }
-		case .ClientLog:
+		case .clientLog:
 			return log
-		case .ClientInc:
+		case .clientInc:
 			return inc
 		}
 	})
-	return p.reduce(Proxy.pure, combine: >>->>)
+	return p.reduce(Proxy.pure, >>->>)
 }
 
 struct AServer : CustomStringConvertible {
 	let unAServer : [ServerStep]
 
 	var description : String {
-		return correct(self.unAServer.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
+		return correct(self.unAServer.map({ $0.description }).intersperse(" >>->> ").reduce("", +))
 	}
 }
 
 extension AServer : Arbitrary {
 	static var arbitrary : Gen<AServer> {
-		return [ServerStep].arbitrary.fmap(AServer.init)
+		return [ServerStep].arbitrary.map(AServer.init)
 	}
 
-	static func shrink(c : AServer) -> [AServer] {
+	static func shrink(_ c : AServer) -> [AServer] {
 		return [ServerStep].shrink(c.unAServer).map(AServer.init)
 	}
 }
 
-func aServer(server : AServer) -> (Int -> Server<Int, Int, Int>.T) {
-	return server.unAServer.map({ (x : ServerStep) -> (Int -> Proxy<X, (), Int, Int, Int>) in
+func aServer(_ server : AServer) -> ((Int) -> Server<Int, Int, Int>) {
+	return server.unAServer.map({ (x : ServerStep) -> ((Int) -> Proxy<Never, (), Int, Int, Int>) in
 		switch x {
-		case .ServerRespond:
+		case .serverRespond:
 			return { respond($0) }
-		case .ServerLog:
+		case .serverLog:
 			return log
-		case .ServerInc:
+		case .serverInc:
 			return inc
 		}
-	}).reduce(Proxy.pure, combine: >>->>)
+	}).reduce(Proxy.pure, >>->>)
 }
 
 struct AProxy : Hashable, CustomStringConvertible {
 	let unAProxy : [ProxyStep]
 
 	var description : String {
-		return correct(self.unAProxy.map({ $0.description }).intersperse(" >>->> ").reduce("", combine: +))
+		return correct(self.unAProxy.map({ $0.description }).intersperse(" >>->> ").reduce("", +))
 	}
 
 	var hashValue : Int {
@@ -201,44 +200,44 @@ func == (l : AProxy, r : AProxy) -> Bool {
 
 extension AProxy : Arbitrary {
 	static var arbitrary : Gen<AProxy> {
-		return [ProxyStep].arbitrary.fmap(AProxy.init)
+		return [ProxyStep].arbitrary.map(AProxy.init)
 	}
 
-	static func shrink(c : AProxy) -> [AProxy] {
+	static func shrink(_ c : AProxy) -> [AProxy] {
 		return [ProxyStep].shrink(c.unAProxy).map(AProxy.init)
 	}
 }
 
 extension AProxy : CoArbitrary {
-	static func coarbitrary<C>(x : AProxy) -> (Gen<C> -> Gen<C>) {
+	static func coarbitrary<C>(_ x : AProxy) -> ((Gen<C>) -> Gen<C>) {
 		return [ProxyStep].coarbitrary(x.unAProxy)
 	}
 }
 
-func aProxy(proxy : AProxy) -> (Int -> Proxy<Int, Int, Int, Int, Int>) {
-	return proxy.unAProxy.map({ (x : ProxyStep) -> (Int -> Proxy<Int, Int, Int, Int, Int>) in
+func aProxy(_ proxy : AProxy) -> ((Int) -> Proxy<Int, Int, Int, Int, Int>) {
+	return proxy.unAProxy.map({ (x : ProxyStep) -> ((Int) -> Proxy<Int, Int, Int, Int, Int>) in
 		switch x {
-		case .ProxyRequest:
+		case .proxyRequest:
 			return { request($0) }
-		case .ProxyRespond:
+		case .proxyRespond:
 			return { respond($0) }
-		case .ProxyLog:
+		case .proxyLog:
 			return log
-		case .ProxyInc:
+		case .proxyInc:
 			return inc
 		}
-	}).reduce(Proxy.pure, combine: >>->>)
+	}).reduce(Proxy.pure, >>->>)
 }
 
 struct ProxyK {
-	typealias T = (Int -> Proxy<Int, Int, Int, Int, Int>)
+	typealias T = ((Int) -> Proxy<Int, Int, Int, Int, Int>)
 }
 
 struct Operation {
 	typealias T = (ProxyK.T, ProxyK.T) -> ProxyK.T
 }
 
-func formulate(pl : ProxyK.T, _ pr : ProxyK.T)(_ p0 : AServer, _ p1 : AClient) -> Bool {
+func formulate(_ pl : ProxyK.T, _ pr : ProxyK.T, _ p0 : AServer, _ p1 : AClient) -> Bool {
 	let sv  = aServer(p0)
 	let cl  = aClient(p1)
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)

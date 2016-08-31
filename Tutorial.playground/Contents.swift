@@ -68,9 +68,7 @@
 //: when you get an `Effect`, meaning that you have handled all inputs and
 //: outputs.  You run this final `Effect` to begin streaming.
 
-import func Swiftz.const
-import func Swiftz.curry
-import func Swiftz.<|
+import Swiftz
 import Aquifer
 
 //: # Producers
@@ -82,9 +80,8 @@ import Aquifer
 
 //: As an aside: Swift does not *technically* allow for the definition of polymorphic
 //: typealiases like `Producer`.  Instead, `Aquifer` uses a number of polymorphic enums
-//: with typealiases inside (the `.T` in all of the types presented hereafter).  We
-//: specifically chose to use enums with no cases so there would be no option to instantiate
-//: them.  This way, they are markers and nothing more.
+//: with typealiases inside.  We specifically chose to use enums with no cases so there
+//: would be no option to instantiate them.  This way, they are markers and nothing more.
 
 //: The following `stdinByLine` `Producer` shows how to incrementally read in
 //: `String`s from standard input and `yield` them downstream, terminating
@@ -97,8 +94,8 @@ import class Foundation.NSFileHandle
 //                                   |        +-- Every action has a return value.
 //                                   |        |   This action returns `()` when finished
 //                                   v        v
-public func stdinByLine() -> Producer<String, ()>.T {
-	let handle = NSFileHandle.fileHandleWithStandardInput() // Grab the handle
+public func stdinByLine() -> Producer<String, ()> {
+	let handle = FileHandle.standardInput // Grab the handle
 	if handle.aqu_isAtEndOfFile { // If we`re at the end of the line, stop.
 		return pure(())
 	} else {
@@ -110,7 +107,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: consumed.  If nobody consumes the value (which is possible) then `yield`
 //: never returns.  You can think of `yield` as having the following type:
 //:
-//:     func yield<A>(value : A) -> Producer<A, ()>.T
+//:     func yield<A>(value : A) -> Producer<A, ()>
 //:
 //: The true type of `yield` is actually more general and powerful.  Throughout
 //: the tutorial we will present type signatures like this that are simplified at
@@ -136,7 +133,7 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //                        |   to loop            |   loop              |
 //                        v   over               v                     v
 //                        --------------         ---------------       ---------
-//     func for_<A, R>(p : Producer<A, R>.T, _ f : A -> Effect<()>.T) -> Effect<R>.T
+//     func for_<A, R>(p : Producer<A, >, _ f : A -> Effect<()>) -> Effect<>
 //
 //: `for_(producer, body)` loops over `producer`, substituting each `yield` in
 //: `producer` with `body`.
@@ -174,13 +171,13 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: This is why `for_` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
-//     func for_<A, B, R>(p : Producer<A, R>.T, f : (A -> Producer<B, ()>.T) -> Producer<B, R>.T
+//     func for_<A, B, R>(p : Producer<A, >, f : (A -> Producer<B, ()>) -> Producer<B, >
 //
 //     Specialize `B` to `X`
-//     func for_<A, R>(p : Producer<A, R>.T, f : (A -> Producer<X, ()>.T) -> Producer<X, R>.T
+//     func for_<A, R>(p : Producer<A, >, f : (A -> Producer<Never, ()>) -> Producer<Never, >
 //
-//     Producer<X, Result>.T == Effect<Result>.T
-//     func for_<A, R>(p : Producer<A, R>.T, f : (A -> Effect<()>.T) -> Effect<R>.T
+//     Producer<Never, > == Effect<>
+//     func for_<A, R>(p : Producer<A, >, f : (A -> Effect<()>) -> Effect<>
 //
 //: This is the same trick that all `Aquifer` functions use to work with various
 //: combinations of `Producer`s, `Consumer`s, `Pipe`s, and `Effect`s.  Each
@@ -191,9 +188,9 @@ public func stdinByLine() -> Producer<String, ()>.T {
 //: argument (the loop body) is an `Effect`:
 //:
 
-// more concise: `return for_(stdinByLine(), Effect.T.pure • print)`
+// more concise: `return for_(stdinByLine(), Effect.pure • print)`
 let stdinLoop = for_(stdinByLine()) { str in
-	return Effect.T.pure(print(str))
+	return Effect.pure(print(str))
 }
 
 //: In this example, `for_` loops over `stdinByLine` and replaces every `yield` in
@@ -207,7 +204,7 @@ let stdinLoop = for_(stdinByLine()) { str in
 //: actions. This means we can run these `Effect`s to remove the lifting and lower
 //: them back to the equivalent computation:
 //
-//     func runEffect<R>(eff : Effect<R>.T) -> R
+//     func runEffect<R>(eff : Effect<>) -> R
 //
 //: This is the real type signature of `runEffect`, which refuses to accept
 //: anything other than an `Effect`. This ensures that we handle all
@@ -217,7 +214,7 @@ runEffect(stdinLoop)
 
 //: ... or you could inline the entire `stdinLoop` into the following one-liner:
 
-runEffect <| for_(stdinLn(), { Effect<()>.T.pure(print($0)) })
+runEffect <| for_(stdinLn(), { Effect<()>.pure(print($0)) })
 
 //: Our final program loops over standard input and echoes every line to
 //: standard output until we hit `Ctrl-D` to end the input stream:
@@ -226,15 +223,15 @@ runEffect <| for_(stdinLn(), { Effect<()>.T.pure(print($0)) })
 //: to a `Producer` using `each`, which is exported by default from `Aquifer`:
 //:
 //
-//     public func each<T>(xs : [T]) -> Producer<T, ()>.T
+//     public func each<T>(xs : [T]) -> Producer<T, ()>
 //
 //: Combine `for_` and `each` to iterate over lists using a "foreach" loop:
 
-runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
+runEffect <| for_(each([1...4]), { Effect.pure(print($0)) })
 
 //: `each` is actually more general and works for any `SequenceType`
 //
-//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()>.T {
+//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
 //
 
 //: # Composability
@@ -243,7 +240,7 @@ runEffect <| for_(each([1...4]), { Effect.T.pure(print($0)) })
 //: test out this feature by defining a new loop body that `duplicate`s every
 //: value:
 
-func duplicate<A>(x : A) -> Producer<A, ()>.T {
+func duplicate<A>(_ x : A) -> Producer<A, ()> {
 	return yield(x) >>- { _ in  yield(x) }
 }
 
@@ -260,7 +257,7 @@ let loop2 = for_(stdinLn()) { x in
 //: `Producer` we cannot run it because there is still unhandled output.
 //: However, we can use yet another `for_` to handle this new duplicated stream:
 
-runEffect <| for_(loop, { Effect<()>.T.pure(print($0)) })
+runEffect <| for_(loop, { Effect<()>.pure(print($0)) })
 
 //: This creates a program which echoes every line from standard input to
 //: standard output twice:
@@ -271,32 +268,32 @@ runEffect <| for_(loop, { Effect<()>.T.pure(print($0)) })
 runEffect <|
 	for_(stdinLn()) { str1 in
 		return for_(duplicate(str1)) { str2 in
-			return Effect.T.pure(print(str2))
+			return Effect.pure(print(str2))
 		}
 	}
 
 //: Yes, we could have!  In fact, this is a special case of the following
 //: equality, which always holds no matter what:
 //
-// let s :      Producer<A, ()>.T  // i.e. `stdinLn()`
-// let f : A -> Producer<B, ()>.T  // i.e. `duplicate()`
-// let g : B -> Producer<C, ()>.T  // i.e. `(Effect<()>.T • print)`
+// let s :      Producer<A, ()>  // i.e. `stdinLn()`
+// let f : A -> Producer<B, ()>  // i.e. `duplicate()`
+// let g : B -> Producer<C, ()>  // i.e. `(Effect<()> • print)`
 //
 // for_(for_(s, f), g) == for_(s, { x in for_(f(x), g) })
 //
 //: We can understand the rationale behind this equality if we first define the
 //: following operator that is the point-free counterpart to `for_`:
 //
-//     func ~~> <A, B, C, R>(f : A -> Producer<B, R>.T, g : B -> Producer<C, R>.T) -> (A -> Producer<C, R>.T) {
+//     func ~~> <A, B, C, R>(f : A -> Producer<B, >, g : B -> Producer<C, >) -> (A -> Producer<C, >) {
 // 	       return { x in for_(f(x), g) }
 //     }
 //
 //: Using `~~>` (pronounced "into"), we can transform our original equality
 //: into the following more symmetric equation:
 //
-// let f : A -> Producer<B, R>.T
-// let g : B -> Producer<C, R>.T
-// let h : C -> Producer<D, R>.T
+// let f : A -> Producer<B, >
+// let g : B -> Producer<C, >
+// let h : C -> Producer<D, >
 //
 // (f ~~> g) ~~> h == f ~~> (g ~~> h)
 //
@@ -344,7 +341,7 @@ runEffect <|
 //: transformations:
 
 runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
-	return Effect<()>.T.pure(print(x))
+	return Effect<()>.pure(print(x))
 }))
 
 //: This means that we can also choose to program in a more functional style and
@@ -369,7 +366,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
 //: The most general solution is to externally iterate over the `Producer` using
 //: the `next` command:
 //
-//     func next(p : Producer<A, R>.T) -> Either<R, (A, Producer<A, R>.T)>
+//     func next(p : Producer<A, >) -> Either<R, (A, Producer<A, >)>
 //
 //: Think of `next` as pattern matching on the head of the `Producer`.  This
 //: `Either` returns a `Left` if the `Producer` is done or it returns a `Right`
@@ -388,8 +385,8 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
 //                     +--------+-- A `Consumer` that awaits `String`s
 //                     |        |
 //                     v        v
-func stdoutByLine() -> Consumer<String, ()>.T {
-	let handle = NSFileHandle.fileHandleWithStandardOutput()
+func stdoutByLine() -> Consumer<String, ()> {
+	let handle = FileHandle.standardOutput
 	return for_(cat()) { handle.aqu_writeLine($0); return pure(()) }
 }
 
@@ -397,7 +394,7 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //: new value.  If nobody provides a value (which is possible) then `await`
 //: never returns.  You can think of `await` as having the following type:
 //
-//     await() -> Consumer<A, A>.T
+//     await() -> Consumer<A, A>
 //
 //: One way to feed a `Consumer` is to repeatedly feed the same input using
 //: using `>~~` (pronounced "feed"):
@@ -406,21 +403,21 @@ func stdoutByLine() -> Consumer<String, ()>.T {
 //				            |  action             |  feed           |  Effect
 //				            v                     v                 v
 //				            ---------             --------------     ---------
-//     func >~~ <B, C>(eff : Effect<B>.T, consumer : Consumer<B, C>.T) -> Effect<C>.T
+//     func >~~ <B, C>(eff : Effect<>, consumer : Consumer<B, C>) -> Effect<>
 //
 //: `draw >~~ consumer` loops over `consumer`, substituting each `await` in
 //: `consumer` with `draw`.
 //:
 //: So the following code replaces every `await` in `stdoutLn` with
-//: `Consumer.T.pure(getLine)`and then removes all the `lift`s:
+//: `Consumer.pure(getLine)`and then removes all the `lift`s:
 //:
 
-runEffect <| Effect.T.pure(readLine()!) >~~ (stdoutLn() as Proxy<(), String, (), X, ()>)
+runEffect <| Effect.pure(readLine()!) >~~ (stdoutLn() as Aquifer.Proxy<(), String, (), Never, ()>)
 
 //: You might wonder why `>~~` uses an `Effect` instead of a raw value.  The reason why
 //: is that `>~~` actually permits the following more general type:
 //
-//     func >~~ <A, B, C>(eff : Consumer<A, B>.T, consumer : Consumer<B, C>.T) -> Consumer<A, C>.T
+//     func >~~ <A, B, C>(eff : Consumer<A, B>, consumer : Consumer<B, C>) -> Consumer<A, C>
 //
 //: `>~~` is the dual of `~~>`, composing `Consumer`s instead of `Producer`s.
 //:
@@ -429,20 +426,20 @@ runEffect <| Effect.T.pure(readLine()!) >~~ (stdoutLn() as Proxy<(), String, (),
 //: following intermediate `Consumer` that requests two `String`s and returns
 //: them concatenated:
 
-let doubleUp : Consumer<String, String>.T = await() >>- { str1 in
+let doubleUp : Consumer<String, String> = await() >>- { str1 in
 	await() >>- { str2 in
-		return Consumer.T.pure(str1 + str2)
+		return Consumer.pure(str1 + str2)
 	}
 }
 
 //: more concise:
 
-let doubleUp2 : Consumer<String, String>.T = curry(+) <^> await() <*> await()
+let doubleUp2 : Consumer<String, String> = curry(+) <^> await() <*> await()
 
-//: We can now insert this in between `Consumer<String, String>.T.pure(readLine()!)` and `stdoutByLine` and see
+//: We can now insert this in between `Consumer<String, String>.pure(readLine()!)` and `stdoutByLine` and see
 //: what happens:
 
-runEffect <| Effect<String>.T.pure(readLine()!) >~~ doubleUp >~~ (stdoutLn() as Proxy<(), String, (), X, ()>)
+runEffect <| Effect<String>.pure(readLine()!) >~~ doubleUp >~~ (stdoutLn() as Aquifer.Proxy<(), String, (), Never, ()>)
 
 //
 // Associativity
@@ -475,7 +472,7 @@ runEffect <| Effect<String>.T.pure(readLine()!) >~~ doubleUp >~~ (stdoutLn() as 
 //: exclusively or `Consumer`s exclusively.  We can connect `Producer`s and
 //: `Consumer`s directly together using `>->` (pronounced "pipe"):
 //
-//     func >-> (p : Producer<A, R>.T, c : Consumer<A, R>.T) -> Effect<R>.T
+//     func >-> (p : Producer<A, >, c : Consumer<A, R>) -> Effect<>
 //
 //: This returns an `Effect` which we can run:
 
@@ -525,7 +522,7 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 //                               |    |  +-- `yield`s `A`s
 //                               |    |  |
 //                               v    v  v
-public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
+public func take_<A>(n : Int) -> Pipe<A, A, ()> {
 	if n <= 0 {
 		return pure(())
 	} else {
@@ -536,14 +533,14 @@ public func take_<A>(n : Int) -> Pipe<A, A, ()>.T {
 //: You can use `Pipe`s to transform `Producer`s, `Consumer`s, or even other
 //: `Pipe`s using the same `>->` operator:
 //
-//     func >-> <A, B, R>(Producer<A, R>.T, Pipe<A, B, R>.T) -> Producer<B, R>.T
-//     func >-> <A, B, R>(Pipe<A, B, R>.T, Consumer<B, R>.T) -> Consumer<A, R>.T
-//     func >-> <A, B, C, R>(Pipe<A, B, R>.T, Pipe<B, C, R>.T) -> Pipe<A, C, R>.T
+//     func >-> <A, B, R>(Producer<A, >, Pipe<A, B, >) -> Producer<B, >
+//     func >-> <A, B, R>(Pipe<A, B, >, Consumer<B, R>) -> Consumer<A, R>
+//     func >-> <A, B, C, R>(Pipe<A, B, >, Pipe<B, C, >) -> Pipe<A, C, >
 //
 //: For example, you can compose `take` after `stdinLn` to limit the number
 //: of lines drawn from standard input:
 
-func maxInput(n : Int) -> Producer<String, ()>.T {
+func maxInput(_ n : Int) -> Producer<String, ()> {
 	return stdinLn() >-> take(n)
 }
 
@@ -552,7 +549,7 @@ runEffect <| maxInput(3) >-> stdoutLn()
 //: ... or you can pre-compose `take` before `stdoutLn` to limit the number
 //: of lines written to standard output:
 
-func maxOutput(n : Int) -> Consumer<String, ()>.T {
+func maxOutput(_ n : Int) -> Consumer<String, ()> {
 	return take(n) >-> stdoutLn()
 }
 
@@ -570,7 +567,7 @@ runEffect <| stdinLn() >-> take(3) >-> stdoutLn()
 //: quirks.  In fact, we can continue the analogy to Unix by defining `cat`
 //: (named after the Unix `cat` utility), which reforwards elements endlessly:
 
-func cat_<A, R>() -> Pipe<A, A, R>.T {
+func cat_<A, R>() -> Pipe<A, A, R> {
 	return await() >>- { x in yield(x) } >>- {  _ in cat_() }
 }
 
@@ -589,11 +586,11 @@ func cat_<A, R>() -> Pipe<A, A, R>.T {
 //:
 //: A lot of Unix tools have very simple definitions when written using `pipes`:
 
-func head<A>(n : Int) -> Pipe<A, A, ()>.T  {
+func head<A>(_ n : Int) -> Pipe<A, A, ()>  {
 	return take(n)
 }
 
-func yes<R>() -> Producer<String, R>.T {
+func yes<R>() -> Producer<String, R> {
 	return yield("y") >>- { _ in yes() }
 }
 
@@ -618,7 +615,7 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: how `map` is defined:
 
 // Read this as: "For all values flowing downstream, apply `f`"
-public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
+public func map_<A, B, R>(f : @escaping (A) -> B) -> Pipe<A, B, R> {
 	return for_(cat()) { v in yield(f(v)) }
 }
 
@@ -626,27 +623,23 @@ public func map_<A, B, R>(f : A -> B) -> Pipe<A, B, R>.T {
 //: instead defined the `yes`pipe like this:
 
 // Read this as: Keep feeding "y" downstream
-func yesAgain<R>() -> Producer<String, R>.T {
-	return Producer.T.pure("y") >~~ cat()
+func yesAgain<R>() -> Producer<String, R> {
+	return Producer.pure("y") >~~ cat()
 }
 
 //: You can even compose pipes inside of another pipe:
 
-func customerService() -> Producer<String, ()>.T {
-	return each("Hello, how can I help you?", "Hold for one second.") >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
+func customerService() -> Producer<String, ()> {
+	return eachV("Hello, how can I help you?", "Hold for one second.") >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
 }
 
 //: Also, you can often use `each` in conjunction with `~~>` to traverse nested
 //: data structures.  For example, you can print all non-`Nothing` elements
 //: from a doubly-nested list:
 
-func each<T>(seq: [T]) -> Producer<T, ()>.T {
-	return seq.reduce(Producer<T, ()>.T.pure(()), combine: { p,a in yield(a) >>- { _ in p } })
-}
-
 let testArray : [[[Int]]] = [[[1], []], [[2], [3]]]
 let loopDeLoopDeLoop = (each ~~> each ~~> each ~~> { x in
-	return Effect<()>.T.pure(print(x))
+	return Effect<()>.pure(print(x))
 })(testArray)
 
 //: Conclusion

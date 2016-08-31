@@ -18,8 +18,7 @@
 		114E394B1B7FC77400EF9CB1 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
 		114E394E1B7FC78000EF9CB1 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
 		11862D271A66392B008F5696 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
-		11862D291A66E8EB008F5696 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
-		11862D2C1A670B0A008F5696 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		11862D2C1A670B0A008F5696 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Core.swift */; };
 		11862D321A67316B008F5696 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D311A67316B008F5696 /* ProxyTests.swift */; };
 		1186B05F1B7FCC9C00ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F0320B1B0BFF82004C6D59 /* Aquifer.framework */; };
 		1186B0641B7FCD0300ADADAD /* Aquifer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11862CD11A65FF66008F5696 /* Aquifer.framework */; };
@@ -31,8 +30,7 @@
 		11F032291B0C00EB004C6D59 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
 		11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		11F0322B1B0C00EF004C6D59 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
-		11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
-		11F0322D1B0C00EF004C6D59 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
+		11F0322C1B0C00EF004C6D59 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Core.swift */; };
 		11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 		11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 		11F032301B0C00F8004C6D59 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
@@ -45,9 +43,8 @@
 		8240CEBF1C3A4C4B00EF4D29 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 11862CD61A65FF66008F5696 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8240CEC01C3A4C5300EF4D29 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		8240CEC11C3A4C5300EF4D29 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
-		8240CEC21C3A4C5300EF4D29 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		8240CEC21C3A4C5300EF4D29 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Core.swift */; };
 		8240CEC31C3A4C5300EF4D29 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
-		8240CEC41C3A4C5300EF4D29 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		8240CEC51C3A4C5300EF4D29 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 		8240CEC61C3A4C5300EF4D29 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 		8240CEC71C3A4C5300EF4D29 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
@@ -56,9 +53,8 @@
 		8240CECB1C3A4C5B00EF4D29 /* NSFileHandleExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 11200E8A1A7958580032A136 /* NSFileHandleExt.m */; };
 		8240CECC1C3A4C5B00EF4D29 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D261A66392B008F5696 /* Proxy.swift */; };
 		8240CECD1C3A4C5B00EF4D29 /* Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E741A7723BD0032A136 /* Simple.swift */; };
-		8240CECE1C3A4C5B00EF4D29 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Operators.swift */; };
+		8240CECE1C3A4C5B00EF4D29 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D2B1A670B0A008F5696 /* Core.swift */; };
 		8240CECF1C3A4C5B00EF4D29 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
-		8240CED01C3A4C5B00EF4D29 /* X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862D281A66E8EB008F5696 /* X.swift */; };
 		8240CED11C3A4C5B00EF4D29 /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D195731A7B42260072F514 /* Auxiliary.swift */; };
 		8240CED21C3A4C5B00EF4D29 /* Grouping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A916DC1A6C7EFC007B4BBA /* Grouping.swift */; };
 		8240CED31C3A4C5B00EF4D29 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11200E821A784D230032A136 /* Parsing.swift */; };
@@ -74,6 +70,10 @@
 		8240CEE31C3A4D1100EF4D29 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
 		8240CEE91C3A4D2300EF4D29 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
 		8240CEEA1C3A4D3700EF4D29 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
+		82BA103D1D76864F0041DCDA /* FocusedParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BA103C1D76864F0041DCDA /* FocusedParsing.swift */; };
+		82BA10471D76867C0041DCDA /* FocusedParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BA103C1D76864F0041DCDA /* FocusedParsing.swift */; };
+		82BA10481D76867C0041DCDA /* FocusedParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BA103C1D76864F0041DCDA /* FocusedParsing.swift */; };
+		82BA104A1D76867D0041DCDA /* FocusedParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BA103C1D76864F0041DCDA /* FocusedParsing.swift */; };
 		82F317461B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F317471B80335E007B80E2 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F317451B80335E007B80E2 /* TestDefs.swift */; };
 		82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F3176C1B81220C007B80E2 /* PipesOperators.swift */; };
@@ -339,8 +339,7 @@
 		11862CE21A65FF66008F5696 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11862CF01A660E37008F5696 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; usesTabs = 1; };
 		11862D261A66392B008F5696 /* Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; usesTabs = 1; };
-		11862D281A66E8EB008F5696 /* X.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = X.swift; sourceTree = "<group>"; usesTabs = 1; };
-		11862D2B1A670B0A008F5696 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; usesTabs = 1; };
+		11862D2B1A670B0A008F5696 /* Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11862D311A67316B008F5696 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyTests.swift; sourceTree = "<group>"; usesTabs = 1; };
 		11862D3B1A673B5D008F5696 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		11A916DC1A6C7EFC007B4BBA /* Grouping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grouping.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -350,6 +349,7 @@
 		8240CE7C1C3A4C2D00EF4D29 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8240CE851C3A4C2D00EF4D29 /* Aquifer-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Aquifer-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8240CEB61C3A4C3600EF4D29 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		82BA103C1D76864F0041DCDA /* FocusedParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusedParsing.swift; sourceTree = "<group>"; };
 		82F317451B80335E007B80E2 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDefs.swift; sourceTree = "<group>"; usesTabs = 1; };
 		82F3176C1B81220C007B80E2 /* PipesOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipesOperators.swift; sourceTree = "<group>"; usesTabs = 1; };
 /* End PBXFileReference section */
@@ -549,9 +549,8 @@
 			children = (
 				11862D261A66392B008F5696 /* Proxy.swift */,
 				11200E741A7723BD0032A136 /* Simple.swift */,
-				11862D2B1A670B0A008F5696 /* Operators.swift */,
+				11862D2B1A670B0A008F5696 /* Core.swift */,
 				82F3176C1B81220C007B80E2 /* PipesOperators.swift */,
-				11862D281A66E8EB008F5696 /* X.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -579,6 +578,7 @@
 				11D195731A7B42260072F514 /* Auxiliary.swift */,
 				11A916DC1A6C7EFC007B4BBA /* Grouping.swift */,
 				11200E821A784D230032A136 /* Parsing.swift */,
+				82BA103C1D76864F0041DCDA /* FocusedParsing.swift */,
 				11200E861A7953120032A136 /* IO.swift */,
 				11200E901A796D9F0032A136 /* Basic.swift */,
 			);
@@ -780,7 +780,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = TypeLift;
 				TargetAttributes = {
 					11862CD01A65FF66008F5696 = {
@@ -797,9 +797,11 @@
 					};
 					8240CE7B1C3A4C2D00EF4D29 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					8240CE841C3A4C2D00EF4D29 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					8240CEB51C3A4C3600EF4D29 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1044,13 +1046,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				11A916DD1A6C7EFC007B4BBA /* Grouping.swift in Sources */,
-				11862D291A66E8EB008F5696 /* X.swift in Sources */,
 				11200E751A7723BD0032A136 /* Simple.swift in Sources */,
 				82F3176D1B81220C007B80E2 /* PipesOperators.swift in Sources */,
 				11200E871A7953120032A136 /* IO.swift in Sources */,
 				11862D271A66392B008F5696 /* Proxy.swift in Sources */,
 				11200E831A784D230032A136 /* Parsing.swift in Sources */,
-				11862D2C1A670B0A008F5696 /* Operators.swift in Sources */,
+				11862D2C1A670B0A008F5696 /* Core.swift in Sources */,
+				82BA103D1D76864F0041DCDA /* FocusedParsing.swift in Sources */,
 				11D195741A7B42260072F514 /* Auxiliary.swift in Sources */,
 				11200E911A796D9F0032A136 /* Basic.swift in Sources */,
 				11200E8C1A7958580032A136 /* NSFileHandleExt.m in Sources */,
@@ -1072,15 +1074,15 @@
 			files = (
 				11F0322F1B0C00F8004C6D59 /* Grouping.swift in Sources */,
 				11F0322A1B0C00EF004C6D59 /* Proxy.swift in Sources */,
-				11F0322C1B0C00EF004C6D59 /* Operators.swift in Sources */,
+				11F0322C1B0C00EF004C6D59 /* Core.swift in Sources */,
 				82F3176E1B81220C007B80E2 /* PipesOperators.swift in Sources */,
 				11F032321B0C00F8004C6D59 /* IO.swift in Sources */,
 				11F0322E1B0C00F8004C6D59 /* Auxiliary.swift in Sources */,
 				11F032301B0C00F8004C6D59 /* Parsing.swift in Sources */,
 				11F032291B0C00EB004C6D59 /* NSFileHandleExt.m in Sources */,
+				82BA10471D76867C0041DCDA /* FocusedParsing.swift in Sources */,
 				11F032331B0C00F8004C6D59 /* Basic.swift in Sources */,
 				11F0322B1B0C00EF004C6D59 /* Simple.swift in Sources */,
-				11F0322D1B0C00EF004C6D59 /* X.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1100,11 +1102,11 @@
 				8240CED61C3A4C6500EF4D29 /* NSFileHandleExt.m in Sources */,
 				8240CEC01C3A4C5300EF4D29 /* Proxy.swift in Sources */,
 				8240CEC11C3A4C5300EF4D29 /* Simple.swift in Sources */,
-				8240CEC21C3A4C5300EF4D29 /* Operators.swift in Sources */,
+				8240CEC21C3A4C5300EF4D29 /* Core.swift in Sources */,
 				8240CEC31C3A4C5300EF4D29 /* PipesOperators.swift in Sources */,
-				8240CEC41C3A4C5300EF4D29 /* X.swift in Sources */,
 				8240CEC51C3A4C5300EF4D29 /* Auxiliary.swift in Sources */,
 				8240CEC61C3A4C5300EF4D29 /* Grouping.swift in Sources */,
+				82BA10481D76867C0041DCDA /* FocusedParsing.swift in Sources */,
 				8240CEC71C3A4C5300EF4D29 /* Parsing.swift in Sources */,
 				8240CEC81C3A4C5300EF4D29 /* IO.swift in Sources */,
 				8240CEC91C3A4C5300EF4D29 /* Basic.swift in Sources */,
@@ -1127,11 +1129,11 @@
 				8240CECB1C3A4C5B00EF4D29 /* NSFileHandleExt.m in Sources */,
 				8240CECC1C3A4C5B00EF4D29 /* Proxy.swift in Sources */,
 				8240CECD1C3A4C5B00EF4D29 /* Simple.swift in Sources */,
-				8240CECE1C3A4C5B00EF4D29 /* Operators.swift in Sources */,
+				8240CECE1C3A4C5B00EF4D29 /* Core.swift in Sources */,
 				8240CECF1C3A4C5B00EF4D29 /* PipesOperators.swift in Sources */,
-				8240CED01C3A4C5B00EF4D29 /* X.swift in Sources */,
 				8240CED11C3A4C5B00EF4D29 /* Auxiliary.swift in Sources */,
 				8240CED21C3A4C5B00EF4D29 /* Grouping.swift in Sources */,
+				82BA104A1D76867D0041DCDA /* FocusedParsing.swift in Sources */,
 				8240CED31C3A4C5B00EF4D29 /* Parsing.swift in Sources */,
 				8240CED41C3A4C5B00EF4D29 /* IO.swift in Sources */,
 				8240CED51C3A4C5B00EF4D29 /* Basic.swift in Sources */,
@@ -1228,8 +1230,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -1238,6 +1242,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1273,8 +1278,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -1283,6 +1290,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1291,6 +1299,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1315,6 +1324,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1336,6 +1346,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1359,6 +1370,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1377,13 +1389,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.typelift.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		11F0321F1B0BFF83004C6D59 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1403,6 +1416,7 @@
 				PRODUCT_NAME = Aquifer;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1410,7 +1424,7 @@
 		11F032201B0BFF83004C6D59 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1425,6 +1439,7 @@
 				PRODUCT_NAME = Aquifer;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1453,6 +1468,7 @@
 				PRODUCT_MODULE_NAME = AquiferTests;
 				PRODUCT_NAME = AquiferTests;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1474,6 +1490,7 @@
 				PRODUCT_MODULE_NAME = AquiferTests;
 				PRODUCT_NAME = AquiferTests;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1481,6 +1498,7 @@
 		8240CE8D1C3A4C2D00EF4D29 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1494,6 +1512,7 @@
 				PRODUCT_NAME = Aquifer;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};
@@ -1502,6 +1521,7 @@
 		8240CE8E1C3A4C2D00EF4D29 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1514,6 +1534,7 @@
 				PRODUCT_NAME = Aquifer;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 				VALIDATE_PRODUCT = YES;
@@ -1531,6 +1552,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Debug;
@@ -1545,6 +1567,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.typelift.Aquifer-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1554,6 +1577,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1567,6 +1591,7 @@
 				PRODUCT_NAME = Aquifer;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.1;
 			};
@@ -1576,6 +1601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1588,6 +1614,7 @@
 				PRODUCT_NAME = Aquifer;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 2.1;

@@ -6,123 +6,59 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
+import Swiftz
+
 // MARK: - Combinators
 
-infix operator ~~> {
-	associativity right
-	precedence 130
-}
+infix operator ~~> : RightAssociativeCombinatorPrecedence
 
-infix operator <~~ {
-	associativity left
-	precedence 130
-}
+infix operator <~~ : LeftAssociativeCombinatorPrecedence
 
-infix operator ~~< {
-	associativity left
-	precedence 140
-}
+infix operator ~~< : LeftAssociativeCombinatorPrecedence
 
-infix operator >~~ {
-	associativity right
-	precedence 140
-}
+infix operator >~~ : RightAssociativeCombinatorPrecedence
 
-infix operator >-> {
-	associativity left
-	precedence 160
-}
+infix operator >-> : MonadPrecedenceLeft
 
-infix operator <-< {
-	associativity right
-	precedence 160
-}
+infix operator <-< : MonadPrecedenceRight
 
 // MARK: - Request Category
 
-infix operator |>| {
-	associativity right
-	precedence 130
-}
+infix operator |>| : RightAssociativeCombinatorPrecedence
 
-infix operator |<| {
-	associativity left
-	precedence 140
-}
+infix operator |<| : LeftAssociativeCombinatorPrecedence
 
-infix operator >>| {
-	associativity right
-	precedence 130
-}
+infix operator >>| : RightAssociativeCombinatorPrecedence
 
-infix operator |<< {
-	associativity left
-	precedence 130
-}
+infix operator |<< : LeftAssociativeCombinatorPrecedence
 
 // MARK: - Respond Category
 
-infix operator >|> {
-	associativity right
-	precedence 140
-}
+infix operator <|< : LeftAssociativeCombinatorPrecedence
 
-infix operator <|< {
-	associativity left
-	precedence 130
-}
+infix operator >|> : RightAssociativeCombinatorPrecedence
 
-infix operator |>> {
-	associativity left
-	precedence 120
-}
+infix operator |>> : LeftAssociativeCombinatorPrecedence
 
-infix operator <<| {
-	associativity right
-	precedence 120
-}
+infix operator <<| : RightAssociativeCombinatorPrecedence
 
 
 // MARK: - Push Category
 
-infix operator >~> {
-	associativity right
-	precedence 170
-}
+infix operator >~> : MonadPrecedenceRight
 
-infix operator <~< {
-	associativity left
-	precedence 170
-}
+infix operator <~< : MonadPrecedenceLeft
 
-infix operator >>~ {
-	associativity left
-	precedence 160
-}
+infix operator >>~ : MonadPrecedenceLeft
 
-infix operator ~<< {
-	associativity right
-	precedence 160
-}
+infix operator ~<< : MonadPrecedenceRight
 
 // MARK: - Pull Category
 
-infix operator >+> {
-	associativity left
-	precedence 160
-}
+infix operator >+> : MonadPrecedenceLeft
 
-infix operator <+< {
-	associativity right
-	precedence 160
-}
+infix operator <+< : MonadPrecedenceRight
 
-infix operator +>> {
-	associativity right
-	precedence 150
-}
+infix operator +>> : MonadPrecedenceRight
 
-infix operator <<+ {
-	associativity left
-	precedence 150
-}
+infix operator <<+ : MonadPrecedenceLeft
