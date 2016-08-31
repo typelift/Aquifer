@@ -64,7 +64,7 @@
 //: * `>>-` handles return values
 //:
 //: As you connect components their types will change to reflect inputs and
-//: outputs that you`ve fused away.  You know that you`re done connecting things
+//: outputs that you've fused away.  You know that you're done connecting things
 //: when you get an `Effect`, meaning that you have handled all inputs and
 //: outputs.  You run this final `Effect` to begin streaming.
 
@@ -96,7 +96,7 @@ import class Foundation.NSFileHandle
 //                                   v        v
 public func stdinByLine() -> Producer<String, ()> {
 	let handle = FileHandle.standardInput // Grab the handle
-	if handle.aqu_isAtEndOfFile { // If we`re at the end of the line, stop.
+	if handle.aqu_isAtEndOfFile { // If we're at the end of the line, stop.
 		return pure(())
 	} else {
 		return yield(handle.aqu_readLine()) >>- { _ in fromHandle(handle) } // Otherwise `yield` the line and loop.
@@ -522,7 +522,7 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 //                               |    |  +-- `yield`s `A`s
 //                               |    |  |
 //                               v    v  v
-public func take_<A>(n : Int) -> Pipe<A, A, ()> {
+public func take_<A>(_ n : Int) -> Pipe<A, A, ()> {
 	if n <= 0 {
 		return pure(())
 	} else {
