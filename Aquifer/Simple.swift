@@ -33,12 +33,6 @@ public func each<UO, UI, S : Sequence>(_ seq : S) -> Proxy<UO, UI, (), S.Iterato
 	return Proxy(eachRepr(seq.makeIterator()))
 }
 
-/// Converts the argument list into a sequence and yields a pipe that produces elements of said
-/// sequence.
-public func eachV<UO, UI, V>(_ seq : V...) -> Proxy<UO, UI, (), V, ()> {
-	return each(seq)
-}
-
 /// Produce a value.
 public func yield<UO, UI, DO>(_ dO : @autoclosure @escaping () -> DO) -> Proxy<UO, UI, (), DO, ()> {
 	return respond(dO)

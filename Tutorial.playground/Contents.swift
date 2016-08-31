@@ -630,7 +630,7 @@ func yesAgain<R>() -> Producer<String, R> {
 //: You can even compose pipes inside of another pipe:
 
 func customerService() -> Producer<String, ()> {
-	return eachV("Hello, how can I help you?", "Hold for one second.") >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
+	return each(["Hello, how can I help you?", "Hold for one second."]) >>- { _ in stdinLn() >-> takeWhile({ $0 != "Goodbye!" }) } // Now continue with a human
 }
 
 //: Also, you can often use `each` in conjunction with `~~>` to traverse nested
