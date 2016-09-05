@@ -6,59 +6,127 @@
 //  Copyright © 2015 TypeLift. All rights reserved.
 //
 
-import Swiftz
-
 // MARK: - Combinators
 
-infix operator ~~> : RightAssociativeCombinatorPrecedence
+precedencegroup IntoRightPrecedence {
+	associativity: right
+ 	higherThan: DefaultPrecedence
+}
 
-infix operator <~~ : LeftAssociativeCombinatorPrecedence
+precedencegroup IntoLeftPrecedence {
+	associativity: left
+	higherThan: DefaultPrecedence
+}
 
-infix operator ~~< : LeftAssociativeCombinatorPrecedence
+infix operator ~~> : IntoRightPrecedence
 
-infix operator >~~ : RightAssociativeCombinatorPrecedence
+infix operator <~~ : IntoLeftPrecedence
 
-infix operator >-> : MonadPrecedenceLeft
+precedencegroup ReplaceRightPrecedence {
+	associativity: right
+	higherThan: IntoRightPrecedence
+}
 
-infix operator <-< : MonadPrecedenceRight
+precedencegroup ReplaceLeftPrecedence {
+	associativity: left
+	higherThan: IntoLeftPrecedence
+}
 
-// MARK: - Request Category
+infix operator ~~< : ReplaceLeftPrecedence
 
-infix operator |>| : RightAssociativeCombinatorPrecedence
+infix operator >~~ : ReplaceRightPrecedence
 
-infix operator |<| : LeftAssociativeCombinatorPrecedence
+precedencegroup ComposeLeftPrecedence {
+	associativity: left
+	higherThan: ReplaceLeftPrecedence
+}
 
-infix operator >>| : RightAssociativeCombinatorPrecedence
+precedencegroup ComposeRightPrecedence {
+	associativity: right
+	higherThan: ReplaceRightPrecedence
+}
 
-infix operator |<< : LeftAssociativeCombinatorPrecedence
+infix operator >-> : ComposeLeftPrecedence
+
+infix operator <-< : ComposeRightPrecedence
 
 // MARK: - Respond Category
 
-infix operator <|< : LeftAssociativeCombinatorPrecedence
+precedencegroup RespondCategoryRightPrecedence {
+	associativity: right
+	higherThan: IntoRightPrecedence
+}
 
-infix operator >|> : RightAssociativeCombinatorPrecedence
+precedencegroup RespondCategoryLeftPrecedence {
+	associativity: left
+	higherThan: IntoLeftPrecedence
+}
 
-infix operator |>> : LeftAssociativeCombinatorPrecedence
+infix operator <|< : RespondCategoryLeftPrecedence
 
-infix operator <<| : RightAssociativeCombinatorPrecedence
+infix operator >|> : RespondCategoryRightPrecedence
+
+infix operator |>> : RespondCategoryLeftPrecedence
+
+infix operator <<| : RespondCategoryRightPrecedence
 
 
-// MARK: - Push Category
+// MARK: - Request Category
 
-infix operator >~> : MonadPrecedenceRight
+precedencegroup RequestCategoryRightPrecedence {
+	associativity: right
+	higherThan: RespondCategoryRightPrecedence
+}
 
-infix operator <~< : MonadPrecedenceLeft
+precedencegroup RequestCategoryLeftPrecedence {
+	associativity: left
+	higherThan: RespondCategoryLeftPrecedence
+}
 
-infix operator >>~ : MonadPrecedenceLeft
+infix operator |>| : RequestCategoryRightPrecedence
 
-infix operator ~<< : MonadPrecedenceRight
+infix operator |<| : RequestCategoryLeftPrecedence
+
+infix operator >>| : RequestCategoryRightPrecedence
+
+infix operator |<< : RequestCategoryLeftPrecedence
 
 // MARK: - Pull Category
 
-infix operator >+> : MonadPrecedenceLeft
+precedencegroup PullCategoryRightPrecedence {
+	associativity: right
+	higherThan: RequestCategoryRightPrecedence
+}
 
-infix operator <+< : MonadPrecedenceRight
+precedencegroup PullCategoryLeftPrecedence {
+	associativity: left
+	higherThan: RequestCategoryLeftPrecedence
+}
 
-infix operator +>> : MonadPrecedenceRight
+infix operator >+> : PullCategoryLeftPrecedence
 
-infix operator <<+ : MonadPrecedenceLeft
+infix operator <+< : PullCategoryRightPrecedence
+
+infix operator <<+ : PullCategoryLeftPrecedence
+
+infix operator +>> : PullCategoryRightPrecedence
+
+// MARK: - Push Category
+
+precedencegroup PushCategoryRightPrecedence {
+	associativity: right
+	higherThan: PullCategoryRightPrecedence
+}
+
+precedencegroup PushCategoryLeftPrecedence {
+	associativity: left
+	higherThan: PullCategoryLeftPrecedence
+}
+
+infix operator >~> : PushCategoryRightPrecedence
+
+infix operator <~< : PushCategoryLeftPrecedence
+
+infix operator ~<< : PushCategoryRightPrecedence
+
+infix operator >>~ : PushCategoryLeftPrecedence
