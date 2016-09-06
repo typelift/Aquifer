@@ -8,121 +8,125 @@
 
 // MARK: - Combinators
 
-infix operator ~~> {
-	associativity right
-	precedence 130
+precedencegroup IntoRightPrecedence {
+	associativity: right
+ 	higherThan: DefaultPrecedence
 }
 
-infix operator <~~ {
-	associativity left
-	precedence 130
+precedencegroup IntoLeftPrecedence {
+	associativity: left
+	higherThan: DefaultPrecedence
 }
 
-infix operator ~~< {
-	associativity left
-	precedence 140
+infix operator ~~> : IntoRightPrecedence
+
+infix operator <~~ : IntoLeftPrecedence
+
+precedencegroup ReplaceRightPrecedence {
+	associativity: right
+	higherThan: IntoRightPrecedence
 }
 
-infix operator >~~ {
-	associativity right
-	precedence 140
+precedencegroup ReplaceLeftPrecedence {
+	associativity: left
+	higherThan: IntoLeftPrecedence
 }
 
-infix operator >-> {
-	associativity left
-	precedence 160
+infix operator ~~< : ReplaceLeftPrecedence
+
+infix operator >~~ : ReplaceRightPrecedence
+
+precedencegroup ComposeLeftPrecedence {
+	associativity: left
+	higherThan: ReplaceLeftPrecedence
 }
 
-infix operator <-< {
-	associativity right
-	precedence 160
+precedencegroup ComposeRightPrecedence {
+	associativity: right
+	higherThan: ReplaceRightPrecedence
 }
 
-// MARK: - Request Category
+infix operator >-> : ComposeLeftPrecedence
 
-infix operator |>| {
-	associativity right
-	precedence 130
-}
-
-infix operator |<| {
-	associativity left
-	precedence 140
-}
-
-infix operator >>| {
-	associativity right
-	precedence 130
-}
-
-infix operator |<< {
-	associativity left
-	precedence 130
-}
+infix operator <-< : ComposeRightPrecedence
 
 // MARK: - Respond Category
 
-infix operator >|> {
-	associativity right
-	precedence 140
+precedencegroup RespondCategoryRightPrecedence {
+	associativity: right
+	higherThan: IntoRightPrecedence
 }
 
-infix operator <|< {
-	associativity left
-	precedence 130
+precedencegroup RespondCategoryLeftPrecedence {
+	associativity: left
+	higherThan: IntoLeftPrecedence
 }
 
-infix operator |>> {
-	associativity left
-	precedence 120
+infix operator <|< : RespondCategoryLeftPrecedence
+
+infix operator >|> : RespondCategoryRightPrecedence
+
+infix operator |>> : RespondCategoryLeftPrecedence
+
+infix operator <<| : RespondCategoryRightPrecedence
+
+
+// MARK: - Request Category
+
+precedencegroup RequestCategoryRightPrecedence {
+	associativity: right
+	higherThan: RespondCategoryRightPrecedence
 }
 
-infix operator <<| {
-	associativity right
-	precedence 120
+precedencegroup RequestCategoryLeftPrecedence {
+	associativity: left
+	higherThan: RespondCategoryLeftPrecedence
 }
 
+infix operator |>| : RequestCategoryRightPrecedence
 
-// MARK: - Push Category
+infix operator |<| : RequestCategoryLeftPrecedence
 
-infix operator >~> {
-	associativity right
-	precedence 170
-}
+infix operator >>| : RequestCategoryRightPrecedence
 
-infix operator <~< {
-	associativity left
-	precedence 170
-}
-
-infix operator >>~ {
-	associativity left
-	precedence 160
-}
-
-infix operator ~<< {
-	associativity right
-	precedence 160
-}
+infix operator |<< : RequestCategoryLeftPrecedence
 
 // MARK: - Pull Category
 
-infix operator >+> {
-	associativity left
-	precedence 160
+precedencegroup PullCategoryRightPrecedence {
+	associativity: right
+	higherThan: RequestCategoryRightPrecedence
 }
 
-infix operator <+< {
-	associativity right
-	precedence 160
+precedencegroup PullCategoryLeftPrecedence {
+	associativity: left
+	higherThan: RequestCategoryLeftPrecedence
 }
 
-infix operator +>> {
-	associativity right
-	precedence 150
+infix operator >+> : PullCategoryLeftPrecedence
+
+infix operator <+< : PullCategoryRightPrecedence
+
+infix operator <<+ : PullCategoryLeftPrecedence
+
+infix operator +>> : PullCategoryRightPrecedence
+
+// MARK: - Push Category
+
+precedencegroup PushCategoryRightPrecedence {
+	associativity: right
+	higherThan: PullCategoryRightPrecedence
 }
 
-infix operator <<+ {
-	associativity left
-	precedence 150
+precedencegroup PushCategoryLeftPrecedence {
+	associativity: left
+	higherThan: PullCategoryLeftPrecedence
 }
+
+infix operator >~> : PushCategoryRightPrecedence
+
+infix operator <~< : PushCategoryLeftPrecedence
+
+infix operator ~<< : PushCategoryRightPrecedence
+
+infix operator >>~ : PushCategoryLeftPrecedence
