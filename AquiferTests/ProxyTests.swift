@@ -91,7 +91,7 @@ class ProxySpec : XCTestCase {
 		property("Push Category") <- self.testCategory(>~>, { push($0) })
 	}
 
-	fileprivate func testCategory(_ op : Operation.T, _ idt : ProxyK.T) -> Testable {
+	fileprivate func testCategory(_ op : @escaping OperationK, _ idt : @escaping ProxyK) -> Testable {
 		let rId = forAll { (f2 : AProxy, s : AServer, c : AClient) in
 			return self.rightIdentity(op, idt, f2, s, c)
 		}
@@ -105,18 +105,18 @@ class ProxySpec : XCTestCase {
 		return rId ^&&^ lId ^&&^ assoc
 	}
 
-	fileprivate func rightIdentity(_ op : Operation.T, _ idt : ProxyK.T, _ f2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
+	fileprivate func rightIdentity(_ op : OperationK, _ idt : @escaping ProxyK, _ f2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
 		let f = aProxy(f2)
 		return formulate(f, op(f, idt), s, c)
 	}
 
-	fileprivate func leftIdentity(_ op : Operation.T, _ idt : ProxyK.T, _ f2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
+	fileprivate func leftIdentity(_ op : OperationK, _ idt : @escaping ProxyK, _ f2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
 		let f = aProxy(f2)
 		return formulate(op(f, idt), f, s, c)
 	}
 
 
-	fileprivate func associativity(_ op : Operation.T, _ f2 : AProxy, _ g2 : AProxy, _ h2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
+	fileprivate func associativity(_ op : OperationK, _ f2 : AProxy, _ g2 : AProxy, _ h2 : AProxy, _ s : AServer, _ c : AClient) -> Bool {
 		let f = aProxy(f2)
 		let g = aProxy(g2)
 		let h = aProxy(h2)
