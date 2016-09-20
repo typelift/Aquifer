@@ -9,6 +9,9 @@
 // roughly `Pipes.Prelude`
 
 import Swiftz
+#if !XCODE_BUILD
+	import Operadics
+#endif
 
 // MARK: - Data.Pipes
 

@@ -9,6 +9,9 @@
 // roughly `Pipes`
 
 import Swiftz
+#if !XCODE_BUILD
+	import Operadics
+#endif
 
 /// Pull the first value out of the given `Pipe`.
 ///
@@ -105,8 +108,8 @@ public func <-< <UO, UI, DI, DO, DDI, DDO, FR>(p : Proxy<DI, DO, DDI, DDO, FR>, 
 private func eachRepr<UO, UI, G : IteratorProtocol>(_ gen : G) -> ProxyRepr<UO, UI, (), G.Element, ()> {
 	var gen = gen
 	if let v = gen.next() {
-		return ProxyRepr.respond(const(v)) { _ in eachRepr(gen) }
+		return ProxyRepr.respond({ _ in v }) { _ in eachRepr(gen) }
 	} else {
-		return ProxyRepr.pure(const(()))
+		return ProxyRepr.pure({ _ in () })
 	}
 }

@@ -9,6 +9,9 @@
 // roughly `Pipes.Parse`
 
 import Swiftz
+#if !XCODE_BUILD
+	import Operadics
+#endif
 
 /// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest
 /// consecutive group of elements that satisfy the given predicate.
