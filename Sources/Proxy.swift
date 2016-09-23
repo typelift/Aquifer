@@ -9,6 +9,9 @@
 // roughly `Pipes.Internal`
 
 import Swiftz
+#if !XCODE_BUILD
+	import Operadics
+#endif
 
 /// A bidirectional channel for information.
 ///

@@ -9,6 +9,10 @@
 // roughly `Pipes.Extras`
 
 import Swiftz
+#if !XCODE_BUILD
+	import Operadics
+	import Swiftx
+#endif
 
 /// Lifts an arrow into a pipe by connecting its inputs to the upstream input and its outputs to the
 /// downstream output of the pipe.

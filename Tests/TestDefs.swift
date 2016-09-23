@@ -229,15 +229,11 @@ func aProxy(_ proxy : AProxy) -> ((Int) -> Proxy<Int, Int, Int, Int, Int>) {
 	}).reduce(Proxy.pure, >>->>)
 }
 
-struct ProxyK {
-	typealias T = ((Int) -> Proxy<Int, Int, Int, Int, Int>)
-}
+typealias ProxyK = (Int) -> Proxy<Int, Int, Int, Int, Int>
 
-struct Operation {
-	typealias T = (ProxyK.T, ProxyK.T) -> ProxyK.T
-}
+typealias OperationK = (@escaping ProxyK, @escaping ProxyK) -> ProxyK
 
-func formulate(_ pl : ProxyK.T, _ pr : ProxyK.T, _ p0 : AServer, _ p1 : AClient) -> Bool {
+func formulate(_ pl : @escaping ProxyK, _ pr : @escaping ProxyK, _ p0 : AServer, _ p1 : AClient) -> Bool {
 	let sv  = aServer(p0)
 	let cl  = aClient(p1)
 	return on(==)({ p in runEffect(p(0)) })(sv >+> pl >+> cl)(sv >+> pr >+> cl)

@@ -7,6 +7,9 @@
 //
 
 import Focus
+#if !XCODE_BUILD
+	import Operadics
+#endif
 
 /// Draws one element from the underlying `Producer`, returning `.None` if the Producer is empty
 public func draw<V, I>() -> IxState<Producer<V, I>, Producer<V, I>, V?> {
