@@ -11,6 +11,7 @@
 import Swiftz
 #if !XCODE_BUILD
 	import Operadics
+	import Swiftx
 #endif
 
 /// Pull the first value out of the given `Pipe`.

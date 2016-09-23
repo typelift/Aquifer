@@ -11,6 +11,7 @@
 import Swiftz
 #if !XCODE_BUILD
 	import Operadics
+	import Swiftx
 #endif
 
 /// A producer that uses the Free Monad Transformer (unrepresentable in Swift) to delimit groupings

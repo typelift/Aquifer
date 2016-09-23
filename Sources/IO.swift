@@ -10,6 +10,9 @@
 
 import Foundation
 import Swiftz
+#if !XCODE_BUILD
+	import Operadics
+#endif
 
 /// Returns a `Pipe` that reads input from `stdin` line-by-line and terminates on end-of-input.
 public func stdinLn() -> Producer<String, ()> {

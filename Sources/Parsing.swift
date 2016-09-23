@@ -11,6 +11,7 @@
 import Swiftz
 #if !XCODE_BUILD
 	import Operadics
+	import Swiftx
 #endif
 
 /// Splits the `Producer` into two `Producer`s, where the outer `Producer` is the longest

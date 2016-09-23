@@ -11,6 +11,7 @@
 import Swiftz
 #if !XCODE_BUILD
 	import Operadics
+	import Swiftx
 #endif
 
 // MARK: - Data.Pipes
