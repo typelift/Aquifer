@@ -115,7 +115,7 @@ The thing to notice about `pipe` is that Swift believes it has the type
 ///   |  |   |   |  +-- This pipe ultimately returns () i.e. performs an effect.
 ///   |  |   |   |  |
 ///   v  v   v   v  v
-Proxy<X, (), (), X, ()>
+Proxy<Never, (), (), Never, ()>
 ```
 
 By consulting the handy table of `typealias`es in [`Proxy`](Aquifer/Proxy.swift)'s
