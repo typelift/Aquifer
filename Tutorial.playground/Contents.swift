@@ -17,8 +17,8 @@
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 // DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
 // ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES
+// LOSS OF USE, DATA, OR PROFITS OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 // ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -70,6 +70,8 @@
 
 import Swiftz
 import Aquifer
+import Cocoa
+import PlaygroundSupport
 
 //: # Producers
 
@@ -96,10 +98,10 @@ import class Foundation.NSFileHandle
 //                                   v        v
 public func stdinByLine() -> Producer<String, ()> {
 	let handle = FileHandle.standardInput // Grab the handle
-	if handle.aqu_isAtEndOfFile { // If we're at the end of the line, stop.
+	if handle.isAtEndOfFile { // If we're at the end of the line, stop.
 		return pure(())
 	} else {
-		return yield(handle.aqu_readLine()) >>- { _ in fromHandle(handle) } // Otherwise `yield` the line and loop.
+		return yield(handle.readLine) >>- { _ in fromHandle(handle) } // Otherwise `yield` the line and loop.
 	}
 }
 
@@ -133,7 +135,7 @@ public func stdinByLine() -> Producer<String, ()> {
 //                        |   to loop            |   the loop        |
 //                        v   over               v                   v
 //                        --------------         ---------------     ---------
-//     func for_<A, R>(p : Producer<A, R>, _ f : A -> Effect<()>) -> Effect<R>
+//     func for_<A, R>(_ p : Producer<A, R>, _ f : A -> Effect<()>) -> Effect<R>
 //
 //: `for_(producer, body)` loops over `producer`, substituting each `yield` in
 //: `producer` with `body`.
@@ -158,7 +160,7 @@ public func stdinByLine() -> Producer<String, ()> {
 //: simpler types.  One of these says that if the body of the loop is a `Producer`,
 //: then the result is a `Producer`, too:
 //:
-//     func for_<UO, UI, DI, DO, NI, NO, FR>(p : Proxy<UO, UI, DI, DO, FR>, _ f : DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
+//     func for_<UO, UI, DI, DO, NI, NO, FR>(_ p : Proxy<UO, UI, DI, DO, FR>, _ f : DO -> Proxy<UO, UI, NI, NO, DI>) -> Proxy<UO, UI, NI, NO, FR>
 //:
 //: The first type signature we showed for `for_` was a special case of this
 //: slightly more general signature because a `Producer` that never `yield`s is
@@ -171,13 +173,13 @@ public func stdinByLine() -> Producer<String, ()> {
 //: This is why `for_` permits two different type signatures.  The first type
 //: signature is just a special case of the second one:
 //
-//     func for_<A, B, R>(p : Producer<A, R>, f : (A -> Producer<B, ()>) -> Producer<B, R>
+//     func for_<A, B, R>(_ p : Producer<A, R>, f : (A -> Producer<B, ()>) -> Producer<B, R>
 //
 //     Specialize `B` to `X`
-//     func for_<A, R>(p : Producer<A, R>, f : (A -> Producer<Never, ()>) -> Producer<Never, R>
+//     func for_<A, R>(_ p : Producer<A, R>, f : (A -> Producer<Never, ()>) -> Producer<Never, R>
 //
 //     Producer<Never, R> == Effect<R>
-//     func for_<A, R>(p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
+//     func for_<A, R>(_ p : Producer<A, R>, f : (A -> Effect<()>) -> Effect<R>
 //
 //: This is the same trick that all `Aquifer` functions use to work with various
 //: combinations of `Producer`s, `Consumer`s, `Pipe`s, and `Effect`s.  Each
@@ -198,7 +200,7 @@ let stdinLoop = for_(stdinByLine()) { str in
 
 //: You can think of `yield` as creating a hole and a `for_` loop is one way
 //: to fill that hole.
-//;
+//
 //: Notice how the final `stdinLoop` only lifts actions and does nothing else.  This
 //: property is true for all `Effect`s, which are just glorified wrappers around
 //: actions. This means we can run these `Effect`s to remove the lifting and lower
@@ -223,15 +225,15 @@ runEffect <| for_(stdinLn(), { Effect<()>.pure(print($0)) })
 //: to a `Producer` using `each`, which is exported by default from `Aquifer`:
 //:
 //
-//     public func each<T>(xs : [T]) -> Producer<T, ()>
+//     public func each<T>(_ xs : [T]) -> Producer<T, ()>
 //
 //: Combine `for_` and `each` to iterate over lists using a "foreach" loop:
 
-runEffect <| for_(each([1...4]), { Effect.pure(print($0)) })
+runEffect <| for_(each(1...4), { Effect.pure(print($0)) })
 
 //: `each` is actually more general and works for any `SequenceType`
 //
-//  public func each<S : SequenceType>(xs : S) -> Producer<S.Generator.Element, ()> {
+//  public func each<S : SequenceType>(_ xs : S) -> Producer<S.Generator.Element, ()> {
 //
 
 //: # Composability
@@ -340,7 +342,7 @@ runEffect <|
 //: our original code into the following more succinct form that composes two
 //: transformations:
 
-runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
+runEffect <| for_(stdinLn(), (duplicate ~~> { x in
 	return Effect<()>.pure(print(x))
 }))
 
@@ -387,7 +389,7 @@ runEffect <| for_(stdinLn(), ({ (x : String) in duplicate(x) } ~~> { x in
 //                     v        v
 func stdoutByLine() -> Consumer<String, ()> {
 	let handle = FileHandle.standardOutput
-	return for_(cat()) { handle.aqu_writeLine($0); return pure(()) }
+  return for_(cat()) { handle.writeLine($0); return pure(()) }
 }
 
 //: `await` is the dual of `yield`: we suspend our `Consumer` until we receive a
@@ -399,7 +401,7 @@ func stdoutByLine() -> Consumer<String, ()> {
 //: One way to feed a `Consumer` is to repeatedly feed the same input using
 //: using `>~~` (pronounced "feed"):
 //
-//                          +- Feed               +- Consumer to    +- Returns new
+//                    +- Feed               +- Consumer to    +- Returns new
 //				            |  action             |  feed           |  Effect
 //				            v                     v                 v
 //				            ---------             --------------     ---------
@@ -411,9 +413,10 @@ func stdoutByLine() -> Consumer<String, ()> {
 //: So the following code replaces every `await` in `stdoutLn` with
 //: `Consumer.pure(getLine)`and then removes all the `lift`s:
 //:
-
-runEffect <| Effect.pure(readLine()!) >~~ (stdoutLn() as Aquifer.Proxy<(), String, (), Never, ()>)
-
+func runReader2() {
+  runEffect <| Effect.pure(FileHandle.standardOutput.readLine) >~~ (stdoutLn() as Aquifer.Proxy<(), String, (), Never, ()>)
+}
+// runReader2()
 //: You might wonder why `>~~` uses an `Effect` instead of a raw value.  The reason why
 //: is that `>~~` actually permits the following more general type:
 //
@@ -439,7 +442,10 @@ let doubleUp2 : Consumer<String, String> = curry(+) <^> await() <*> await()
 //: We can now insert this in between `Consumer<String, String>.pure(readLine()!)` and `stdoutByLine` and see
 //: what happens:
 
-runEffect <| Effect<String>.pure(readLine()!) >~~ doubleUp >~~ (stdoutLn() as Aquifer.Proxy<(), String, (), Never, ()>)
+func runReader() {
+  runEffect <| Effect<String>.pure(FileHandle.standardInput.readLine) >~~ doubleUp >~~ (stdoutLn() as Aquifer.Proxy<(), String, (), Never, ()>)
+}
+//runReader()
 
 //
 // Associativity
@@ -517,12 +523,12 @@ let str = runEffect <| (const("End of input!") <^> stdinLn()) >-> (const("Broken
 
 /// Returns a pipe that only allows a given number of values to pass through it.
 //
-//                               +--------- A `Pipe` that
-//                               |    +---- `await`s `A`s and
-//                               |    |  +-- `yield`s `A`s
-//                               |    |  |
-//                               v    v  v
-public func take_<A>(_ n : Int) -> Pipe<A, A, ()> {
+//                                              +--------- A `Pipe` that
+//                                              |  +---- `await`s `A`s and
+//                                              |  |  +-- `yield`s `A`s
+//                                              |  |  |
+//                                              v  v  v
+public func take_<A>(_ n : Int) -> Aquifer.Pipe<A, A, ()> {
 	if n <= 0 {
 		return pure(())
 	} else {
@@ -533,9 +539,9 @@ public func take_<A>(_ n : Int) -> Pipe<A, A, ()> {
 //: You can use `Pipe`s to transform `Producer`s, `Consumer`s, or even other
 //: `Pipe`s using the same `>->` operator:
 //
-//     func >-> <A, B, R>(Producer<A, R>, Pipe<A, B, R>) -> Producer<B, R>
-//     func >-> <A, B, R>(Pipe<A, B, R>, Consumer<B, R>) -> Consumer<A, R>
-//     func >-> <A, B, C, R>(Pipe<A, B, R>, Pipe<B, C, R>) -> Pipe<A, C, R>
+//     func >-> <A, B, R>(_ producer<A, R>, Pipe<A, B, R>) -> Producer<B, R>
+//     func >-> <A, B, R>(_ pipe<A, B, R>, Consumer<B, R>) -> Consumer<A, R>
+//     func >-> <A, B, C, R>(_ pipe<A, B, R>, Pipe<B, C, R>) -> Pipe<A, C, R>
 //
 //: For example, you can compose `take` after `stdinLn` to limit the number
 //: of lines drawn from standard input:
@@ -567,7 +573,7 @@ runEffect <| stdinLn() >-> take(3) >-> stdoutLn()
 //: quirks.  In fact, we can continue the analogy to Unix by defining `cat`
 //: (named after the Unix `cat` utility), which reforwards elements endlessly:
 
-func cat_<A, R>() -> Pipe<A, A, R> {
+func cat_<A, R>() -> Aquifer.Pipe<A, A, R> {
 	return await() >>- { x in yield(x) } >>- {  _ in cat_() }
 }
 
@@ -586,7 +592,7 @@ func cat_<A, R>() -> Pipe<A, A, R> {
 //:
 //: A lot of Unix tools have very simple definitions when written using `pipes`:
 
-func head<A>(_ n : Int) -> Pipe<A, A, ()>  {
+func head<A>(_ n : Int) -> Aquifer.Pipe<A, A, ()>  {
 	return take(n)
 }
 
@@ -615,7 +621,7 @@ runEffect <| yes() >-> head(3) >-> stdoutLn()
 //: how `map` is defined:
 
 // Read this as: "For all values flowing downstream, apply `f`"
-public func map_<A, B, R>(f : @escaping (A) -> B) -> Pipe<A, B, R> {
+public func map_<A, B, R>(f : @escaping (A) -> B) -> Aquifer.Pipe<A, B, R> {
 	return for_(cat()) { v in yield(f(v)) }
 }
 

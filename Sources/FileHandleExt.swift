@@ -17,7 +17,7 @@ import Foundation
 private let BUFFER_SIZE : Int = 256
 
 extension FileHandle {
-	var readLine : String {
+	public var readLine : String {
 		let fd = self.fileDescriptor
 		guard fd > 0 else {
 			return ""
@@ -62,14 +62,14 @@ extension FileHandle {
 		return retVal
 	}
 
-	func writeLine(_ line : String) {
+	public func writeLine(_ line : String) {
 		guard let data = (line + "\n").data(using: .utf8) else {
 			return
 		}
 		self.write(data)
 	}
 
-	var isAtEndOfFile : Bool {
+	public var isAtEndOfFile : Bool {
 		let currentOffset = self.offsetInFile
 		self.seekToEndOfFile()
 		let endOffset = self.offsetInFile
