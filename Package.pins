@@ -1,0 +1,30 @@
+{
+  "autoPin": true,
+  "pins": [
+    {
+      "package": "Focus",
+      "reason": null,
+      "repositoryURL": "https://github.com/typelift/Focus.git",
+      "version": "0.3.2"
+    },
+    {
+      "package": "Operadics",
+      "reason": null,
+      "repositoryURL": "https://github.com/typelift/Operadics.git",
+      "version": "0.2.2"
+    },
+    {
+      "package": "Swiftx",
+      "reason": null,
+      "repositoryURL": "https://github.com/typelift/Swiftx.git",
+      "version": "0.5.1"
+    },
+    {
+      "package": "Swiftz",
+      "reason": null,
+      "repositoryURL": "https://github.com/typelift/Swiftz.git",
+      "version": "0.6.3"
+    }
+  ],
+  "version": 1
+}

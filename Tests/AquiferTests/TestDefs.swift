@@ -31,7 +31,7 @@ enum ClientStep : Int, CustomStringConvertible {
 extension ClientStep : Arbitrary {
 	static var arbitrary : Gen<ClientStep> {
 		return Gen.sized { _ in
-			return Gen<ClientStep>.fromElementsOf([
+			return Gen<ClientStep>.fromElements(of: [
 				.clientInc,
 				.clientLog,
 				.clientRequest,
@@ -60,7 +60,7 @@ enum ServerStep : Int, CustomStringConvertible {
 extension ServerStep : Arbitrary {
 	static var arbitrary : Gen<ServerStep> {
 		return Gen.sized { _ in
-			return Gen<ServerStep>.fromElementsOf([
+			return Gen<ServerStep>.fromElements(of: [
 				.serverInc,
 				.serverLog,
 				.serverRespond,
@@ -92,7 +92,7 @@ enum ProxyStep : Int, CustomStringConvertible {
 extension ProxyStep : Arbitrary {
 	static var arbitrary : Gen<ProxyStep> {
 		return Gen.sized { _ in
-			return Gen<ProxyStep>.fromElementsOf([
+			return Gen<ProxyStep>.fromElements(of: [
 				.proxyRequest,
 				.proxyRespond,
 				.proxyLog,

@@ -7,9 +7,9 @@ let package = Package(
 			name: "Aquifer"),
 	],
 	dependencies: [
-		.Package(url: "https://github.com/typelift/Operadics.git", versions: Version(0,2,2)...Version(0,2,2)),
-		.Package(url: "https://github.com/typelift/Swiftz.git", versions: Version(0,6,0)...Version(0,6,0)),
-		.Package(url: "https://github.com/typelift/Focus.git", versions: Version(0,3,0)...Version(0,3,0)),
+		.Package(url: "https://github.com/typelift/Operadics.git", versions: Version(0,2,2)...Version(1,0,0)),
+		.Package(url: "https://github.com/typelift/Swiftz.git", versions: Version(0,6,0)...Version(1,0,0)),
+		.Package(url: "https://github.com/typelift/Focus.git", versions: Version(0,3,0)...Version(1,0,0)),
 	]
 )
 

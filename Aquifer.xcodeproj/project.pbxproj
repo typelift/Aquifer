@@ -20,12 +20,12 @@
 		8240CEE31C3A4D1100EF4D29 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
 		8240CEE91C3A4D2300EF4D29 /* Focus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116C60C31B7EC56C00DE8B29 /* Focus.framework */; };
 		8240CEEA1C3A4D3700EF4D29 /* Swiftz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110A96D61B7D9449005667D4 /* Swiftz.framework */; };
-		82D36D4B1D90F67B00490C11 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D36D491D90F67B00490C11 /* ProxyTests.swift */; };
-		82D36D4C1D90F67B00490C11 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D36D491D90F67B00490C11 /* ProxyTests.swift */; };
-		82D36D4D1D90F67B00490C11 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D36D491D90F67B00490C11 /* ProxyTests.swift */; };
-		82D36D4E1D90F67B00490C11 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D36D4A1D90F67B00490C11 /* TestDefs.swift */; };
-		82D36D4F1D90F67B00490C11 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D36D4A1D90F67B00490C11 /* TestDefs.swift */; };
-		82D36D501D90F67B00490C11 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D36D4A1D90F67B00490C11 /* TestDefs.swift */; };
+		8298F0671E92B1270076D657 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F0651E92B1270076D657 /* ProxyTests.swift */; };
+		8298F0681E92B1270076D657 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F0651E92B1270076D657 /* ProxyTests.swift */; };
+		8298F0691E92B1270076D657 /* ProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F0651E92B1270076D657 /* ProxyTests.swift */; };
+		8298F06A1E92B1270076D657 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F0661E92B1270076D657 /* TestDefs.swift */; };
+		8298F06B1E92B1270076D657 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F0661E92B1270076D657 /* TestDefs.swift */; };
+		8298F06C1E92B1270076D657 /* TestDefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F0661E92B1270076D657 /* TestDefs.swift */; };
 		82D36D5E1D90F69600490C11 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 82D36D521D90F69600490C11 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82D36D5F1D90F69600490C11 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 82D36D521D90F69600490C11 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82D36D601D90F69600490C11 /* Aquifer.h in Headers */ = {isa = PBXBuildFile; fileRef = 82D36D521D90F69600490C11 /* Aquifer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -332,8 +332,8 @@
 		8240CE7C1C3A4C2D00EF4D29 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8240CE851C3A4C2D00EF4D29 /* Aquifer-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Aquifer-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8240CEB61C3A4C3600EF4D29 /* Aquifer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Aquifer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		82D36D491D90F67B00490C11 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProxyTests.swift; path = Tests/ProxyTests.swift; sourceTree = SOURCE_ROOT; };
-		82D36D4A1D90F67B00490C11 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestDefs.swift; path = Tests/TestDefs.swift; sourceTree = SOURCE_ROOT; };
+		8298F0651E92B1270076D657 /* ProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProxyTests.swift; path = Tests/AquiferTests/ProxyTests.swift; sourceTree = SOURCE_ROOT; };
+		8298F0661E92B1270076D657 /* TestDefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestDefs.swift; path = Tests/AquiferTests/TestDefs.swift; sourceTree = SOURCE_ROOT; };
 		82D36D511D90F68400490C11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		82D36D521D90F69600490C11 /* Aquifer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Aquifer.h; path = Sources/Aquifer.h; sourceTree = SOURCE_ROOT; };
 		82D36D531D90F69600490C11 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Auxiliary.swift; path = Sources/Auxiliary.swift; sourceTree = SOURCE_ROOT; };
@@ -560,8 +560,8 @@
 		11862D3E1A673BAA008F5696 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				82D36D491D90F67B00490C11 /* ProxyTests.swift */,
-				82D36D4A1D90F67B00490C11 /* TestDefs.swift */,
+				8298F0651E92B1270076D657 /* ProxyTests.swift */,
+				8298F0661E92B1270076D657 /* TestDefs.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -778,14 +778,14 @@
 					};
 					11862CDB1A65FF66008F5696 = {
 						CreatedOnToolsVersion = 6.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0830;
 					};
 					11F0320A1B0BFF82004C6D59 = {
 						CreatedOnToolsVersion = 6.4;
 					};
 					11F032141B0BFF82004C6D59 = {
 						CreatedOnToolsVersion = 6.4;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0830;
 					};
 					8240CE7B1C3A4C2D00EF4D29 = {
 						CreatedOnToolsVersion = 7.2;
@@ -793,7 +793,7 @@
 					};
 					8240CE841C3A4C2D00EF4D29 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0830;
 					};
 					8240CEB51C3A4C3600EF4D29 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1055,8 +1055,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82D36D4B1D90F67B00490C11 /* ProxyTests.swift in Sources */,
-				82D36D4E1D90F67B00490C11 /* TestDefs.swift in Sources */,
+				8298F0671E92B1270076D657 /* ProxyTests.swift in Sources */,
+				8298F06A1E92B1270076D657 /* TestDefs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,8 +1082,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82D36D4C1D90F67B00490C11 /* ProxyTests.swift in Sources */,
-				82D36D4F1D90F67B00490C11 /* TestDefs.swift in Sources */,
+				8298F0681E92B1270076D657 /* ProxyTests.swift in Sources */,
+				8298F06B1E92B1270076D657 /* TestDefs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1109,8 +1109,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82D36D4D1D90F67B00490C11 /* ProxyTests.swift in Sources */,
-				82D36D501D90F67B00490C11 /* TestDefs.swift in Sources */,
+				8298F0691E92B1270076D657 /* ProxyTests.swift in Sources */,
+				8298F06C1E92B1270076D657 /* TestDefs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
